@@ -25,7 +25,7 @@ const registerUser = async (req, res) => {
   await otpGenerator(user, email);
   return res
     .status(StatusCodes.CREATED)
-    .json({ data: user, message: "OTP Sent Successfully!" });
+    .json({ data: user.otpExpires, message: "OTP Sent Successfully!" });
 };
 
 const loginUser = async (req, res) => {
