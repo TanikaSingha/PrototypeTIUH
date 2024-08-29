@@ -3,7 +3,9 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   currentStep: 0,
   selectedElement: "",
+  currentTask: "",
   isTutorialComplete: false,
+  modalOpen: false,
 };
 
 const tutorialSlice = createSlice({
@@ -27,6 +29,15 @@ const tutorialSlice = createSlice({
       state.selectedElement = "";
       state.isTutorialComplete = false;
     },
+    setModalOpen: (state) => {
+      state.modalOpen = true;
+    },
+    setModalClose: (state) => {
+      state.modalOpen = false;
+    },
+    setCurrentTask: (state, action) => {
+      state.currentTask = action.payload;
+    },
   },
 });
 
@@ -36,5 +47,8 @@ export const {
   setSelectedElement,
   completeTutorial,
   resetTutorial,
+  setModalOpen,
+  setModalClose,
+  setCurrentTask,
 } = tutorialSlice.actions;
 export default tutorialSlice.reducer;

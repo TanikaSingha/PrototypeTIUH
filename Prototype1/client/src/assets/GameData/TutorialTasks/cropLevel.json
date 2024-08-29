@@ -1,0 +1,63 @@
+{
+  "name": "Crop Irrigation Knowledge Quiz",
+  "type": "Quiz",
+  "description": "Test your knowledge on effective crop irrigation techniques and groundwater conservation.",
+  "solutions": [
+    "Correct answers to quiz questions",
+    "Understanding best practices for irrigation and conservation"
+  ],
+  "questions": [
+    {
+      "question": "What is the best time of day to irrigate crops to minimize water loss?",
+      "options": ["Morning", "Afternoon", "Evening", "Midnight"],
+      "correctAnswer": "Morning"
+    },
+    {
+      "question": "Which irrigation method is most efficient for conserving groundwater?",
+      "options": [
+        "Flood Irrigation",
+        "Drip Irrigation",
+        "Sprinkler Irrigation",
+        "Furrow Irrigation"
+      ],
+      "correctAnswer": "Drip Irrigation"
+    },
+    {
+      "question": "What is the main reason for mulching around crops?",
+      "options": [
+        "To prevent pests",
+        "To retain soil moisture",
+        "To improve soil fertility",
+        "To enhance plant growth"
+      ],
+      "correctAnswer": "To retain soil moisture"
+    },
+    {
+      "question": "How can farmers reduce water runoff from their fields?",
+      "options": [
+        "Planting cover crops",
+        "Increasing irrigation frequency",
+        "Using heavy machinery",
+        "Applying chemical fertilizers"
+      ],
+      "correctAnswer": "Planting cover crops"
+    },
+    {
+      "question": "Which of the following practices helps in groundwater recharge?",
+      "options": [
+        "Building concrete roads",
+        "Installing rainwater harvesting systems",
+        "Increasing crop yield",
+        "Using chemical pesticides"
+      ],
+      "correctAnswer": "Installing rainwater harvesting systems"
+    }
+  ],
+  "taskDetails": {
+    "scoreThreshold": 30,
+    "pointsPerQuestion": 10,
+    "coinsPerQuestion": 20,
+    "timeLimit": 120000,
+    "waterLevelDeduction": 10
+  }
+}

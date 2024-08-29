@@ -1,0 +1,162 @@
+{
+  "name": "Element House - Kitchen Water Conservation",
+  "type": "Choice-Based Game",
+  "description": "Make smart choices in the kitchen to conserve groundwater and reduce water waste.",
+  "taskDetails": {
+    "scoreThreshold": 20,
+    "waterLevelDeduction": 20,
+    "maxPoints": 50,
+    "waterLevelIncrease": 10
+  },
+  "scenarios": [
+    {
+      "scenario": "You are about to wash dishes. Which method do you choose to conserve water?",
+      "options": [
+        {
+          "choice": "Use a dishwasher on a full load",
+          "score": 10,
+          "coins": 20,
+          "outcomeText": "Best choice - You are saving water and energy!"
+        },
+        {
+          "choice": "Wash dishes under running tap water",
+          "score": 2,
+          "coins": 5,
+          "outcomeText": "Bad choice - Running water wastes a lot of water."
+        },
+        {
+          "choice": "Fill the sink with water and wash dishes",
+          "score": 7,
+          "coins": 15,
+          "outcomeText": "Good choice - You conserve water by using only what's needed."
+        },
+        {
+          "choice": "Use disposable plates to avoid washing",
+          "score": 0,
+          "coins": 0,
+          "outcomeText": "Worst choice - This option harms the environment and doesn't save water."
+        }
+      ]
+    },
+    {
+      "scenario": "You notice a leaking faucet in the kitchen. What do you do?",
+      "options": [
+        {
+          "choice": "Ignore the leak",
+          "score": 0,
+          "coins": 0,
+          "outcomeText": "Worst choice - Ignoring leaks wastes significant amounts of water."
+        },
+        {
+          "choice": "Place a bucket under it to catch the water",
+          "score": 5,
+          "coins": 10,
+          "outcomeText": "Bad choice - You are catching water, but a permanent fix is better."
+        },
+        {
+          "choice": "Attempt to fix the leak temporarily",
+          "score": 7,
+          "coins": 15,
+          "outcomeText": "Good choice - A temporary fix is better than nothing."
+        },
+        {
+          "choice": "Call a plumber to repair the faucet",
+          "score": 10,
+          "coins": 20,
+          "outcomeText": "Best choice - Fixing the leak permanently saves water long-term."
+        }
+      ]
+    },
+    {
+      "scenario": "You need to clean vegetables for dinner. How do you proceed?",
+      "options": [
+        {
+          "choice": "Rinse vegetables under running water",
+          "score": 2,
+          "coins": 5,
+          "outcomeText": "Bad choice - Running water wastes water unnecessarily."
+        },
+        {
+          "choice": "Use a large bowl to wash vegetables and reuse the water for plants",
+          "score": 10,
+          "coins": 20,
+          "outcomeText": "Best choice - Efficient use of water and reusing it for plants!"
+        },
+        {
+          "choice": "Soak vegetables in a sink full of water and drain it afterward",
+          "score": 4,
+          "coins": 10,
+          "outcomeText": "Good choice - Better than running water, but reuse would be ideal."
+        },
+        {
+          "choice": "Wipe vegetables with a damp cloth",
+          "score": 7,
+          "coins": 15,
+          "outcomeText": "Good choice - Minimizing water usage while still cleaning the vegetables."
+        }
+      ]
+    },
+    {
+      "scenario": "You’re preparing to cook pasta. How do you handle the water?",
+      "options": [
+        {
+          "choice": "Boil more water than needed and drain it all after cooking",
+          "score": 3,
+          "coins": 5,
+          "outcomeText": "Bad choice - Using more water than necessary isn't efficient."
+        },
+        {
+          "choice": "Boil just enough water and use it efficiently",
+          "score": 10,
+          "coins": 20,
+          "outcomeText": "Best choice - You’re using the right amount of water without waste."
+        },
+        {
+          "choice": "Reuse leftover water from the pasta for another dish",
+          "score": 8,
+          "coins": 15,
+          "outcomeText": "Good choice - Reusing water helps reduce waste."
+        },
+        {
+          "choice": "Let the water run continuously while waiting for it to boil",
+          "score": 0,
+          "coins": 0,
+          "outcomeText": "Worst choice - Running water wastes a lot of water."
+        }
+      ]
+    },
+    {
+      "scenario": "After cooking, you have leftover water from boiling. What do you do with it?",
+      "options": [
+        {
+          "choice": "Pour it down the drain",
+          "score": 0,
+          "coins": 0,
+          "outcomeText": "Bad choice - This wastes water that could be reused."
+        },
+        {
+          "choice": "Use it to water your plants",
+          "score": 10,
+          "coins": 20,
+          "outcomeText": "Best choice - You’re conserving water by reusing it for plants."
+        },
+        {
+          "choice": "Let it cool and store it for later use",
+          "score": 7,
+          "coins": 15,
+          "outcomeText": "Good choice - Saving the water for future use is a smart move."
+        },
+        {
+          "choice": "Use it for washing dishes",
+          "score": 5,
+          "coins": 10,
+          "outcomeText": "Good choice - Repurposing water for washing dishes is a water-saving practice."
+        }
+      ]
+    }
+  ],
+  "solutions": [
+    "Make environmentally-friendly choices in the kitchen",
+    "Understand water-saving practices in daily activities"
+  ]
+}

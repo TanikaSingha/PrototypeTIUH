@@ -4,9 +4,17 @@ const userSchema = new mongoose.Schema(
   {
     username: {
       type: String,
-      unique: true,
-      trim: true,
-      required: [true, "Please Enter Your Username!"],
+      required: [true, "Please Enter Username"],
+      validate: {
+        validator: async function (username) {
+          if (this.isModified("username")) {
+            const user = await mongoose.models.User.findOne({ username });
+            return !user || !user.isVerified || user._id.equals(this._id);
+          }
+          return true;
+        },
+        message: "Username is already in use!",
+      },
     },
     email: {
       type: String,
@@ -15,7 +23,18 @@ const userSchema = new mongoose.Schema(
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
         "Please provide a valid email!",
       ],
-      unique: true,
+      validate: {
+        validator: async function (email) {
+          if (this.isModified("email")) {
+            const user = await mongoose.models.User.findOne({
+              email,
+            });
+            return !user || !user.isVerified || user._id.equals(this._id);
+          }
+          return true;
+        },
+        message: "Email is already in use!",
+      },
     },
     leaderBoardPosition: {
       type: Number,

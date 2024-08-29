@@ -1,0 +1,106 @@
+{
+  "name": "Advanced Industrial Elements Crossword Puzzle",
+  "type": "Crossword Puzzle",
+  "description": "Solve the crossword puzzle by filling in industry-related terms. Challenge your knowledge of industrial elements, equipment, and processes across multiple difficulty levels.",
+  "solutions": [
+    "Comprehending industry-related terms",
+    "Familiarity with industrial processes, equipment, and safety measures"
+  ],
+  "crosswordGrid": {
+    "size": [10, 10],
+    "clues": [
+      {
+        "direction": "across",
+        "number": 1,
+        "position": [0, 0],
+        "clue": "A machine used for molding metal (8 letters)",
+        "answer": "PRESSURE"
+      },
+      {
+        "direction": "down",
+        "number": 1,
+        "position": [0, 0],
+        "clue": "A substance used to prevent rust on metal (6 letters)",
+        "answer": "OIL"
+      },
+      {
+        "direction": "across",
+        "number": 2,
+        "position": [2, 0],
+        "clue": "A high-temperature furnace for melting metal (9 letters)",
+        "answer": "FURNACE"
+      },
+      {
+        "direction": "down",
+        "number": 2,
+        "position": [0, 3],
+        "clue": "A device for measuring temperature (7 letters)",
+        "answer": "THERMOMETER"
+      }
+    ],
+    "hints": [
+      {
+        "hint": "Used in casting and molding processes.",
+        "specificClue": "Relates to the first clue across."
+      },
+      {
+        "hint": "Commonly applied to protect metal surfaces.",
+        "specificClue": "Relates to the first clue down."
+      },
+      {
+        "hint": "Found in metalworking industries for heating purposes.",
+        "specificClue": "Relates to the second clue across."
+      },
+      {
+        "hint": "Used to monitor heat in various industrial processes.",
+        "specificClue": "Relates to the second clue down."
+      }
+    ]
+  },
+  "difficultyLevels": [
+    {
+      "level": "Easy",
+      "timeLimit": 600000,
+      "penaltyForIncorrect": 5,
+      "hintCost": 2,
+      "scoreMultiplier": 1
+    },
+    {
+      "level": "Medium",
+      "timeLimit": 450000,
+      "penaltyForIncorrect": 10,
+      "hintCost": 5,
+      "scoreMultiplier": 1.5
+    },
+    {
+      "level": "Hard",
+      "timeLimit": 300000,
+      "penaltyForIncorrect": 20,
+      "hintCost": 10,
+      "scoreMultiplier": 2
+    }
+  ],
+  "taskDetails": {
+    "scoreThreshold": 70,
+    "pointsPerCorrectAnswer": 20,
+    "coinsPerCorrectAnswer": 50,
+    "maxAttempts": 3,
+    "waterLevelDeduction": 25,
+    "hintsAvailable": true,
+    "bonusForCompletion": 150,
+    "difficultyScaling": true
+  },
+  "feedback": {
+    "correct": "Excellent! You've correctly solved this part of the puzzle and increased your industrial knowledge.",
+    "incorrect": "Incorrect answer. Review the clue and think again!",
+    "completion": "Outstanding! You've completed the puzzle. You earned a bonus for your great performance!"
+  },
+  "progressTracking": {
+    "trackCompletionTime": true,
+    "trackHintsUsed": true,
+    "trackAttempts": true,
+    "difficultyLevelChosen": true,
+    "trackCorrectAnswers": true,
+    "trackIncorrectAnswers": true
+  }
+}
