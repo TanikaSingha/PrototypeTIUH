@@ -15,7 +15,19 @@ const QuizGame = () => {
     outcome: "",
   });
 
+  const getFormattedTime = (milliseconds) => {
+    const totalSeconds = Math.floor(milliseconds / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
+      2,
+      "0"
+    )}`;
+  };
+
   const handleOption = (item, index) => {
+    if (timer <= 0 || result.outcome) return;
+
     const isCorrect =
       currentTask.questions[currentQuestion].correctAnswer === item;
 
@@ -35,47 +47,60 @@ const QuizGame = () => {
 
     if (currentQuestion === currentTask.questions.length - 1) {
       setStartTimer(false);
+      handleGameCompletion();
     }
   };
 
-  useEffect(() => {
-    if (
-      currentQuestion === currentTask.questions.length - 1 &&
-      result.outcome
+  const handleGameCompletion = () => {
+    if (timer <= 0) {
+      setWaterLevel((prevWaterLevel) => prevWaterLevel - 20);
+    } else if (
+      score < Number(currentTask.taskDetails.scoreThreshold) &&
+      waterLevel > 10
     ) {
-      if (timer <= 0) {
-        setWaterLevel((prevWaterLevel) => prevWaterLevel - 20);
-      } else if (
-        score < Number(currentTask.taskDetails.scoreThreshold) &&
-        waterLevel > 10
-      ) {
-        setWaterLevel((prevWaterLevel) => prevWaterLevel - 10);
-      } else {
-        const timeLeft = Math.floor(timer / 10000);
-        setScore((prevScore) => prevScore + timeLeft * 5);
-        if (waterLevel < 100) {
-          setWaterLevel((prevWaterLevel) => prevWaterLevel + 10);
-        }
+      setWaterLevel((prevWaterLevel) => prevWaterLevel - 10);
+    } else {
+      const timeLeft = Math.floor(timer / 1000);
+      setScore((prevScore) => prevScore + timeLeft * 5);
+      if (waterLevel < 100) {
+        setWaterLevel((prevWaterLevel) => prevWaterLevel + 10);
       }
-      setShowResults(true);
     }
-  }, [result]);
+    setShowResults(true);
+  };
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (startTimer && timer > 0) {
-        setTimer((prevTime) => prevTime - 1000);
-      } else {
-        clearInterval(interval);
-      }
-    }, 1000);
+    if (startTimer && timer > 0) {
+      const interval = setInterval(() => {
+        setTimer((prevTime) => {
+          if (prevTime <= 1000) {
+            clearInterval(interval);
+            handleGameCompletion();
+            return 0;
+          }
+          return prevTime - 1000;
+        });
+      }, 1000);
 
-    return () => clearInterval(interval);
-  }, [timer, startTimer]);
+      return () => clearInterval(interval);
+    }
+  }, [startTimer, timer]);
+
   const percentage =
     ((currentTask.taskDetails.timeLimit - timer) /
       currentTask.taskDetails.timeLimit) *
     100;
+
+  let pathColor;
+
+  if (percentage > 60) {
+    pathColor = "#ef4444";
+  } else if (percentage > 30) {
+    pathColor = "#f59e0b";
+  } else {
+    pathColor = "#10b981";
+  }
+
   return (
     <section className="min-h-screen flex items-center justify-center w-full relative">
       <div className="bg-yellow-300 flex gap-2 items-center justify-center p-4 absolute top-2 right-2 rounded-md shadow-md">
@@ -84,11 +109,14 @@ const QuizGame = () => {
         <div className="w-20 h-20">
           <CircularProgressbar
             value={percentage}
-            text={`${Math.floor(timer / 1000)}`}
+            text={getFormattedTime(timer)}
             styles={buildStyles({
-              textColor: "#000",
-              pathColor: "#3b82f6",
-              trailColor: "#d1d5db",
+              textColor: "#fff",
+              pathColor: pathColor,
+              trailColor: "#d6d6d6",
+              strokeLinecap: "round",
+              pathTransitionDuration: 0.5,
+              textSize: "22px",
             })}
           />
         </div>
@@ -126,9 +154,7 @@ const QuizGame = () => {
                   <li
                     key={index}
                     className="cursor-pointer p-2 rounded-md bg-gray-100 hover:bg-blue-200 transition-colors relative"
-                    onClick={() =>
-                      !result.outcome && startTimer && handleOption(item, index)
-                    }
+                    onClick={() => handleOption(item, index)}
                   >
                     <div
                       className={`absolute inset-0 w-full h-full rounded-md ${

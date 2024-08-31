@@ -1,30 +1,375 @@
-import React from "react";
+import React, { useState, useMemo, useCallback, useEffect } from "react";
 import currentTask from "../../assets/GameData/TutorialTasks/puzzleLevel.json";
 
 const randomLetterGenerator = () => {
   return String.fromCharCode(65 + Math.floor(Math.random() * 26));
 };
+let interval;
+const colorMap = {
+  correct: "bg-green-500",
+  incorrect: "bg-red-500",
+  completion: "bg-blue-500",
+};
 const PuzzleGame = () => {
+  const [score, setScore] = useState(0);
+  const [coins, setCoins] = useState(2000);
+  const [waterLevel, setWaterLevel] = useState(100);
+  const [feedBack, setFeedBack] = useState({ status: "", statement: "" });
+  const [startDrag, setStartDrag] = useState(false);
+  const [dragString, setDragString] = useState("");
+  const [visitedPositions, setVisitedPositions] = useState(new Set());
+  const [linePath, setLinePath] = useState("");
+  const [lastValidPosition, setLastValidPosition] = useState(null);
+  const [showResults, setShowResults] = useState(false);
+  const [maxAttempts, setMaxAttempts] = useState(
+    currentTask.taskDetails.maxAttempts
+  );
+  const [storeAnswers, setStoreAnswers] = useState(new Set());
+  const [answeredLetters, setAnsweredLetters] = useState({});
+  const [hint, setHint] = useState("");
+  const [hintsLeft, setHintsLeft] = useState(2);
+
+  useEffect(() => {
+    const initAnsweredLetters = {};
+    currentTask.crosswordGrid.clues.forEach((clue) => {
+      const { position, direction, answer } = clue;
+      for (let i = 0; i < answer.length; i++) {
+        const key =
+          direction === "across"
+            ? `${position[0]},${Number(position[1]) + i}`
+            : `${Number(position[0]) + i},${position[1]}`;
+        if (!initAnsweredLetters[key]) {
+          initAnsweredLetters[key] = {
+            wordsFound: 0,
+            totalWords: 1,
+            foundAll: false,
+          };
+        } else {
+          initAnsweredLetters[key].totalWords += 1;
+        }
+      }
+    });
+    setAnsweredLetters(initAnsweredLetters);
+  }, []);
+
+  const gridLetters = useMemo(() => {
+    const grid = [];
+    const { size, clues } = currentTask.crosswordGrid;
+
+    for (let i = 0; i < size[0]; i++) {
+      const row = [];
+      for (let j = 0; j < size[1]; j++) {
+        const clue = clues.find((item) => {
+          const [rowPos, colPos] = item.position;
+          const isAcross = item.direction === "across";
+          const isDown = item.direction === "down";
+          return (
+            (isAcross &&
+              Number(rowPos) === i &&
+              j >= Number(colPos) &&
+              j < Number(colPos) + item.answer.length) ||
+            (isDown &&
+              Number(colPos) === j &&
+              i >= Number(rowPos) &&
+              i < Number(rowPos) + item.answer.length)
+          );
+        });
+
+        if (clue) {
+          const letterIndex =
+            clue.direction === "across"
+              ? j - Number(clue.position[1])
+              : i - Number(clue.position[0]);
+          row.push(clue.answer[letterIndex]);
+        } else {
+          row.push(randomLetterGenerator());
+        }
+      }
+      grid.push(row);
+    }
+    return grid;
+  }, [currentTask.crosswordGrid]);
+
+  const handleHint = useCallback(() => {
+    const find = currentTask.crosswordGrid.clues.find((item) => {
+      return !storeAnswers.has(item);
+    });
+    if (!find || hintsLeft <= 0 || coins < 400 / hintsLeft) {
+      return;
+    }
+    const hintCost = 400 / hintsLeft;
+    setHint(find.clue);
+    setCoins((prevCoins) => prevCoins - hintCost);
+    setHintsLeft((prevNum) => prevNum - 1);
+  }, [storeAnswers, hintsLeft, coins]);
+
+  const handleMouseDown = useCallback(
+    (e) => {
+      if (showResults || maxAttempts === 0) return;
+
+      e.preventDefault();
+      const [i, j] = e.currentTarget.dataset.position.split(",").map(Number);
+      const positionKey = `${i},${j}`;
+      if (answeredLetters[positionKey]?.foundAll) {
+        return;
+      }
+
+      setStartDrag(true);
+      setDragString(e.currentTarget.dataset.value);
+      setVisitedPositions(new Set([positionKey]));
+      setLinePath(`M${j * 50 + 25},${i * 50 + 25}`);
+      setLastValidPosition({ i, j });
+    },
+    [answeredLetters, showResults, maxAttempts]
+  );
+
+  const handleMouseOver = useCallback(
+    (e) => {
+      if (!startDrag || showResults || maxAttempts === 0) return;
+
+      const [i, j] = e.currentTarget.dataset.position.split(",").map(Number);
+      const positionKey = `${i},${j}`;
+      if (
+        !visitedPositions.has(positionKey) &&
+        !answeredLetters[positionKey]?.foundAll
+      ) {
+        const { i: lastI, j: lastJ } = lastValidPosition || {};
+        const isValidMove =
+          lastI !== undefined &&
+          lastJ !== undefined &&
+          (lastI === i || lastJ === j);
+
+        if (isValidMove) {
+          setDragString((prev) => prev + e.target.dataset.value);
+          setVisitedPositions((prev) => new Set(prev).add(positionKey));
+          setLinePath((prev) => prev + ` L${j * 50 + 25},${i * 50 + 25}`);
+          setLastValidPosition({ i, j });
+        }
+      }
+    },
+    [
+      startDrag,
+      visitedPositions,
+      lastValidPosition,
+      answeredLetters,
+      showResults,
+      maxAttempts,
+    ]
+  );
+
+  const handleAnswer = useCallback(() => {
+    const isPresent = currentTask.crosswordGrid.clues.find(
+      (item) => item.answer === dragString
+    );
+    clearInterval(interval);
+    setFeedBack({ status: "correct", statement: currentTask.feedback.correct });
+    interval = setTimeout(() => {
+      setFeedBack({ status: "", statement: "" });
+    }, 1000);
+    if (isPresent && !storeAnswers.has(isPresent)) {
+      setStoreAnswers((prevSet) => {
+        const newSet = new Set(prevSet);
+        newSet.add(isPresent);
+        return newSet;
+      });
+      const { position, direction, answer } = isPresent;
+      const [startRow, startCol] = position.map(Number);
+      const newAnsweredLetters = { ...answeredLetters };
+
+      for (let k = 0; k < answer.length; k++) {
+        const posKey =
+          direction === "across"
+            ? `${startRow},${startCol + k}`
+            : `${startRow + k},${startCol}`;
+
+        if (!newAnsweredLetters[posKey]) {
+          newAnsweredLetters[posKey] = { wordsFound: 0, totalWords: 1 };
+        }
+        newAnsweredLetters[posKey].wordsFound += 1;
+        const isFullyAnswered =
+          newAnsweredLetters[posKey].wordsFound ===
+          newAnsweredLetters[posKey].totalWords;
+
+        newAnsweredLetters[posKey].foundAll = isFullyAnswered;
+      }
+
+      setAnsweredLetters(newAnsweredLetters);
+
+      setScore(
+        (prevScore) =>
+          prevScore + currentTask.taskDetails.pointsPerCorrectAnswer
+      );
+      setCoins(
+        (prevCoins) => prevCoins + currentTask.taskDetails.coinsPerCorrectAnswer
+      );
+    } else if (maxAttempts > 0) {
+      clearInterval(interval);
+      setFeedBack({
+        status: "incorrect",
+        statement: currentTask.feedback.incorrect,
+      });
+      interval = setTimeout(() => {
+        setFeedBack({ status: "", statement: "" });
+      }, 1000);
+      setMaxAttempts((prevAttempts) => prevAttempts - 1);
+    }
+  }, [dragString, storeAnswers, answeredLetters, maxAttempts]);
+
+  const handleMouseUp = useCallback(() => {
+    if (showResults) return;
+
+    setStartDrag(false);
+    setVisitedPositions(new Set());
+    setLinePath("");
+    setLastValidPosition(null);
+    if (dragString.length > 1) {
+      handleAnswer();
+    }
+    setDragString("");
+  }, [dragString, handleAnswer, showResults, setShowResults]);
+
+  useEffect(() => {
+    if (
+      storeAnswers.size === currentTask.crosswordGrid.clues.length ||
+      maxAttempts === 0
+    ) {
+      if (maxAttempts !== 0) {
+        clearInterval(interval);
+        setFeedBack({
+          status: "completion",
+          statement: currentTask.feedback.completion,
+        });
+        interval = setTimeout(() => {
+          setFeedBack({ status: "", statement: "" });
+        }, 1000);
+      }
+      if (score < currentTask.taskDetails.scoreThreshold) {
+        setWaterLevel((prev) =>
+          Math.max(prev - currentTask.taskDetails.waterLevelDeduction, 0)
+        );
+      } else {
+        if (maxAttempts === currentTask.taskDetails.maxAttempts) {
+          setScore((prev) => prev + currentTask.taskDetails.bonusForCompletion);
+          setWaterLevel((prev) => Math.min(prev + 20, 100));
+        } else {
+          setWaterLevel((prev) => Math.min(prev + 10, 100));
+        }
+      }
+      console.log("yes");
+      setShowResults(true);
+    }
+  }, [storeAnswers, maxAttempts]);
   return (
-    <section className="bg-yellow-500 min-h-screen w-full flex items-center justify-center">
+    <section
+      className="bg-yellow-500 min-h-screen w-full flex items-center justify-center relative flex-col"
+      onMouseUp={handleMouseUp}
+    >
+      {hint && (
+        <div className="absolute top-2 p-2 bg-white text-black left-2">
+          <p>{hint}</p>
+          <button
+            onClick={() => {
+              setHint("");
+            }}
+          >
+            Done
+          </button>
+        </div>
+      )}
+      {feedBack.statement && (
+        <div
+          className={`absolute bottom-2 right-2 ${colorMap[feedBack.status]}`}
+        >
+          <p className="text-xl font-bold text-white">{feedBack.statement}</p>
+        </div>
+      )}
+      <div className="bg-yellow-300 flex gap-2 items-center justify-center p-4 absolute top-2 right-2 rounded-md shadow-md">
+        <p>Coins: {coins}</p>
+        <p>Score: {score}/100</p>
+        <p>Water Level: {waterLevel}</p>
+      </div>
+      <div className="absolute top-1/2 right-4 p-2 bg-gray-200">
+        <p className="text-red-700">
+          Attempts: {maxAttempts}/{currentTask.taskDetails.maxAttempts}
+        </p>
+      </div>
+      <div className="bg-orange-400 w-5/12">
+        <h1>Puzzle: {currentTask.name}</h1>
+        <h4>Description: {currentTask.description}</h4>
+        <p>Information for the Player</p>
+        <ul className="text-sm">
+          {currentTask.solutions.map((item, index) => (
+            <li key={index}>{item}</li>
+          ))}
+        </ul>
+      </div>
       <div
-        className="bg-white flex flex-wrap"
+        className="bg-white flex flex-wrap relative shadow-lg "
         style={{
-          width: `${currentTask.crosswordGrid.size[0] * 50}px`,
-          height: `${currentTask.crosswordGrid.size[1] * 50}px`,
+          width: `${currentTask.crosswordGrid.size[1] * 50}px`,
         }}
       >
-        {[...Array(currentTask.crosswordGrid.size[0])].map((_, i) =>
-          [...Array(currentTask.crosswordGrid.size[1])].map((_, j) => (
-            <div
-              key={`${i}-${j}`}
-              className="w-[50px] h-[50px] bg-slate-100 border border-gray-300"
-            >
-              <p>{randomLetterGenerator()}</p>
-            </div>
-          ))
+        {gridLetters.map((row, i) =>
+          row.map((letter, j) => {
+            const positionKey = `${i},${j}`;
+            const cellClass = answeredLetters[positionKey]?.foundAll
+              ? "bg-green-200"
+              : answeredLetters[positionKey]?.wordsFound >= 1
+              ? "bg-blue-200"
+              : "bg-white";
+            return (
+              <div
+                key={`${i}-${j}`}
+                data-value={letter}
+                data-position={`${i},${j}`}
+                className={`w-[50px] h-[50px] border flex items-center justify-center select-none ${cellClass} border-gray-900 ${
+                  answeredLetters[positionKey]?.foundAll
+                    ? `cursor-not-allowed`
+                    : startDrag
+                    ? `cursor-grab`
+                    : `cursor-pointer`
+                }`}
+                onMouseDown={handleMouseDown}
+                onMouseOver={handleMouseOver}
+              >
+                {letter}
+              </div>
+            );
+          })
         )}
+        <svg
+          className="absolute top-0 left-0"
+          style={{
+            width: `${currentTask.crosswordGrid.size[1] * 50}px`,
+            height: `${currentTask.crosswordGrid.size[0] * 50}px`,
+            pointerEvents: "none",
+          }}
+        >
+          <path d={linePath} stroke="red" strokeWidth="3" fill="none" />
+        </svg>
       </div>
+      <div
+        className={`p-2 bg-white text-black absolute left-5 top-10 ${
+          coins < 400 / hintsLeft
+            ? `opacity-80 cursor-not-allowed`
+            : `opacity-100 cursor-pointer`
+        }`}
+      >
+        <p>{hintsLeft}/2</p>
+        <button onClick={handleHint} disabled={coins < 400 / hintsLeft}>
+          Use Hint
+        </button>
+      </div>
+      {showResults && (
+        <div className="absolute top-0 left-0 w-full h-full bg-gray-800/30 flex items-center justify-center">
+          <div className="bg-white p-8 rounded-lg shadow-lg text-center">
+            <h2 className="text-2xl font-bold mb-4">Game Over</h2>
+            <p className="text-xl">Your final score is: {score}</p>
+            <p className="text-lg">Coins collected: {coins}</p>
+            <p>Water Level:{waterLevel}</p>
+          </div>
+        </div>
+      )}
     </section>
   );
 };

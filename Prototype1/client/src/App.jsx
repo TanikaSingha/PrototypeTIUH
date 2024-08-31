@@ -21,7 +21,7 @@ const App = () => {
   return (
     <main>
       <Routes>
-        {/* <Route path="/" element={<HomePage></HomePage>}></Route>
+        <Route path="/" element={<HomePage></HomePage>}></Route>
         <Route
           path="/login"
           element={user ? <Navigate to="/profile" /> : <Login />}
@@ -49,7 +49,7 @@ const App = () => {
           path="/level/:levelType"
           element={<GameComponent></GameComponent>}
         ></Route>
-        <Route path="*" element={<ErrorPage></ErrorPage>}></Route> */}
+        <Route path="*" element={<ErrorPage></ErrorPage>}></Route>
         <Route path="/quiz" element={<QuizGame></QuizGame>}></Route>
         <Route path="/choice" element={<ChoiceGame></ChoiceGame>}></Route>
         <Route path="/puzzle" element={<PuzzleGame></PuzzleGame>}></Route>
