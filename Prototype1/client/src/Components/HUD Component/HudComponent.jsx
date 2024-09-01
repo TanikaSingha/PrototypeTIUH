@@ -4,6 +4,7 @@ import Joyride, { STATUS } from "react-joyride";
 import { setModalOpen } from "../../lib/Slices/tutorialSlice";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import { useNavigate } from "react-router-dom";
+import "./HudComponent.css"
 
 const getScoreFromLevel = (level) => {
   if (level === 5) return 2000;
@@ -61,8 +62,9 @@ const Hud = () => {
 
   const percentage = (user.score / getScoreFromLevel(user.playerLevel)) * 100;
 
+
   return (
-    <div className="absolute top-0 left-0 p-3 bg-white shadow-lg w-full flex justify-between items-center hud h-20">
+    <div className="absolute top-0 left-0 p-4 bg-gradient-to-b from-blue-950 to-blue-900 shadow-lg w-full flex justify-between items-center hud h-16 text-white">
       {/* <Joyride
         steps={steps}
         continuous
@@ -72,31 +74,35 @@ const Hud = () => {
         disableOverlayClose
         callback={handleJoyrideCallback}
       /> */}
-      <h2 className="text-lg font-bold">AquaSavvy</h2>
-      <div className="flex items-center space-x-4">
-        <div className="text-sm">
-          <p className="score">
+      <h2 className="text-xl font-bold audiowide tracking-wide">AquaSavvy</h2>
+      <div className="flex items-center space-x-6">
+        <div className="montserrat text-base tasks">
+          <strong>Tasks:</strong> {`"${currentTask?.name || `No Tasks`}"`}
+        </div>
+        <div className="text-sm score flex gap-4">
+          <p className="montserrat text-base">
             <strong>Score:</strong> {user.score}
           </p>
-          <p className="coins">
+          <p className="coins montserrat text-base">
             <strong>Coins:</strong> {user.coins}
           </p>
         </div>
         <div
-          className="flex items-center space-x-2"
+          className="flex items-center space-x-4 cursor-pointer"
           onClick={() => {
             if (!isTaskRunning) {
               navigate("/profile");
             }
           }}
         >
-          <div className="relative w-16 h-16">
+
+          <div className="relative w-14 h-14">
             <CircularProgressbar
               value={percentage}
               styles={buildStyles({
                 textColor: "#fff",
-                pathColor: "#008000",
-                trailColor: "#d6d6d6",
+                pathColor: "#00FF00",
+                trailColor: "#1A1D23",
                 strokeLinecap: "round",
                 pathTransitionDuration: 0.5,
               })}
@@ -105,35 +111,33 @@ const Hud = () => {
               <img
                 src={user.avatar}
                 alt="profile-pic"
-                className="w-14 h-14 rounded-full object-cover border-4 border-white"
+                className="w-12 h-12 rounded-full object-cover border-2 border-white"
                 style={{ zIndex: 1 }}
               />
             </div>
           </div>
-          <div className="text-sm">
-            <p>Level {user.playerLevel}</p>
+          <div className="montserrat text-base">
+            <p className="font-semibold">Level {user.playerLevel}</p>
           </div>
         </div>
-        <div className="text-sm water-level">
-          <strong>Water Level:</strong>
-          <div className={`bg-gray-500 h-2 mt-1 w-32 relative`}>
+        <div className="water-level flex flex-col items-center">
+          <strong className="montserrat text-base">Water Level:</strong>
+          <div className={`bg-gray-700 h-2 mt-1 w-32 relative rounded`}>
             <div
-              className={`absolute inset-0 h-full ${
-                user.groundWaterLevel >= 50
-                  ? `bg-blue-500`
-                  : user.groundWaterLevel >= 25
+              className={`absolute inset-0 h-full ${user.groundWaterLevel >= 50
+                ? `bg-blue-500`
+                : user.groundWaterLevel >= 25
                   ? `bg-yellow-300`
                   : `bg-red-500`
-              }`}
+                } rounded`}
               style={{ width: `${user.groundWaterLevel}%` }}
             ></div>
           </div>
         </div>
-        <div className="text-sm tasks">
-          <strong>Tasks:</strong> {`"${currentTask?.name || `No Tasks`}"`}
-        </div>
+
       </div>
     </div>
+
   );
 };
 

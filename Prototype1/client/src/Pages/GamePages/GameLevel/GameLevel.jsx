@@ -25,7 +25,7 @@ const GameLevel = () => {
   if (!levelComponent) {
     return <div>Invalid level!</div>;
   }
-  return <div className="w-full min-h-screen">{levelComponent}</div>;
+  return <div className="w-full">{levelComponent}</div>;
 };
 
 export default GameLevel;

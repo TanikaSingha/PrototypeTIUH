@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import GuideIntroduction from "../../Components/TutorialComponents/GuideIntroduction/GuideIntroduction";
 import WelcomeScreen from "../../Components/TutorialComponents/Welcome Screen/WelcomeScreen";
-import GameElementsIntro from "../../Components/GameElementsIntro/GameElementsIntro";
-import GameElementComponent from "../../Components/GameElementComponent/GameElementComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { prevStep } from "../../lib/Slices/tutorialSlice";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'

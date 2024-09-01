@@ -4,6 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { setModalClose } from "../../../lib/Slices/tutorialSlice";
 import { useNavigate } from "react-router-dom";
 import { setTaskInfo } from "../../../lib/Slices/gameSlice";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import taskicon1 from "../../../assets/Icons/waterLeaf.png";
 
 const modalData = [
   { title: "Title 1", description: "Description 1", images: [] },
@@ -15,6 +18,7 @@ const modalData = [
 
 const ModalComponent = () => {
   const [page, setPage] = useState(0);
+  const dispatch = useDispatch();
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
       <div className="w-[600px] h-[400px] bg-white rounded-lg shadow-lg flex flex-col p-6 relative">
@@ -87,20 +91,73 @@ const CropLevel = () => {
   return (
     <div
       style={{ backgroundImage: `url(${cropLevelImage})` }}
-      className="w-full min-h-screen bg-cover bg-no-repeat flex items-center justify-center"
+      className={`w-full h-[calc(100vh-64px)]  bg-cover bg-no-repeat flex items-center justify-center`}
     >
+      <div className="absolute inset-0 bg-black/50 z-10"></div>
+      <button
+        onClick={() => {
+          navigate(-1);
+        }
+        }
+        className="w-[50px] h-[50px] rounded-full bg-white cursor-pointer absolute top-5 left-5 z-50 hover:scale-110 transition-all duration-100 ease-in-out"
+      >
+        <FontAwesomeIcon icon={faArrowLeft} className=""></FontAwesomeIcon>
+      </button>
       {modalOpen && <ModalComponent />}
       {!modalOpen && (
-        <div>
-          <h1 className="text-white text-4xl font-bold">Crop Level</h1>
-          <div
-            className="w-20 h-20 bg-black"
+        <div className="z-50">
+          <h1 className="text-white text-4xl font-bold text-center mb-6">Crop Level</h1>
+          {/* <div
+            className="w-20 h-20 bg-black cursor-pointer"
             onClick={() => {
               navigate(`/game/taskPage?element=farm&level=crop&type=quiz`);
             }}
           >
             <p className="text-white">Task 1</p>
+          </div> */}
+          <div className="flex justify-center space-x-6">
+            {/* Task 1 */}
+            <div
+              className="w-60 h-96 bg-gray-800 text-white flex flex-col justify-center items-center gap-2 p-2 rounded-lg cursor-pointer hover:scale-105 transition-transform"
+              onClick={() => {
+                navigate(`/game/taskPage?element=farm&level=crop&type=task1`);
+              }}
+            >
+              <h2 className="text-xl font-bold mb-2">Task 1</h2>
+              <p className="text-sm text-gray-300 text-center">
+                Water-Smart Crop Management Quiz
+              </p>
+              <img src={taskicon1} alt="icon" className="w-12 h-12 " />
+              <p className="text-center">Test your knowledge on sustainable crop management practices that protect and conserve groundwater</p>
+            </div>
+
+            {/* Task 2 */}
+            <div
+              className="w-60 h-96 bg-gray-800 text-white opacity-50 flex flex-col items-center justify-center rounded-lg cursor-pointer hover:scale-105 transition-transform"
+              onClick={() => {
+                navigate(`/game/taskPage?element=farm&level=crop&type=task2`);
+              }}
+            >
+              <h2 className="text-xl font-bold mb-2">Task 2</h2>
+              <p className="text-sm text-gray-300">
+                Brief description of Task 2.
+              </p>
+            </div>
+
+            {/* Task 3 */}
+            <div
+              className="w-60 h-96 bg-gray-800 text-white opacity-50 flex flex-col items-center justify-center rounded-lg cursor-pointer hover:scale-105 transition-transform"
+              onClick={() => {
+                navigate(`/game/taskPage?element=farm&level=crop&type=task3`);
+              }}
+            >
+              <h2 className="text-xl font-bold mb-2">Task 3</h2>
+              <p className="text-sm text-gray-300">
+                Brief description of Task 3.
+              </p>
+            </div>
           </div>
+
         </div>
       )}
     </div>
