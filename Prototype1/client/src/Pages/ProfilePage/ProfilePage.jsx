@@ -97,7 +97,7 @@ const ProfilePage = () => {
   return (
     <section className="py-4 px-8 bg-gray-950 text-gray-200 min-h-screen">
       <nav className="flex justify-between items-center">
-        <p className="text-lg montserrat"><Link to='/'><FontAwesomeIcon className="pr-2 hover:scale-110 " icon={faArrowCircleLeft}></FontAwesomeIcon></Link>Profile</p>
+        <p className="text-lg montserrat"><Link to='/start'><FontAwesomeIcon className="pr-2 hover:scale-110 " icon={faArrowCircleLeft}></FontAwesomeIcon></Link>Profile</p>
         <button
           onClick={handleLogout}
           className="text-lg montserrat bg-gradient-to-r from-sky-600 to-blue-500 text-white px-6 py-2 rounded-lg shadow-md hover:from-blue-500 hover:to-sky-800 hover:scale-x-105 transition-all transform duration-150 focus:outline-none focus:ring-2 focus:ring-red-500"
