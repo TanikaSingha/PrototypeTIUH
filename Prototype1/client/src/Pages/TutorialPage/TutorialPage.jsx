@@ -5,6 +5,9 @@ import GameElementsIntro from "../../Components/GameElementsIntro/GameElementsIn
 import GameElementComponent from "../../Components/GameElementComponent/GameElementComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { prevStep } from "../../lib/Slices/tutorialSlice";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { Navigate } from "react-router-dom";
 
 const TutorialPage = () => {
   const { currentStep, isTutorialComplete } = useSelector(
