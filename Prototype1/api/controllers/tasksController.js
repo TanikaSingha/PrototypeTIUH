@@ -1,4 +1,4 @@
-const { BadRequest } = require("../errors/index");
+const { BadRequest, NotFound } = require("../errors/index");
 const { Quiz, Puzzle, Choice } = require("../models/gamesSchema");
 const createTasks = async (req, res) => {
   const { gameId } = req.params;

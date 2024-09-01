@@ -6,6 +6,7 @@ import {
   addWaterLevel,
   removeCoins,
   removeWaterLevel,
+  updateScore,
 } from "../../lib/Slices/userSlice";
 import { setTaskComplete, setTaskRunning } from "../../lib/Slices/gameSlice";
 
@@ -271,6 +272,7 @@ const PuzzleGame = () => {
           dispatch(addWaterLevel(10));
         }
       }
+      dispatch(updateScore());
       dispatch(setTaskComplete());
       setShowResults(true);
     }

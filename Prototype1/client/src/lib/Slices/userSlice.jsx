@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import apiRequest from "../utils/apiRequest";
+import socket from "../utils/socket";
 
 const initialState = {
   user: JSON.parse(localStorage.getItem("user")) || null,
@@ -14,7 +15,11 @@ export const loginUser = createAsyncThunk(
   async (credentials, { rejectWithValue }) => {
     try {
       const response = await apiRequest.post("/auth/login", credentials);
-      return response.data.data;
+      const userData = response.data.data;
+
+      socket.emit("newUser", { userId: userData._id, score: userData.score });
+
+      return userData;
     } catch (error) {
       return rejectWithValue(error.response?.data);
     }
@@ -26,13 +31,15 @@ export const registerUser = createAsyncThunk(
   async (credentials, { rejectWithValue }) => {
     try {
       const response = await apiRequest.post("/auth/register", credentials);
-      return response.data.data;
+      const userData = response.data.data;
+      socket.emit("newUser", { userId: userData._id, score: userData.score });
+
+      return userData;
     } catch (error) {
       return rejectWithValue(error.response?.data);
     }
   }
 );
-
 export const verifyOtp = createAsyncThunk(
   "user/verifyOtp",
   async (credentials, { rejectWithValue }) => {
@@ -73,11 +80,32 @@ export const fetchUser = createAsyncThunk(
   "user/fetchUser",
   async (_, { getState, rejectWithValue }) => {
     try {
-      const userId = getState().user._id;
+      const userId = getState().user.user._id; // Fixed user retrieval from state
       const response = await apiRequest.get(`/user/${userId}`);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data);
+    }
+  }
+);
+
+export const updateScore = createAsyncThunk(
+  "user/updateScore",
+  async (_, { getState, rejectWithValue }) => {
+    try {
+      const { user, game } = getState();
+      const { _id: taskId } = game.currentTask;
+      const { score, coins, groundWaterLevel, playerLevel } = user.user;
+      const response = await apiRequest.patch(`/user/tasks/${taskId}`, {
+        score,
+        coins,
+        groundWaterLevel,
+        playerLevel,
+      });
+      socket.emit("scoreUpdate", { userId: user.user._id, score });
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message);
     }
   }
 );
@@ -101,40 +129,54 @@ const userSlice = createSlice({
       state.error = null;
     },
     setAvatar: (state, action) => {
-      state.user.avatar = action.payload;
-      localStorage.setItem("user", JSON.stringify(state.user));
+      if (state.user) {
+        state.user.avatar = action.payload;
+        localStorage.setItem("user", JSON.stringify(state.user));
+      }
     },
     addScore: (state, action) => {
-      state.user.score = state.user.score + action.payload;
-      state.user.playerLevel = getLevelFromScore(state.user.score);
-      localStorage.setItem("user", JSON.stringify(state.user));
+      if (state.user) {
+        state.user.score = state.user.score + action.payload;
+        state.user.playerLevel = getLevelFromScore(state.user.score);
+        localStorage.setItem("user", JSON.stringify(state.user));
+      }
     },
     removeScore: (state, action) => {
-      state.user.score = Math.max(state.user.score - action.payload, 0);
-      state.user.playerLevel = getLevelFromScore(state.user.score);
-      localStorage.setItem("user", JSON.stringify(state.user));
+      if (state.user) {
+        state.user.score = Math.max(state.user.score - action.payload, 0);
+        state.user.playerLevel = getLevelFromScore(state.user.score);
+        localStorage.setItem("user", JSON.stringify(state.user));
+      }
     },
     addCoins: (state, action) => {
-      state.user.coins = state.user.coins + action.payload;
-      localStorage.setItem("user", JSON.stringify(state.user));
+      if (state.user) {
+        state.user.coins = state.user.coins + action.payload;
+        localStorage.setItem("user", JSON.stringify(state.user));
+      }
     },
     removeCoins: (state, action) => {
-      state.user.coins = Math.max(state.user.coins - action.payload, 0);
-      localStorage.setItem("user", JSON.stringify(state.user));
+      if (state.user) {
+        state.user.coins = Math.max(state.user.coins - action.payload, 0);
+        localStorage.setItem("user", JSON.stringify(state.user));
+      }
     },
     addWaterLevel: (state, action) => {
-      state.user.groundWaterLevel = Math.min(
-        state.user.groundWaterLevel + action.payload,
-        100
-      );
-      localStorage.setItem("user", JSON.stringify(state.user));
+      if (state.user) {
+        state.user.groundWaterLevel = Math.min(
+          state.user.groundWaterLevel + action.payload,
+          100
+        );
+        localStorage.setItem("user", JSON.stringify(state.user));
+      }
     },
     removeWaterLevel: (state, action) => {
-      state.user.groundWaterLevel = Math.max(
-        state.user.groundWaterLevel - action.payload,
-        0
-      );
-      localStorage.setItem("user", JSON.stringify(state.user));
+      if (state.user) {
+        state.user.groundWaterLevel = Math.max(
+          state.user.groundWaterLevel - action.payload,
+          0
+        );
+        localStorage.setItem("user", JSON.stringify(state.user));
+      }
     },
   },
   extraReducers: (builder) => {
@@ -198,7 +240,7 @@ const userSlice = createSlice({
       .addCase(verifyOtp.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(verifyOtp.fulfilled, (state, action) => {
+      .addCase(verifyOtp.fulfilled, (state) => {
         state.status = "succeeded";
         state.otpVerification = true;
         state.error = null;
@@ -214,12 +256,23 @@ const userSlice = createSlice({
       .addCase(resendOtp.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.otpExpiration = action.payload;
-        console.log(state.otpExpiration);
         state.error = null;
       })
       .addCase(resendOtp.rejected, (state, action) => {
         state.status = "failed";
         state.otpExpiration = null;
+        state.error = action.payload;
+      })
+      .addCase(updateScore.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(updateScore.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.user = action.payload;
+        localStorage.setItem("user", JSON.stringify(action.payload));
+      })
+      .addCase(updateScore.rejected, (state, action) => {
+        state.status = "failed";
         state.error = action.payload;
       });
   },

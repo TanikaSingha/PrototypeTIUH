@@ -6,8 +6,9 @@ import {
   addScore,
   addWaterLevel,
   removeWaterLevel,
+  updateScore,
 } from "../../lib/Slices/userSlice";
-import "react-circular-progressbar/dist/styles.css"; 
+import "react-circular-progressbar/dist/styles.css";
 import { setTaskComplete, setTaskRunning } from "../../lib/Slices/gameSlice";
 
 const QuizGame = () => {
@@ -69,9 +70,10 @@ const QuizGame = () => {
       dispatch(removeWaterLevel(10));
     } else {
       const timeLeft = Math.floor(timer / 1000);
-      dispatch(addScore(timeLeft * 5));
+      dispatch(addScore(timeLeft * 2));
       dispatch(addWaterLevel(10));
     }
+    dispatch(updateScore());
     dispatch(setTaskComplete());
   };
 

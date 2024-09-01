@@ -72,6 +72,18 @@ const userSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    completedTasks: [
+      {
+        task: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Task",
+        },
+        completedAt: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
     isVerified: {
       type: Boolean,
       default: false,
