@@ -5,6 +5,7 @@ import {
   addScore,
   addWaterLevel,
   removeWaterLevel,
+  updateScore,
 } from "../../lib/Slices/userSlice";
 import { setTaskComplete, setTaskRunning } from "../../lib/Slices/gameSlice";
 
@@ -86,6 +87,7 @@ const ChoiceGame = () => {
         }
         dispatch(addWaterLevel(value));
       }
+      dispatch(updateScore());
       dispatch(setTaskComplete());
     }
   }, [result]);
