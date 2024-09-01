@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { clearError, registerUser } from "../../lib/Slices/userSlice.jsx";
-import background from "../../assets/BackGround/registerpagebackground.png"
-import "./RegisterPage.css"
+import background from "../../assets/BackGround/registerpagebackground.png";
+import "./RegisterPage.css";
 
 const RegisterPage = () => {
   const [form, setForm] = useState({
@@ -41,7 +41,10 @@ const RegisterPage = () => {
   }, [dispatch]);
 
   return (
-    <section className="flex flex-col justify-center items-center p-6 bg-green-900 min-h-screen bg-cover" style={{ backgroundImage: `url(${background})` }}>
+    <section
+      className="flex flex-col justify-center items-center p-6 bg-green-900 min-h-screen bg-cover"
+      style={{ backgroundImage: `url(${background})` }}
+    >
       <div className="absolute inset-0 h-full bg-black/70 z-10"></div>
       <h1 className="inconsolata text-5xl font-bold mb-6 text-center text-white z-20">
         Register
@@ -51,7 +54,7 @@ const RegisterPage = () => {
         onSubmit={handleSubmit}
       >
         <div className="space-y-4 mb-4">
-          {["username", "email", "password"].map((field) => (
+          {["name", "username", "email", "password"].map((field) => (
             <div key={field} className="flex flex-col">
               <label
                 htmlFor={field}
@@ -64,8 +67,8 @@ const RegisterPage = () => {
                   field === "email"
                     ? "email"
                     : field === "password"
-                      ? "password"
-                      : "text"
+                    ? "password"
+                    : "text"
                 }
                 name={field}
                 id={field}
@@ -84,11 +87,18 @@ const RegisterPage = () => {
           Register
         </button>
       </form>
-      
+
       <div className="mt-6 flex flex-col items-center w-full max-w-md z-20 inconsolata">
         <div className="flex justify-between w-full">
           <h4 className="text-sm font-medium text-white">
-            <Link to="/login" className="hover:underline text-lg"><FontAwesomeIcon icon={faArrowCircleLeft} className="pr-2"></FontAwesomeIcon>Back to Login</Link></h4>
+            <Link to="/login" className="hover:underline text-lg">
+              <FontAwesomeIcon
+                icon={faArrowCircleLeft}
+                className="pr-2"
+              ></FontAwesomeIcon>
+              Back to Login
+            </Link>
+          </h4>
           <button
             onClick={() => navigate("/")}
             className="text-blue-300 hover:text-blue-500 font-extrabold text-lg"
