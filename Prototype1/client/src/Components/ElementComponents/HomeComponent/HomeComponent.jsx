@@ -55,7 +55,8 @@ const HomeComponent = () => {
     }
   };
   return (
-    <div className="w-full min-h-screen bg-slate-800 flex flex-col gap justify-center items-center">
+    <div className={`w-full h-[calc(100vh-64px)] bg-slate-800 flex flex-col items-center`
+    }>
       <Joyride
         steps={steps}
         run={run}
@@ -118,8 +119,8 @@ const HomeComponent = () => {
           },
         }}
       />
-      <h1 className="font-bold home-heading text-5xl text-white farm-heading liu-jian">Home</h1>
-      <div className="relative bg-white/10 p-6 mt-8 rounded-3xl">
+      <h1 className="font-bold text-4xl text-white farm-heading liu-jian mt-4">Home</h1>
+      <div className="relative bg-white/10 p-4 mt-8 rounded-3xl">
         <div
           className="group farm-land absolute w-[50px] h-[85px] bg-transparent bottom-[250px] left-[300px] cursor-pointer z-30"
           onClick={() => {
