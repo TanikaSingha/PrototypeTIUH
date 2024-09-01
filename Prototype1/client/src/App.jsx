@@ -10,10 +10,13 @@ import AuthComponent from "./Components/AuthComponent/AuthComponent";
 import OtpPage from "./Pages/OtpPage/OtpPage";
 import StartPage from "./Pages/StartPage/StartPage";
 import TutorialPage from "./Pages/TutorialPage/TutorialPage";
-import GameComponent from "./Components/GameComponent/GameComponent";
 import QuizGame from "./Games/QuizGame/QuizGame";
 import ChoiceGame from "./Games/ChoiceGame/ChoiceGame";
 import PuzzleGame from "./Games/PuzzleGame/PuzzleGame";
+import GameElementsIntro from "./Pages/GamePages/GameElementsIntro/GameElementsIntro";
+import GameElement from "./Pages/GamePages/GameElement/GameElement";
+import GameLevel from "./Pages/GamePages/GameLevel/GameLevel";
+import TaskPage from "./Pages/GamePages/TaskPage/TaskPage";
 
 const App = () => {
   const { user, otpVerification } = useSelector((state) => state.user);
@@ -45,14 +48,16 @@ const App = () => {
             </AuthComponent>
           }
         ></Route>
+        {/* Game Routes */}
         <Route
-          path="/level/:levelType"
-          element={<GameComponent></GameComponent>}
+          path="/gameElements"
+          element={<GameElementsIntro></GameElementsIntro>}
         ></Route>
+        <Route path="/element/:elementId" element={<GameElement />}>
+          <Route path="level/:levelId" element={<GameLevel />}></Route>
+        </Route>
+        <Route path="/game/taskPage" element={<TaskPage />} />
         <Route path="*" element={<ErrorPage></ErrorPage>}></Route>
-        <Route path="/quiz" element={<QuizGame></QuizGame>}></Route>
-        <Route path="/choice" element={<ChoiceGame></ChoiceGame>}></Route>
-        <Route path="/puzzle" element={<PuzzleGame></PuzzleGame>}></Route>
       </Routes>
     </main>
   );

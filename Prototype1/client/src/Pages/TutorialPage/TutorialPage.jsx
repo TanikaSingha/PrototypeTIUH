@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import Game from "../../Components/MainComponent/MainComponent";
 import GuideIntroduction from "../../Components/TutorialComponents/GuideIntroduction/GuideIntroduction";
 import WelcomeScreen from "../../Components/TutorialComponents/Welcome Screen/WelcomeScreen";
 import GameElementsIntro from "../../Components/GameElementsIntro/GameElementsIntro";
 import GameElementComponent from "../../Components/GameElementComponent/GameElementComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { prevStep } from "../../lib/Slices/tutorialSlice";
+import { Navigate } from "react-router-dom";
 
 const TutorialPage = () => {
   const { currentStep, isTutorialComplete } = useSelector(
@@ -28,8 +28,7 @@ const TutorialPage = () => {
       )}
       {currentStep === 0 && <WelcomeScreen></WelcomeScreen>}
       {currentStep === 1 && <GuideIntroduction></GuideIntroduction>}
-      {currentStep === 2 && <GameElementsIntro></GameElementsIntro>}
-      {currentStep === 3 && <GameElementComponent></GameElementComponent>}
+      {currentStep === 2 && <Navigate to="/gameElements"></Navigate>}
     </section>
   );
 };

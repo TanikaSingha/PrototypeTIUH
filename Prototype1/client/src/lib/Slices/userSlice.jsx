@@ -82,6 +82,14 @@ export const fetchUser = createAsyncThunk(
   }
 );
 
+const getLevelFromScore = (score) => {
+  if (score >= 1000) return 5;
+  if (score >= 750) return 4;
+  if (score >= 500) return 3;
+  if (score >= 250) return 2;
+  return 1;
+};
+
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -94,6 +102,38 @@ const userSlice = createSlice({
     },
     setAvatar: (state, action) => {
       state.user.avatar = action.payload;
+      localStorage.setItem("user", JSON.stringify(state.user));
+    },
+    addScore: (state, action) => {
+      state.user.score = state.user.score + action.payload;
+      state.user.playerLevel = getLevelFromScore(state.user.score);
+      localStorage.setItem("user", JSON.stringify(state.user));
+    },
+    removeScore: (state, action) => {
+      state.user.score = Math.max(state.user.score - action.payload, 0);
+      state.user.playerLevel = getLevelFromScore(state.user.score);
+      localStorage.setItem("user", JSON.stringify(state.user));
+    },
+    addCoins: (state, action) => {
+      state.user.coins = state.user.coins + action.payload;
+      localStorage.setItem("user", JSON.stringify(state.user));
+    },
+    removeCoins: (state, action) => {
+      state.user.coins = Math.max(state.user.coins - action.payload, 0);
+      localStorage.setItem("user", JSON.stringify(state.user));
+    },
+    addWaterLevel: (state, action) => {
+      state.user.groundWaterLevel = Math.min(
+        state.user.groundWaterLevel + action.payload,
+        100
+      );
+      localStorage.setItem("user", JSON.stringify(state.user));
+    },
+    removeWaterLevel: (state, action) => {
+      state.user.groundWaterLevel = Math.max(
+        state.user.groundWaterLevel - action.payload,
+        0
+      );
       localStorage.setItem("user", JSON.stringify(state.user));
     },
   },
@@ -185,6 +225,15 @@ const userSlice = createSlice({
   },
 });
 
-export const { setUserFromLocalStorage, clearError, setAvatar } =
-  userSlice.actions;
+export const {
+  setUserFromLocalStorage,
+  clearError,
+  setAvatar,
+  addCoins,
+  addScore,
+  addWaterLevel,
+  removeCoins,
+  removeWaterLevel,
+  removeScore,
+} = userSlice.actions;
 export default userSlice.reducer;

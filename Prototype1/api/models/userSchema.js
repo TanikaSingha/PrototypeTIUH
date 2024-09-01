@@ -2,9 +2,13 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const userSchema = new mongoose.Schema(
   {
+    name: {
+      type: String,
+      required: [true, "Please Enter Your Name!"],
+    },
     username: {
       type: String,
-      required: [true, "Please Enter Username"],
+      required: [true, "Please Enter Username!"],
       validate: {
         validator: async function (username) {
           if (this.isModified("username")) {
@@ -47,6 +51,26 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: [true, "Please Enter Password!"],
+    },
+    coins: {
+      type: Number,
+      default: 0,
+    },
+    score: {
+      type: Number,
+      default: 0,
+    },
+    playerLevel: {
+      type: Number,
+      default: 1,
+    },
+    groundWaterLevel: {
+      type: Number,
+      default: 100,
+    },
+    badgesEarned: {
+      type: Number,
+      default: 0,
     },
     isVerified: {
       type: Boolean,

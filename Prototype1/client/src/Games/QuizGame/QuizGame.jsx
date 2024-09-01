@@ -1,14 +1,23 @@
 import React, { useEffect, useState } from "react";
-import currentTask from "../../assets/GameData/TutorialTasks/cropLevel.json";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addCoins,
+  addScore,
+  addWaterLevel,
+  removeWaterLevel,
+} from "../../lib/Slices/userSlice";
+import "react-circular-progressbar/dist/styles.css"; 
+import { setTaskComplete, setTaskRunning } from "../../lib/Slices/gameSlice";
 
 const QuizGame = () => {
+  const dispatch = useDispatch();
+  const { currentTask, isTaskRunning } = useSelector((state) => state.game);
+
   const [score, setScore] = useState(0);
   const [coins, setCoins] = useState(0);
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [waterLevel, setWaterLevel] = useState(100);
-  const [showResults, setShowResults] = useState(false);
-  const [timer, setTimer] = useState(currentTask.taskDetails.timeLimit);
+  const [timer, setTimer] = useState(currentTask.taskDetails?.timeLimit || 0);
   const [startTimer, setStartTimer] = useState(false);
   const [result, setResult] = useState({
     option: "",
@@ -29,17 +38,17 @@ const QuizGame = () => {
     if (timer <= 0 || result.outcome) return;
 
     const isCorrect =
-      currentTask.questions[currentQuestion].correctAnswer === item;
+      currentTask.questions[currentQuestion]?.correctAnswer === item;
 
     if (isCorrect) {
       setResult({ option: index, outcome: "correct" });
       setScore(
         (prevScore) =>
-          prevScore + Number(currentTask.taskDetails.pointsPerQuestion)
+          prevScore + Number(currentTask.taskDetails?.pointsPerQuestion || 0)
       );
       setCoins(
         (prevCoins) =>
-          prevCoins + Number(currentTask.taskDetails.coinsPerQuestion)
+          prevCoins + Number(currentTask.taskDetails?.coinsPerQuestion || 0)
       );
     } else {
       setResult({ option: index, outcome: "incorrect" });
@@ -52,21 +61,18 @@ const QuizGame = () => {
   };
 
   const handleGameCompletion = () => {
+    dispatch(addCoins(coins));
+    dispatch(addScore(score));
     if (timer <= 0) {
-      setWaterLevel((prevWaterLevel) => prevWaterLevel - 20);
-    } else if (
-      score < Number(currentTask.taskDetails.scoreThreshold) &&
-      waterLevel > 10
-    ) {
-      setWaterLevel((prevWaterLevel) => prevWaterLevel - 10);
+      dispatch(removeWaterLevel(20));
+    } else if (score < Number(currentTask.taskDetails?.scoreThreshold || 0)) {
+      dispatch(removeWaterLevel(10));
     } else {
       const timeLeft = Math.floor(timer / 1000);
-      setScore((prevScore) => prevScore + timeLeft * 5);
-      if (waterLevel < 100) {
-        setWaterLevel((prevWaterLevel) => prevWaterLevel + 10);
-      }
+      dispatch(addScore(timeLeft * 5));
+      dispatch(addWaterLevel(10));
     }
-    setShowResults(true);
+    dispatch(setTaskComplete());
   };
 
   useEffect(() => {
@@ -87,8 +93,8 @@ const QuizGame = () => {
   }, [startTimer, timer]);
 
   const percentage =
-    ((currentTask.taskDetails.timeLimit - timer) /
-      currentTask.taskDetails.timeLimit) *
+    ((currentTask.taskDetails?.timeLimit - timer) /
+      (currentTask.taskDetails?.timeLimit || 1)) *
     100;
 
   let pathColor;
@@ -102,59 +108,70 @@ const QuizGame = () => {
   }
 
   return (
-    <section className="min-h-screen flex items-center justify-center w-full relative">
-      <div className="bg-yellow-300 flex gap-2 items-center justify-center p-4 absolute top-2 right-2 rounded-md shadow-md">
-        <p>Coins: {coins}</p>
-        <p>Score: {score}/100</p>
-        <div className="w-20 h-20">
-          <CircularProgressbar
-            value={percentage}
-            text={getFormattedTime(timer)}
-            styles={buildStyles({
-              textColor: "#fff",
-              pathColor: pathColor,
-              trailColor: "#d6d6d6",
-              strokeLinecap: "round",
-              pathTransitionDuration: 0.5,
-              textSize: "22px",
-            })}
-          />
+    <>
+      <div className="w-32 h-32 absolute top-1/3 right-20">
+        <CircularProgressbar
+          value={percentage}
+          text={getFormattedTime(timer)}
+          styles={buildStyles({
+            pathColor: pathColor,
+            textColor: "#333",
+            trailColor: "#d6d6d6",
+            strokeWidth: 6,
+          })}
+        />
+      </div>
+      <div className="w-full max-w-4xl bg-white rounded-lg shadow-md p-6 mt-10">
+        <div className="flex items-center justify-between mb-6">
+          <button
+            disabled={
+              startTimer || currentQuestion === currentTask.questions.length - 1
+            }
+            onClick={() => {
+              dispatch(setTaskRunning());
+              setStartTimer(true);
+            }}
+            className="bg-blue-500 text-white p-3 rounded-md disabled:bg-gray-300"
+          >
+            Start Quiz
+          </button>
         </div>
-      </div>
-      <div>
-        <button
-          disabled={
-            startTimer || currentQuestion === currentTask.questions.length - 1
-          }
-          onClick={() => setStartTimer(true)}
-          className="bg-blue-500 text-white p-2 rounded-md disabled:bg-gray-300"
-        >
-          Start Quiz
-        </button>
-      </div>
-      <div className="bg-green-100 w-[800px] h-[400px] rounded-sm p-2 shadow-lg">
-        <div>
-          <h1 className="text-lg font-bold">Quiz Name: {currentTask.name}</h1>
-          <h4 className="text-sm">Description: {currentTask.description}</h4>
-          <p>Information for the player:</p>
-          <ul className="list-disc ml-6">
-            {currentTask.solutions.map((item, index) => (
-              <li key={index}>{item}</li>
+
+        <div className="space-y-4">
+          <h1 className="text-2xl font-bold">Quiz Name: {currentTask.name}</h1>
+          <h4 className="text-lg text-gray-600">
+            Description: {currentTask.description}
+          </h4>
+          <p className="text-gray-700">Information for the player:</p>
+          <ul className="list-disc ml-6 text-gray-700">
+            {currentTask.instructions?.map((item, index) => (
+              <li key={index} className="mb-2">
+                {item}
+              </li>
             ))}
           </ul>
         </div>
-        <div className="mt-4">
-          <h1 className="text-lg">Questions</h1>
-          <p>Q. {currentTask.questions[currentQuestion].question}</p>
+
+        <div className="mt-6">
+          <h1 className="text-xl font-semibold">Questions</h1>
+          <p className="text-lg font-medium">
+            Q. {currentTask.questions[currentQuestion]?.question}
+          </p>
           <div>
-            <h2 className="font-medium">Choose from the given options:</h2>
-            <ul className="grid grid-cols-2 gap-4 mt-5">
-              {currentTask.questions[currentQuestion].options.map(
+            <h2 className="font-medium text-gray-800">
+              Choose from the given options:
+            </h2>
+            <ul className="grid grid-cols-2 gap-4 mt-4">
+              {currentTask.questions[currentQuestion]?.options.map(
                 (item, index) => (
                   <li
                     key={index}
-                    className="cursor-pointer p-2 rounded-md bg-gray-100 hover:bg-blue-200 transition-colors relative"
-                    onClick={() => handleOption(item, index)}
+                    className="cursor-pointer p-4 rounded-md bg-gray-100 hover:bg-blue-200 transition-colors relative"
+                    onClick={() => {
+                      if (startTimer) {
+                        handleOption(item, index);
+                      }
+                    }}
                   >
                     <div
                       className={`absolute inset-0 w-full h-full rounded-md ${
@@ -165,8 +182,10 @@ const QuizGame = () => {
                           : ""
                       }`}
                     ></div>
-                    <span>Option {index + 1}:</span>
-                    <span>{item}</span>
+                    <span className="block text-gray-800">
+                      Option {index + 1}:
+                    </span>
+                    <span className="block text-gray-600">{item}</span>
                   </li>
                 )
               )}
@@ -179,21 +198,14 @@ const QuizGame = () => {
                   setCurrentQuestion((prev) => prev + 1);
                   setResult({ option: "", outcome: "" });
                 }}
-                className="mt-4 bg-blue-500 text-white p-2 rounded-md"
+                className="mt-4 bg-blue-500 text-white p-3 rounded-md"
               >
                 Next Question
               </button>
             )}
         </div>
       </div>
-      {showResults && (
-        <div className="bg-yellow-300 p-4 rounded-md shadow-md absolute bottom-2 right-2">
-          <p>Final Score: {score}</p>
-          <p>Coins Earned: {coins}</p>
-          <p>Water Level: {waterLevel}</p>
-        </div>
-      )}
-    </section>
+    </>
   );
 };
 

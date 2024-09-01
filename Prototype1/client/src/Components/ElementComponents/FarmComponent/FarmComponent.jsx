@@ -97,7 +97,7 @@ const FarmComponent = () => {
             if (!isTutorialComplete) {
               dispatch(nextStep());
             }
-            navigate("/level/crop-level");
+            navigate("/element/farm/level/crop-level");
           }}
         ></div>
         <img

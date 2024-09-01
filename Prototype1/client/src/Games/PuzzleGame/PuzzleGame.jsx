@@ -1,5 +1,13 @@
 import React, { useState, useMemo, useCallback, useEffect } from "react";
-import currentTask from "../../assets/GameData/TutorialTasks/puzzleLevel.json";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addCoins,
+  addScore,
+  addWaterLevel,
+  removeCoins,
+  removeWaterLevel,
+} from "../../lib/Slices/userSlice";
+import { setTaskComplete, setTaskRunning } from "../../lib/Slices/gameSlice";
 
 const randomLetterGenerator = () => {
   return String.fromCharCode(65 + Math.floor(Math.random() * 26));
@@ -11,9 +19,9 @@ const colorMap = {
   completion: "bg-blue-500",
 };
 const PuzzleGame = () => {
+  const { currentTask } = useSelector((state) => state.game);
   const [score, setScore] = useState(0);
-  const [coins, setCoins] = useState(2000);
-  const [waterLevel, setWaterLevel] = useState(100);
+  const [coins, setCoins] = useState(0);
   const [feedBack, setFeedBack] = useState({ status: "", statement: "" });
   const [startDrag, setStartDrag] = useState(false);
   const [dragString, setDragString] = useState("");
@@ -22,16 +30,18 @@ const PuzzleGame = () => {
   const [lastValidPosition, setLastValidPosition] = useState(null);
   const [showResults, setShowResults] = useState(false);
   const [maxAttempts, setMaxAttempts] = useState(
-    currentTask.taskDetails.maxAttempts
+    currentTask?.taskDetails?.maxAttempts || 0
   );
   const [storeAnswers, setStoreAnswers] = useState(new Set());
   const [answeredLetters, setAnsweredLetters] = useState({});
   const [hint, setHint] = useState("");
   const [hintsLeft, setHintsLeft] = useState(2);
-
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.user);
+  const { isTaskRunning } = useSelector((state) => state.game);
   useEffect(() => {
     const initAnsweredLetters = {};
-    currentTask.crosswordGrid.clues.forEach((clue) => {
+    currentTask?.crosswordGrid?.clues?.forEach((clue) => {
       const { position, direction, answer } = clue;
       for (let i = 0; i < answer.length; i++) {
         const key =
@@ -54,7 +64,7 @@ const PuzzleGame = () => {
 
   const gridLetters = useMemo(() => {
     const grid = [];
-    const { size, clues } = currentTask.crosswordGrid;
+    const { size, clues } = currentTask?.crosswordGrid;
 
     for (let i = 0; i < size[0]; i++) {
       const row = [];
@@ -88,20 +98,20 @@ const PuzzleGame = () => {
       grid.push(row);
     }
     return grid;
-  }, [currentTask.crosswordGrid]);
+  }, [currentTask?.crosswordGrid]);
 
   const handleHint = useCallback(() => {
-    const find = currentTask.crosswordGrid.clues.find((item) => {
+    const find = currentTask?.crosswordGrid?.clues?.find((item) => {
       return !storeAnswers.has(item);
     });
-    if (!find || hintsLeft <= 0 || coins < 400 / hintsLeft) {
+    if (!find || hintsLeft <= 0 || user.coins < 400 / hintsLeft) {
       return;
     }
     const hintCost = 400 / hintsLeft;
     setHint(find.clue);
-    setCoins((prevCoins) => prevCoins - hintCost);
+    dispatch(removeCoins(hintCost));
     setHintsLeft((prevNum) => prevNum - 1);
-  }, [storeAnswers, hintsLeft, coins]);
+  }, [storeAnswers, hintsLeft, user.coins]);
 
   const handleMouseDown = useCallback(
     (e) => {
@@ -158,11 +168,14 @@ const PuzzleGame = () => {
   );
 
   const handleAnswer = useCallback(() => {
-    const isPresent = currentTask.crosswordGrid.clues.find(
+    const isPresent = currentTask?.crosswordGrid?.clues?.find(
       (item) => item.answer === dragString
     );
     clearInterval(interval);
-    setFeedBack({ status: "correct", statement: currentTask.feedback.correct });
+    setFeedBack({
+      status: "correct",
+      statement: currentTask?.feedback?.correct,
+    });
     interval = setTimeout(() => {
       setFeedBack({ status: "", statement: "" });
     }, 1000);
@@ -197,16 +210,17 @@ const PuzzleGame = () => {
 
       setScore(
         (prevScore) =>
-          prevScore + currentTask.taskDetails.pointsPerCorrectAnswer
+          prevScore + currentTask?.taskDetails?.pointsPerCorrectAnswer
       );
       setCoins(
-        (prevCoins) => prevCoins + currentTask.taskDetails.coinsPerCorrectAnswer
+        (prevCoins) =>
+          prevCoins + currentTask?.taskDetails?.coinsPerCorrectAnswer
       );
     } else if (maxAttempts > 0) {
       clearInterval(interval);
       setFeedBack({
         status: "incorrect",
-        statement: currentTask.feedback.incorrect,
+        statement: currentTask?.feedback?.incorrect,
       });
       interval = setTimeout(() => {
         setFeedBack({ status: "", statement: "" });
@@ -230,38 +244,40 @@ const PuzzleGame = () => {
 
   useEffect(() => {
     if (
-      storeAnswers.size === currentTask.crosswordGrid.clues.length ||
+      storeAnswers.size === currentTask?.crosswordGrid?.clues?.length ||
       maxAttempts === 0
     ) {
+      dispatch(addScore(score));
+      dispatch(addCoins(coins));
       if (maxAttempts !== 0) {
         clearInterval(interval);
         setFeedBack({
           status: "completion",
-          statement: currentTask.feedback.completion,
+          statement: currentTask?.feedback?.completion,
         });
         interval = setTimeout(() => {
           setFeedBack({ status: "", statement: "" });
         }, 1000);
       }
-      if (score < currentTask.taskDetails.scoreThreshold) {
-        setWaterLevel((prev) =>
-          Math.max(prev - currentTask.taskDetails.waterLevelDeduction, 0)
+      if (score < currentTask?.taskDetails?.scoreThreshold) {
+        dispatch(
+          removeWaterLevel(currentTask?.taskDetails?.waterLevelDeduction)
         );
       } else {
-        if (maxAttempts === currentTask.taskDetails.maxAttempts) {
-          setScore((prev) => prev + currentTask.taskDetails.bonusForCompletion);
-          setWaterLevel((prev) => Math.min(prev + 20, 100));
+        if (maxAttempts === currentTask?.taskDetails?.maxAttempts) {
+          dispatch(addScore(currentTask?.taskDetails?.bonusForCompletion));
+          dispatch(addWaterLevel(20));
         } else {
-          setWaterLevel((prev) => Math.min(prev + 10, 100));
+          dispatch(addWaterLevel(10));
         }
       }
-      console.log("yes");
+      dispatch(setTaskComplete());
       setShowResults(true);
     }
   }, [storeAnswers, maxAttempts]);
   return (
     <section
-      className="bg-yellow-500 min-h-screen w-full flex items-center justify-center relative flex-col"
+      className="min-h-screen w-full flex items-center justify-center bg-gray-100"
       onMouseUp={handleMouseUp}
     >
       {hint && (
@@ -276,6 +292,17 @@ const PuzzleGame = () => {
           </button>
         </div>
       )}
+      <button
+        className={`absolute bottom-4 left-4 bg-blue-200 cursor-pointer p-2 ${
+          isTaskRunning ? `bg-green-500` : `bg-blue-500`
+        }`}
+        onClick={() => {
+          dispatch(setTaskRunning());
+        }}
+        disabled={isTaskRunning}
+      >
+        {isTaskRunning ? `Playing...` : `Start Game`}
+      </button>
       {feedBack.statement && (
         <div
           className={`absolute bottom-2 right-2 ${colorMap[feedBack.status]}`}
@@ -283,22 +310,17 @@ const PuzzleGame = () => {
           <p className="text-xl font-bold text-white">{feedBack.statement}</p>
         </div>
       )}
-      <div className="bg-yellow-300 flex gap-2 items-center justify-center p-4 absolute top-2 right-2 rounded-md shadow-md">
-        <p>Coins: {coins}</p>
-        <p>Score: {score}/100</p>
-        <p>Water Level: {waterLevel}</p>
-      </div>
       <div className="absolute top-1/2 right-4 p-2 bg-gray-200">
         <p className="text-red-700">
-          Attempts: {maxAttempts}/{currentTask.taskDetails.maxAttempts}
+          Attempts: {maxAttempts}/{currentTask?.taskDetails?.maxAttempts}
         </p>
       </div>
       <div className="bg-orange-400 w-5/12">
-        <h1>Puzzle: {currentTask.name}</h1>
-        <h4>Description: {currentTask.description}</h4>
+        <h1>Puzzle: {currentTask?.name}</h1>
+        <h4>Description: {currentTask?.description}</h4>
         <p>Information for the Player</p>
         <ul className="text-sm">
-          {currentTask.solutions.map((item, index) => (
+          {currentTask?.instructions?.map((item, index) => (
             <li key={index}>{item}</li>
           ))}
         </ul>
@@ -306,7 +328,7 @@ const PuzzleGame = () => {
       <div
         className="bg-white flex flex-wrap relative shadow-lg "
         style={{
-          width: `${currentTask.crosswordGrid.size[1] * 50}px`,
+          width: `${currentTask?.crosswordGrid?.size[1] * 50}px`,
         }}
       >
         {gridLetters.map((row, i) =>
@@ -329,8 +351,8 @@ const PuzzleGame = () => {
                     ? `cursor-grab`
                     : `cursor-pointer`
                 }`}
-                onMouseDown={handleMouseDown}
-                onMouseOver={handleMouseOver}
+                onMouseDown={isTaskRunning && handleMouseDown}
+                onMouseOver={isTaskRunning && handleMouseOver}
               >
                 {letter}
               </div>
@@ -340,36 +362,37 @@ const PuzzleGame = () => {
         <svg
           className="absolute top-0 left-0"
           style={{
-            width: `${currentTask.crosswordGrid.size[1] * 50}px`,
-            height: `${currentTask.crosswordGrid.size[0] * 50}px`,
+            width: `${currentTask?.crosswordGrid?.size[1] * 50}px`,
+            height: `${currentTask?.crosswordGrid?.size[0] * 50}px`,
             pointerEvents: "none",
           }}
         >
           <path d={linePath} stroke="red" strokeWidth="3" fill="none" />
         </svg>
       </div>
+      <div>
+        <h1>Hints:</h1>
+        <ol>
+          {currentTask?.crosswordGrid?.hints?.map((item, index) => {
+            return <li key={index}>{item.hint}</li>;
+          })}
+        </ol>
+      </div>
       <div
         className={`p-2 bg-white text-black absolute left-5 top-10 ${
-          coins < 400 / hintsLeft
+          user.coins < 400 / hintsLeft
             ? `opacity-80 cursor-not-allowed`
             : `opacity-100 cursor-pointer`
         }`}
       >
         <p>{hintsLeft}/2</p>
-        <button onClick={handleHint} disabled={coins < 400 / hintsLeft}>
+        <button
+          onClick={handleHint}
+          disabled={isTaskRunning && user.coins < 400 / hintsLeft}
+        >
           Use Hint
         </button>
       </div>
-      {showResults && (
-        <div className="absolute top-0 left-0 w-full h-full bg-gray-800/30 flex items-center justify-center">
-          <div className="bg-white p-8 rounded-lg shadow-lg text-center">
-            <h2 className="text-2xl font-bold mb-4">Game Over</h2>
-            <p className="text-xl">Your final score is: {score}</p>
-            <p className="text-lg">Coins collected: {coins}</p>
-            <p>Water Level:{waterLevel}</p>
-          </div>
-        </div>
-      )}
     </section>
   );
 };

@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import cropLevelImage from "../../../assets/Levels/FarmLevel/Crop-Level.png";
 import { useDispatch, useSelector } from "react-redux";
 import { setModalClose } from "../../../lib/Slices/tutorialSlice";
 import { useNavigate } from "react-router-dom";
-import { setTaskInfo } from "../../../lib/Slices/gameSlice";
+import WaterCoolantLevelImage from "../../../assets/Levels/IndustryLevel/WaterCoolant-Level.png";
 
 const modalData = [
   { title: "Title 1", description: "Description 1", images: [] },
@@ -62,7 +61,7 @@ const ModalComponent = () => {
   );
 };
 
-const CropLevel = () => {
+const WaterCoolantLevel = () => {
   const { modalOpen } = useSelector((state) => state.tutorial);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -86,17 +85,19 @@ const CropLevel = () => {
   ];
   return (
     <div
-      style={{ backgroundImage: `url(${cropLevelImage})` }}
+      style={{ backgroundImage: `url(${WaterCoolantLevelImage})` }}
       className="w-full min-h-screen bg-cover bg-no-repeat flex items-center justify-center"
     >
       {modalOpen && <ModalComponent />}
       {!modalOpen && (
         <div>
-          <h1 className="text-white text-4xl font-bold">Crop Level</h1>
+          <h1 className="text-white text-4xl font-bold">Water-Coolant Level</h1>
           <div
             className="w-20 h-20 bg-black"
             onClick={() => {
-              navigate(`/game/taskPage?element=farm&level=crop&type=quiz`);
+              navigate(
+                `/game/taskPage?element=industry&level=water-coolant&type=puzzle`
+              );
             }}
           >
             <p className="text-white">Task 1</p>
@@ -107,4 +108,4 @@ const CropLevel = () => {
   );
 };
 
-export default CropLevel;
+export default WaterCoolantLevel;
