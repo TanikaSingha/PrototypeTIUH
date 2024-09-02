@@ -132,7 +132,7 @@ const IndustryComponent = () => {
             if (!isTutorialComplete) {
               dispatch(nextStep());
             }
-            navigate("/level/crop-level");
+            navigate("/element/industry/level/water-coolant-level");
           }}
         >
           <div className="hidden inconsolata group-hover:block absolute top-[-80px] left-[50%] transform -translate-x-1/2 w-[200px] z-30 bg-gray-800 text-white text-center p-4 rounded-lg shadow-lg">
@@ -146,8 +146,7 @@ const IndustryComponent = () => {
               dispatch(nextStep());
             }
             navigate("/element/industry/level/water-coolant-level");
-          }}
-        >
+          }}>
           <div className="hidden inconsolata group-hover:block absolute top-[-80px] left-[50%] transform -translate-x-1/2 w-[200px] z-30 bg-gray-800 text-white text-center p-4 rounded-lg shadow-lg">
             Click to enter the Coolant System level!
           </div>

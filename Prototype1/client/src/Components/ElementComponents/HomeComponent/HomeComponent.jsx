@@ -121,7 +121,7 @@ const HomeComponent = () => {
           },
         }}
       />
-      <h1 className="font-bold text-4xl text-white farm-heading liu-jian mt-4">
+      <h1 className="font-bold text-4xl text-white home-heading liu-jian mt-4">
         Home
       </h1>
       <div className="relative bg-white/10 p-4 mt-8 rounded-3xl">
@@ -144,9 +144,8 @@ const HomeComponent = () => {
             if (!isTutorialComplete) {
               dispatch(nextStep());
             }
-            navigate("/level/crop-level");
-          }}
-        >
+            navigate("/element/home/level/kitchen-level");
+          }}>
           <div className="hidden inconsolata group-hover:block absolute top-[-80px] left-[50%] transform -translate-x-1/2 w-[200px] z-30 bg-gray-800 text-white text-center p-4 rounded-lg shadow-lg">
             Click to enter the cleaning area level!
           </div>
@@ -157,9 +156,8 @@ const HomeComponent = () => {
             if (!isTutorialComplete) {
               dispatch(nextStep());
             }
-            navigate("/level/crop-level");
-          }}
-        >
+            navigate("/element/home/level/kitchen-level");
+          }}>
           <div className="hidden inconsolata group-hover:block absolute top-[-80px] left-[50%] transform -translate-x-1/2 w-[200px] z-30 bg-gray-800 text-white text-center p-4 rounded-lg shadow-lg">
             Click to enter the bathroom level!
           </div>
