@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setModalClose } from "../../../lib/Slices/tutorialSlice";
 import { useNavigate } from "react-router-dom";
 import { setTaskInfo } from "../../../lib/Slices/gameSlice";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import taskicon1 from "../../../assets/Icons/waterLeaf.png";
 
@@ -96,9 +96,8 @@ const CropLevel = () => {
       <div className="absolute inset-0 bg-black/50 z-10"></div>
       <button
         onClick={() => {
-          navigate(-1);
-        }
-        }
+          navigate("/gameElements");
+        }}
         className="w-[50px] h-[50px] rounded-full bg-white cursor-pointer absolute top-5 left-5 z-50 hover:scale-110 transition-all duration-100 ease-in-out"
       >
         <FontAwesomeIcon icon={faArrowLeft} className=""></FontAwesomeIcon>
@@ -106,7 +105,9 @@ const CropLevel = () => {
       {modalOpen && <ModalComponent />}
       {!modalOpen && (
         <div className="z-50">
-          <h1 className="text-white text-4xl font-bold text-center mb-6">Crop Level</h1>
+          <h1 className="text-white text-4xl font-bold text-center mb-6">
+            Crop Level
+          </h1>
           {/* <div
             className="w-20 h-20 bg-black cursor-pointer"
             onClick={() => {
@@ -120,7 +121,7 @@ const CropLevel = () => {
             <div
               className="w-60 h-96 bg-gray-800 text-white flex flex-col justify-center items-center gap-2 p-2 rounded-lg cursor-pointer hover:scale-105 transition-transform"
               onClick={() => {
-                navigate(`/game/taskPage?element=farm&level=crop&type=task1`);
+                navigate(`/game/taskPage?element=farm&level=crop&type=quiz`);
               }}
             >
               <h2 className="text-xl font-bold mb-2">Task 1</h2>
@@ -128,7 +129,10 @@ const CropLevel = () => {
                 Water-Smart Crop Management Quiz
               </p>
               <img src={taskicon1} alt="icon" className="w-12 h-12 " />
-              <p className="text-center">Test your knowledge on sustainable crop management practices that protect and conserve groundwater</p>
+              <p className="text-center">
+                Test your knowledge on sustainable crop management practices
+                that protect and conserve groundwater
+              </p>
             </div>
 
             {/* Task 2 */}
@@ -157,7 +161,6 @@ const CropLevel = () => {
               </p>
             </div>
           </div>
-
         </div>
       )}
     </div>
