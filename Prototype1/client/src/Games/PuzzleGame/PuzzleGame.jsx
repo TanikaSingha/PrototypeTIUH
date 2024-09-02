@@ -289,7 +289,7 @@ const PuzzleGame = () => {
       className={`w-full h-[calc(100vh-64px)] flex flex-col p-4`}
       onMouseUp={handleMouseUp}
     >
-      <h1 className="text-4xl font-semibold text-cyan-300 montserrat text-center mt-2">
+      <h1 className="text-4xl font-semibold text-cyan-300 inconsolata text-center mt-2">
         Puzzle Name: {currentTask.name}
       </h1>
       {hint && (
@@ -369,20 +369,20 @@ const PuzzleGame = () => {
             </p>
           </div>
           <div className="flex flex-col flex-[0.8] justify-center ">
-            <h1 className="text-3xl font-semibold text-cyan-300 uppercase audiowide mb-5">
+            <h1 className="text-3xl font-semibold text-emerald-300 uppercase audiowide mb-5">
               Details:
             </h1>
-            <div className="space-y-3 rounded-md p-4 bg-gradient-to-bl from-emerald-500 to-green-100 ">
-              <h4 className="text-md text-gray-600">
-                <p className="font-semibold text-2xl text-gray-700 mb-2">
+            <div className="space-y-3 rounded-md p-4 bg-gradient-to-l from-emerald-500 to-green-100 ">
+              <h4 className="text-md text-gray-900">
+                <p className="font-semibold text-2xl text-gray-800 mb-2">
                   Description:
                 </p>
                 {currentTask.description}
               </h4>
-              <p className="text-gray-700 font-semibold text-2xl">
+              <p className="text-gray-900 font-semibold text-2xl">
                 Information for the player:
               </p>
-              <ul className="list-disc ml-6 text-gray-700 text-md">
+              <ul className="list-disc ml-6 text-gray-800 text-md">
                 {currentTask.instructions?.map((item, index) => (
                   <li key={index} className="mb-2">
                     {item}
