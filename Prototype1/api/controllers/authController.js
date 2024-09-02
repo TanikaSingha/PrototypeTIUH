@@ -91,6 +91,15 @@ const verifyOTP = async (req, res) => {
 
   await User.deleteMany({ email, _id: { $ne: user._id }, isVerified: false });
 
+  const topUsers = await User.find({})
+    .sort({ score: -1 })
+    .limit(10)
+    .select("_id score leaderBoardPosition");
+
+  for (let i = 0; i < topUsers.length; i++) {
+    topUsers[i].leaderBoardPosition = i + 1;
+    await topUsers[i].save();
+  }
   return res
     .status(StatusCodes.OK)
     .json({ data: user, message: "OTP verified successfully!" });

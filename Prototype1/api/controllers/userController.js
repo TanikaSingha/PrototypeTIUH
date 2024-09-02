@@ -3,6 +3,14 @@ const User = require("../models/userSchema");
 const Task = require("../models/taskSchema");
 const { BadRequest, NotFound } = require("../errors");
 
+const getLeaderBoard = async (req, res) => {
+  const users = await User.find({})
+    .sort({ score: -1 })
+    .limit(10)
+    .select("username score leaderBoardPosition avatar level");
+  return res.status(200).json({ data: users, msg: "LeaderBoard received!" });
+};
+
 const getUser = async (req, res) => {
   const { userId } = req.params;
   const { id } = req.user;
@@ -46,6 +54,15 @@ const updateResult = async (req, res) => {
     user.completedTasks.push({ task: taskId });
   }
   await user.save();
+  const topUsers = await User.find({})
+    .sort({ score: -1 })
+    .limit(10)
+    .select("_id score leaderBoardPosition");
+
+  for (let i = 0; i < topUsers.length; i++) {
+    topUsers[i].leaderBoardPosition = i + 1;
+    await topUsers[i].save();
+  }
   return res.status(200).json({ data: user, msg: "Updated Successfully!" });
 };
 
@@ -66,4 +83,4 @@ const uploadAvatar = async (req, res) => {
   });
 };
 
-module.exports = { getUser, uploadAvatar, updateResult };
+module.exports = { getUser, uploadAvatar, updateResult, getLeaderBoard };

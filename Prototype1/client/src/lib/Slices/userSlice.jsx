@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import apiRequest from "../utils/apiRequest";
-import socket from "../utils/socket";
 
 const initialState = {
   user: JSON.parse(localStorage.getItem("user")) || null,
@@ -17,8 +16,7 @@ export const loginUser = createAsyncThunk(
       const response = await apiRequest.post("/auth/login", credentials);
       const userData = response.data.data;
 
-      socket.emit("newUser", { userId: userData._id, score: userData.score });
-
+     
       return userData;
     } catch (error) {
       return rejectWithValue(error.response?.data);
@@ -102,7 +100,6 @@ export const updateScore = createAsyncThunk(
         groundWaterLevel,
         playerLevel,
       });
-      socket.emit("scoreUpdate", { userId: user.user._id, score });
       return response.data.data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message);
