@@ -20,15 +20,12 @@ const avatarMap = [
   "https://res.cloudinary.com/dzjbxojvu/image/upload/v1724619706/avatars/xba9fjk3et0lxnn2oe4c.jpg",
   "https://res.cloudinary.com/dzjbxojvu/image/upload/v1724619706/avatars/j9g2r7wnooq1s3jh5tnc.jpg",
   "https://res.cloudinary.com/dzjbxojvu/image/upload/v1724619706/avatars/t84v2o60lrdmmouy7kec.jpg",
-  "https://res.cloudinary.com/dzjbxojvu/image/upload/v1724619707/avatars/um7huhxwczbeikjlgwl3.jpg",
-  "https://res.cloudinary.com/dzjbxojvu/image/upload/v1724619706/avatars/pxtago3qjlvicif9mbya.jpg",
-  "https://res.cloudinary.com/dzjbxojvu/image/upload/v1724619706/avatars/ekxely0wscznef87qoci.jpg",
-  "https://res.cloudinary.com/dzjbxojvu/image/upload/v1724619706/avatars/xba9fjk3et0lxnn2oe4c.jpg",
-  "https://res.cloudinary.com/dzjbxojvu/image/upload/v1724619706/avatars/j9g2r7wnooq1s3jh5tnc.jpg",
-  "https://res.cloudinary.com/dzjbxojvu/image/upload/v1724619706/avatars/t84v2o60lrdmmouy7kec.jpg",
-  "https://res.cloudinary.com/dzjbxojvu/image/upload/v1724619706/avatars/xba9fjk3et0lxnn2oe4c.jpg",
-  "https://res.cloudinary.com/dzjbxojvu/image/upload/v1724619706/avatars/j9g2r7wnooq1s3jh5tnc.jpg",
-  "https://res.cloudinary.com/dzjbxojvu/image/upload/v1724619706/avatars/t84v2o60lrdmmouy7kec.jpg",
+  "https://res.cloudinary.com/dzjbxojvu/image/upload/v1725285098/avatars/pq4e6sfixpisivaaskdp.jpg",
+  "https://res.cloudinary.com/dzjbxojvu/image/upload/v1725285098/avatars/sbvcs0qxdjkvnvdrqxlo.jpg",
+  "https://res.cloudinary.com/dzjbxojvu/image/upload/v1725285098/avatars/bigovspguk1epm9ig1kl.jpg",
+  "https://res.cloudinary.com/dzjbxojvu/image/upload/v1725285098/avatars/yxttbwxvcyvolnvsmfg2.jpg",
+  "https://res.cloudinary.com/dzjbxojvu/image/upload/v1725285098/avatars/rdhq4iakhx53qqfav6an.jpg",
+  "https://res.cloudinary.com/dzjbxojvu/image/upload/v1725285098/avatars/moftzkygmwuuunwp7fmi.jpg",
 ];
 
 const ChooseAvatarComponent = ({ selectedImage, setSelectedImage }) => {
