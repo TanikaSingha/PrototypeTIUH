@@ -8,14 +8,19 @@ import {
   updateScore,
 } from "../../lib/Slices/userSlice";
 import { setTaskComplete, setTaskRunning } from "../../lib/Slices/gameSlice";
+import {
+  faArrowRight,
+  faHourglass,
+  faPlay,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const colorMap = {
-  best: "bg-green-500",
-  good: "bg-yellow-300",
-  bad: "bg-orange-500",
-  worst: "bg-red-500",
+  best: "from-green-400 to-teal-600 hover:from-teal-600 hover:to-green-400",
+  good: "from-yellow-300 to-orange-500 hover:from-orange-500 hover:to-yellow-300",
+  worst: "from-red-400 to-pink-500 hover:from-pink-500 hover:to-red-400",
+  bad: "from-purple-400 to-pink-600 hover:from-pink-600 hover:to-purple-400",
 };
-
 const ChoiceGame = () => {
   const [score, setScore] = useState(0);
   const [coins, setCoins] = useState(0);
@@ -93,107 +98,140 @@ const ChoiceGame = () => {
   }, [result]);
 
   return (
-    <section className="min-h-screen w-full flex items-center justify-center bg-gray-100">
-      <button
-        className={`absolute bottom-4 left-4 bg-blue-200 cursor-pointer p-2 ${
-          isTaskRunning ? `bg-green-500` : `bg-blue-500`
-        }`}
-        onClick={() => {
-          dispatch(setTaskRunning());
-        }}
-        disabled={isTaskRunning}
-      >
-        {isTaskRunning ? `Playing...` : `Start Game`}
-      </button>
-      <div className="w-full max-w-3xl bg-white p-6 rounded-lg shadow-md relative">
+    <div className={`w-full h-[calc(100vh-64px)] flex flex-col p-4`}>
+      <h1 className="text-4xl font-semibold text-cyan-300 montserrat text-center mt-2">
+        Choice Title: {currentTask.name}
+      </h1>
+      <div className="w-[1300px] mx-auto montserrat">
+        <div className="flex items-center justify-between mb-6">
+          <button
+            className="montserrat mt-8 px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-400 text-white font-semibold rounded-md hover:from-cyan-400 hover:to-cyan-800  transition-all hover:scale-110 duration-300 shadow-lg cursor-pointer"
+            onClick={() => {
+              dispatch(setTaskRunning());
+            }}
+            disabled={currentQuestion === currentTask?.scenarios?.length - 1}
+          >
+            {isTaskRunning ? (
+              <p>
+                Playing...{" "}
+                <FontAwesomeIcon icon={faHourglass}></FontAwesomeIcon>
+              </p>
+            ) : (
+              <p>
+                Play Quiz <FontAwesomeIcon icon={faPlay}></FontAwesomeIcon>
+              </p>
+            )}
+          </button>
+        </div>
         {popup && (
           <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-10">
             <div
-              className={`p-6 text-white rounded-lg shadow-lg transition-all ${
+              className={`p-6 text-white rounded-lg shadow-lg transition-colors bg-gradient-to-r flex items-center justify-center flex-col ${
                 colorMap[result.outcome]
               }`}
             >
               <p className="text-lg">{popup}</p>
               <button
                 onClick={() => setPopup("")}
-                className="mt-4 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded"
+                className="mt-4 bg-gray-900 hover:opacity-75 text-white py-2 px-6 rounded cursor-pointer font-bold shadow-xl "
               >
                 OK
               </button>
             </div>
           </div>
         )}
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold text-gray-800">
-            {currentTask?.name}
-          </h1>
-          <p className="text-lg text-gray-600 mt-2">
-            {currentTask?.description}
-          </p>
-          <div className="mt-4">
-            <h4 className="text-lg font-semibold text-gray-700">
-              Information for the player:
-            </h4>
-            <ul className="list-disc list-inside mt-2 text-gray-600">
-              {currentTask?.instructions?.map((item, index) => (
-                <li key={index}>{item}</li>
-              ))}
-            </ul>
+        <div className="flex gap-10 w-full mt-6 flex-row-reverse ">
+          <div className="flex-[0.6] flex flex-col ">
+            <h1 className="text-3xl font-semibold text-cyan-300 uppercase audiowide mb-5">
+              Details:
+            </h1>
+            <div className="space-y-3 rounded-md p-4 bg-gradient-to-bl from-emerald-500 to-green-100 ">
+              <h4 className="text-md text-gray-600">
+                <p className="font-semibold text-2xl text-gray-700 mb-2">
+                  Description:
+                </p>
+                {currentTask.description}
+              </h4>
+              <p className="text-gray-700 font-semibold text-2xl">
+                Information for the player:
+              </p>
+              <ul className="list-disc ml-6 text-gray-700 text-md">
+                {currentTask.instructions?.map((item, index) => (
+                  <li key={index} className="mb-2">
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            {currentQuestion < currentTask?.scenarios?.length - 1 &&
+              result.outcome && (
+                <button
+                  onClick={() => {
+                    if (!popup) {
+                      setCurrentQuestion((prevQuestion) => prevQuestion + 1);
+                      setResult({ option: "", outcome: "" });
+                      setChoiceSelected(null);
+                    }
+                  }}
+                  className="montserrat mt-8 px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-400 text-white font-semibold rounded-md hover:from-cyan-400 hover:to-cyan-800  transition-all hover:scale-110 duration-300 shadow-lg cursor-pointer w-1/2"
+                >
+                  Next Question
+                  <FontAwesomeIcon
+                    icon={faArrowRight}
+                    className="ml-2"
+                  ></FontAwesomeIcon>
+                </button>
+              )}
+          </div>
+
+          <div className="flex-1 flex flex-col gap-2">
+            <h1 className="text-3xl font-semibold text-cyan-300 uppercase audiowide">
+              Scenarios
+            </h1>
+            <p className="text-lg font-medium text-emerald-200">
+              {currentTask?.scenarios?.[currentQuestion]?.scenario}
+            </p>
+            <div>
+              <h2 className="font-medium text-blue-200">
+                Choose from the given options:
+              </h2>
+              <ul className="flex flex-col gap-3 mt-4">
+                {currentTask?.scenarios?.[currentQuestion]?.options?.map(
+                  (item, index) => (
+                    <li
+                      key={index}
+                      className="cursor-pointer"
+                      onClick={() => {
+                        isTaskRunning && handleOption(index);
+                      }}
+                    >
+                      <div
+                        className={`cursor-pointer p-3 rounded-lg hover:scale-105 hover:shadow-xl bg-gradient-to-tr transition-all relative ${
+                          choiceSelected === index
+                            ? `border-yellow-50 shadow-md rounded-none border-4 hover:scale-100 ${
+                                result.outcome && index === result.option
+                                  ? `${colorMap[result.outcome]}`
+                                  : ` from-cyan-100 to-blue-600  hover:from-blue-600 hover:to-cyan-100`
+                              }`
+                            : " from-cyan-100 to-blue-600  hover:from-blue-600 hover:to-cyan-100   "
+                        }`}
+                      >
+                        <span className="block font-semibold text-lg text-green-800">
+                          Choice {index + 1}:
+                        </span>
+                        <span className="block text-sm text-wrap text-gray-800">
+                          {item?.choice}
+                        </span>
+                      </div>
+                    </li>
+                  )
+                )}
+              </ul>
+            </div>
           </div>
         </div>
-        <div>
-          <h2 className="text-2xl font-semibold text-gray-800">Scenarios</h2>
-          <p className="mt-4 text-gray-700">
-            {currentTask?.scenarios?.[currentQuestion]?.scenario}
-          </p>
-          <ul className="grid grid-cols-2 gap-4 mt-6">
-            {currentTask?.scenarios?.[currentQuestion]?.options?.map(
-              (item, index) => (
-                <li
-                  key={index}
-                  className="cursor-pointer"
-                  onClick={() => {
-                    isTaskRunning && handleOption(index);
-                  }}
-                >
-                  <div
-                    className={`p-4 rounded-lg shadow-md transition-all duration-300 ease-in-out ${
-                      choiceSelected === index
-                        ? `border-black border-4 ${
-                            result.outcome && index === result.option
-                              ? `${colorMap[result.outcome]}`
-                              : `bg-blue-500`
-                          }`
-                        : "bg-blue-500"
-                    }`}
-                  >
-                    <h4 className="font-semibold text-white">
-                      Choice {index + 1}
-                    </h4>
-                    <p className="text-white">{item?.choice}</p>
-                  </div>
-                </li>
-              )
-            )}
-          </ul>
-        </div>
-        {currentQuestion < currentTask?.scenarios?.length - 1 &&
-          result.outcome && (
-            <button
-              onClick={() => {
-                if (!popup) {
-                  setCurrentQuestion((prevQuestion) => prevQuestion + 1);
-                  setResult({ option: "", outcome: "" });
-                  setChoiceSelected(null);
-                }
-              }}
-              className="mt-6 bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-lg"
-            >
-              Next Scenario
-            </button>
-          )}
       </div>
-    </section>
+    </div>
   );
 };
 

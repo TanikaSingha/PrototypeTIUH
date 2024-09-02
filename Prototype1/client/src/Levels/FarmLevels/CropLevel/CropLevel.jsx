@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setModalClose } from "../../../lib/Slices/tutorialSlice";
 import { useNavigate } from "react-router-dom";
 import { setTaskInfo } from "../../../lib/Slices/gameSlice";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import taskicon1 from "../../../assets/Icons/waterLeaf.png";
 import taskicon2 from "../../../assets/Icons/mulching.png";
@@ -99,9 +99,8 @@ const CropLevel = () => {
       <div className="absolute inset-0 bg-black/50 z-10"></div>
       <button
         onClick={() => {
-          navigate(-1);
-        }
-        }
+          navigate("/gameElements");
+        }}
         className="w-[50px] h-[50px] rounded-full bg-white cursor-pointer absolute top-5 left-5 z-50 hover:scale-110 transition-all duration-100 ease-in-out"
       >
         <FontAwesomeIcon icon={faArrowLeft} className=""></FontAwesomeIcon>
@@ -109,7 +108,9 @@ const CropLevel = () => {
       {modalOpen && <ModalComponent />}
       {!modalOpen && (
         <div className="z-50">
-          <h1 className="text-white text-4xl font-bold text-center mb-6 audiowide">Crop Level</h1>
+          <h1 className="text-white text-4xl font-bold text-center mb-6 audiowide">
+            Crop Level
+          </h1>
           {/* <div
             className="w-20 h-20 bg-black cursor-pointer"
             onClick={() => {
@@ -164,7 +165,6 @@ const CropLevel = () => {
               <p className="text-center inconsolata">Rotate crops by planting legumes to improve soil health and water retention</p>
             </div>
           </div>
-
         </div>
       )}
     </div>

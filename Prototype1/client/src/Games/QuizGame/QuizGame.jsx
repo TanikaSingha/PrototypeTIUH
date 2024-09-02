@@ -10,6 +10,12 @@ import {
 } from "../../lib/Slices/userSlice";
 import "react-circular-progressbar/dist/styles.css";
 import { setTaskComplete, setTaskRunning } from "../../lib/Slices/gameSlice";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faArrowRight,
+  faHourglass,
+  faPlay,
+} from "@fortawesome/free-solid-svg-icons";
 
 const QuizGame = () => {
   const dispatch = useDispatch();
@@ -111,100 +117,134 @@ const QuizGame = () => {
 
   return (
     <>
-      <div className="w-32 h-32 absolute top-1/3 right-20">
+      <div className="w-36 h-36 absolute top-10 right-10">
         <CircularProgressbar
           value={percentage}
           text={getFormattedTime(timer)}
           styles={buildStyles({
             pathColor: pathColor,
-            textColor: "#333",
-            trailColor: "#d6d6d6",
+            textColor: "#fff",
+            trailColor: "#fff",
             strokeWidth: 6,
           })}
         />
       </div>
-      <div className="w-full max-w-4xl bg-white rounded-lg shadow-md p-6 mt-10">
-        <div className="flex items-center justify-between mb-6">
-          <button
-            disabled={
-              startTimer || currentQuestion === currentTask.questions.length - 1
-            }
-            onClick={() => {
-              dispatch(setTaskRunning());
-              setStartTimer(true);
-            }}
-            className="bg-blue-500 text-white p-3 rounded-md disabled:bg-gray-300"
-          >
-            Start Quiz
-          </button>
-        </div>
-
-        <div className="space-y-4">
-          <h1 className="text-2xl font-bold">Quiz Name: {currentTask.name}</h1>
-          <h4 className="text-lg text-gray-600">
-            Description: {currentTask.description}
-          </h4>
-          <p className="text-gray-700">Information for the player:</p>
-          <ul className="list-disc ml-6 text-gray-700">
-            {currentTask.instructions?.map((item, index) => (
-              <li key={index} className="mb-2">
-                {item}
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="mt-6">
-          <h1 className="text-xl font-semibold">Questions</h1>
-          <p className="text-lg font-medium">
-            Q. {currentTask.questions[currentQuestion]?.question}
-          </p>
-          <div>
-            <h2 className="font-medium text-gray-800">
-              Choose from the given options:
-            </h2>
-            <ul className="grid grid-cols-2 gap-4 mt-4">
-              {currentTask.questions[currentQuestion]?.options.map(
-                (item, index) => (
-                  <li
-                    key={index}
-                    className="cursor-pointer p-4 rounded-md bg-gray-100 hover:bg-blue-200 transition-colors relative"
-                    onClick={() => {
-                      if (startTimer) {
-                        handleOption(item, index);
-                      }
-                    }}
-                  >
-                    <div
-                      className={`absolute inset-0 w-full h-full rounded-md ${
-                        result.option === index
-                          ? result.outcome === "correct"
-                            ? "bg-green-500/50"
-                            : "bg-red-600/50"
-                          : ""
-                      }`}
-                    ></div>
-                    <span className="block text-gray-800">
-                      Option {index + 1}:
-                    </span>
-                    <span className="block text-gray-600">{item}</span>
-                  </li>
-                )
+      <div className={`w-full h-[calc(100vh-64px)] flex flex-col p-4`}>
+        <h1 className="text-4xl font-semibold text-cyan-300 montserrat text-center mt-2">
+          Quiz Name: {currentTask.name}
+        </h1>
+        <div className="w-[1300px] mx-auto montserrat">
+          <div className="flex items-center justify-between mb-6">
+            <button
+              disabled={
+                startTimer ||
+                currentQuestion === currentTask.questions.length - 1
+              }
+              onClick={() => {
+                dispatch(setTaskRunning());
+                setStartTimer(true);
+              }}
+              className="montserrat mt-8 px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-400 text-white font-semibold rounded-md hover:from-cyan-400 hover:to-cyan-800  transition-all hover:scale-110 duration-300 shadow-lg cursor-pointer"
+            >
+              {isTaskRunning ? (
+                <p>
+                  Playing...{" "}
+                  <FontAwesomeIcon icon={faHourglass}></FontAwesomeIcon>
+                </p>
+              ) : (
+                <p>
+                  Play Quiz <FontAwesomeIcon icon={faPlay}></FontAwesomeIcon>
+                </p>
               )}
-            </ul>
+            </button>
           </div>
-          {result.outcome &&
-            currentQuestion < currentTask.questions.length - 1 && (
-              <button
-                onClick={() => {
-                  setCurrentQuestion((prev) => prev + 1);
-                  setResult({ option: "", outcome: "" });
-                }}
-                className="mt-4 bg-blue-500 text-white p-3 rounded-md"
-              >
-                Next Question
-              </button>
-            )}
+          <div className="flex gap-10 w-full mt-16 ">
+            <div className="flex-[0.6] flex flex-col justify-center ">
+              <h1 className="text-3xl font-semibold text-cyan-300 uppercase audiowide mb-5">
+                Details:
+              </h1>
+              <div className="space-y-3 rounded-md p-4 bg-gradient-to-bl from-emerald-500 to-green-100 ">
+                <h4 className="text-md text-gray-600">
+                  <p className="font-semibold text-2xl text-gray-700 mb-2">
+                    Description:
+                  </p>
+                  {currentTask.description}
+                </h4>
+                <p className="text-gray-700 font-semibold text-2xl">
+                  Information for the player:
+                </p>
+                <ul className="list-disc ml-6 text-gray-700 text-md">
+                  {currentTask.instructions?.map((item, index) => (
+                    <li key={index} className="mb-2">
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            <div className="flex-1 flex flex-col gap-5">
+              <h1 className="text-3xl font-semibold text-cyan-300 uppercase audiowide">
+                Questions
+              </h1>
+              <p className="text-lg font-medium text-emerald-200">
+                <span className="text-xl">Q. </span>
+                {currentTask.questions[currentQuestion]?.question}
+              </p>
+              <div>
+                <h2 className="font-medium text-blue-200">
+                  Choose from the given options:
+                </h2>
+                <ul className="grid grid-cols-2 gap-8 mt-4">
+                  {currentTask.questions[currentQuestion]?.options.map(
+                    (item, index) => (
+                      <li
+                        key={index}
+                        className="cursor-pointer p-3 rounded-md bg-gradient-to-tr from-cyan-100 to-blue-600  hover:from-blue-600 hover:to-cyan-100  transition-all relative hover:shadow-xl hover:scale-105"
+                        onClick={() => {
+                          if (startTimer) {
+                            handleOption(item, index);
+                          }
+                        }}
+                      >
+                        <div
+                          className={`absolute inset-0 w-full h-full rounded-md ${
+                            result.option === index
+                              ? result.outcome === "correct"
+                                ? "bg-green-500/50"
+                                : "bg-red-600/50"
+                              : ""
+                          }`}
+                        ></div>
+                        <span className="block font-semibold text-lg text-green-800">
+                          Option {index + 1}:
+                        </span>
+                        <span className="block text-md text-gray-800">
+                          {item}
+                        </span>
+                      </li>
+                    )
+                  )}
+                </ul>
+              </div>
+            </div>
+            {result.outcome &&
+              currentQuestion < currentTask.questions.length - 1 && (
+                <button
+                  onClick={() => {
+                    setCurrentQuestion((prev) => prev + 1);
+                    setResult({ option: "", outcome: "" });
+                  }}
+                  className="montserrat mt-8 px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-400 text-white font-semibold rounded-md hover:from-cyan-400 hover:to-cyan-800  transition-all hover:scale-110 duration-300 shadow-lg cursor-pointer absolute right-10 bottom-5"
+                >
+                  Next Question
+                  <FontAwesomeIcon
+                    icon={faArrowRight}
+                    className="ml-2"
+                  ></FontAwesomeIcon>
+                </button>
+              )}
+          </div>
         </div>
       </div>
     </>

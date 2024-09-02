@@ -9,7 +9,14 @@ import {
   updateScore,
 } from "../../lib/Slices/userSlice";
 import { setTaskComplete, setTaskRunning } from "../../lib/Slices/gameSlice";
-
+import {
+  faCheck,
+  faExclamationCircle,
+  faHourglass,
+  faLightbulb,
+  faPlay,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const randomLetterGenerator = () => {
   return String.fromCharCode(65 + Math.floor(Math.random() * 26));
 };
@@ -39,7 +46,7 @@ const PuzzleGame = () => {
   const [hintsLeft, setHintsLeft] = useState(2);
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
-  const { isTaskRunning } = useSelector((state) => state.game);
+  const { isTaskRunning, isTaskComplete } = useSelector((state) => state.game);
   useEffect(() => {
     const initAnsweredLetters = {};
     currentTask?.crosswordGrid?.clues?.forEach((clue) => {
@@ -278,14 +285,19 @@ const PuzzleGame = () => {
     }
   }, [storeAnswers, maxAttempts]);
   return (
-    <section
-      className="min-h-screen w-full flex items-center justify-center bg-gray-100"
+    <div
+      className={`w-full h-[calc(100vh-64px)] flex flex-col p-4`}
       onMouseUp={handleMouseUp}
     >
+      <h1 className="text-4xl font-semibold text-cyan-300 montserrat text-center mt-2">
+        Puzzle Name: {currentTask.name}
+      </h1>
       {hint && (
-        <div className="absolute top-2 p-2 bg-white text-black left-2">
-          <p>{hint}</p>
+        <div className="absolute top-2 p-4 bg-gradient-to-r from-emerald-100 to-emerald-600 text-cyan-900 left-1/2 -translate-x-1/2 rounded-lg flex gap-2 flex-col">
+          <h3 className="text-xl font-bold">Hint {2 - hintsLeft}</h3>
+          <p className="text-emerald-900">{hint}</p>
           <button
+            className="bg-cyan-800 p-2 rounded-md text-cyan-100 hover:opacity-85"
             onClick={() => {
               setHint("");
             }}
@@ -294,108 +306,194 @@ const PuzzleGame = () => {
           </button>
         </div>
       )}
-      <button
-        className={`absolute bottom-4 left-4 bg-blue-200 cursor-pointer p-2 ${
-          isTaskRunning ? `bg-green-500` : `bg-blue-500`
-        }`}
-        onClick={() => {
-          dispatch(setTaskRunning());
-        }}
-        disabled={isTaskRunning}
-      >
-        {isTaskRunning ? `Playing...` : `Start Game`}
-      </button>
-      {feedBack.statement && (
-        <div
-          className={`absolute bottom-2 right-2 ${colorMap[feedBack.status]}`}
-        >
-          <p className="text-xl font-bold text-white">{feedBack.statement}</p>
+      <div className="w-[1300px] mx-auto montserrat">
+        <div className="flex items-center justify-between mb-4">
+          <button
+            disabled={isTaskRunning || isTaskComplete}
+            onClick={() => {
+              dispatch(setTaskRunning());
+              setStartTimer(true);
+            }}
+            className="montserrat mt-8 px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-400 text-white font-semibold rounded-md hover:from-cyan-400 hover:to-cyan-800  transition-all hover:scale-110 duration-300 shadow-lg cursor-pointer"
+          >
+            {isTaskRunning ? (
+              <p>
+                Playing...
+                <FontAwesomeIcon
+                  icon={faHourglass}
+                  className="ml-2"
+                ></FontAwesomeIcon>
+              </p>
+            ) : !isTaskComplete ? (
+              <p>
+                Play Puzzle{" "}
+                <FontAwesomeIcon
+                  icon={faPlay}
+                  className="ml-2"
+                ></FontAwesomeIcon>
+              </p>
+            ) : maxAttempts !== 0 ? (
+              <p>
+                Task Completed
+                <FontAwesomeIcon
+                  icon={faCheck}
+                  className="ml-2"
+                ></FontAwesomeIcon>
+              </p>
+            ) : (
+              <p>
+                Task Failed{" "}
+                <FontAwesomeIcon
+                  icon={faExclamationCircle}
+                  className="ml-2"
+                ></FontAwesomeIcon>
+              </p>
+            )}
+          </button>
         </div>
-      )}
-      <div className="absolute top-1/2 right-4 p-2 bg-gray-200">
-        <p className="text-red-700">
-          Attempts: {maxAttempts}/{currentTask?.taskDetails?.maxAttempts}
-        </p>
-      </div>
-      <div className="bg-orange-400 w-5/12">
-        <h1>Puzzle: {currentTask?.name}</h1>
-        <h4>Description: {currentTask?.description}</h4>
-        <p>Information for the Player</p>
-        <ul className="text-sm">
-          {currentTask?.instructions?.map((item, index) => (
-            <li key={index}>{item}</li>
-          ))}
-        </ul>
-      </div>
-      <div
-        className="bg-white flex flex-wrap relative shadow-lg "
-        style={{
-          width: `${currentTask?.crosswordGrid?.size[1] * 50}px`,
-        }}
-      >
-        {gridLetters.map((row, i) =>
-          row.map((letter, j) => {
-            const positionKey = `${i},${j}`;
-            const cellClass = answeredLetters[positionKey]?.foundAll
-              ? "bg-green-200"
-              : answeredLetters[positionKey]?.wordsFound >= 1
-              ? "bg-blue-200"
-              : "bg-white";
-            return (
-              <div
-                key={`${i}-${j}`}
-                data-value={letter}
-                data-position={`${i},${j}`}
-                className={`w-[50px] h-[50px] border flex items-center justify-center select-none ${cellClass} border-gray-900 ${
-                  answeredLetters[positionKey]?.foundAll
-                    ? `cursor-not-allowed`
-                    : startDrag
-                    ? `cursor-grab`
-                    : `cursor-pointer`
-                }`}
-                onMouseDown={isTaskRunning && handleMouseDown}
-                onMouseOver={isTaskRunning && handleMouseOver}
-              >
-                {letter}
-              </div>
-            );
-          })
+        {feedBack.statement && (
+          <div
+            className={`absolute left-2 bottom-2 p-2 ${
+              colorMap[feedBack.status]
+            }`}
+          >
+            <p className="text-md font-bold text-white montserrat">
+              {feedBack.statement}
+            </p>
+          </div>
         )}
-        <svg
-          className="absolute top-0 left-0"
-          style={{
-            width: `${currentTask?.crosswordGrid?.size[1] * 50}px`,
-            height: `${currentTask?.crosswordGrid?.size[0] * 50}px`,
-            pointerEvents: "none",
-          }}
-        >
-          <path d={linePath} stroke="red" strokeWidth="3" fill="none" />
-        </svg>
+        <div className="flex gap-10 w-full ">
+          <div className="absolute top-20 right-4 p-4 bg-gradient-to-r bg-cyan-100  rounded-full w-36">
+            <p className="text-cyan-950 text-md">
+              Attempts: {maxAttempts}/{currentTask?.taskDetails?.maxAttempts}
+            </p>
+          </div>
+          <div className="flex flex-col flex-[0.8] justify-center ">
+            <h1 className="text-3xl font-semibold text-cyan-300 uppercase audiowide mb-5">
+              Details:
+            </h1>
+            <div className="space-y-3 rounded-md p-4 bg-gradient-to-bl from-emerald-500 to-green-100 ">
+              <h4 className="text-md text-gray-600">
+                <p className="font-semibold text-2xl text-gray-700 mb-2">
+                  Description:
+                </p>
+                {currentTask.description}
+              </h4>
+              <p className="text-gray-700 font-semibold text-2xl">
+                Information for the player:
+              </p>
+              <ul className="list-disc ml-6 text-gray-700 text-md">
+                {currentTask.instructions?.map((item, index) => (
+                  <li key={index} className="mb-2">
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+          <div className="flex gap-10">
+            <div
+              className="bg-white flex flex-1 flex-wrap relative shadow-lg "
+              style={{
+                width: `${currentTask?.crosswordGrid?.size[1] * 50}px`,
+              }}
+            >
+              {gridLetters.map((row, i) =>
+                row.map((letter, j) => {
+                  const positionKey = `${i},${j}`;
+                  const cellClass = answeredLetters[positionKey]?.foundAll
+                    ? "bg-green-200"
+                    : answeredLetters[positionKey]?.wordsFound >= 1
+                    ? "bg-blue-200"
+                    : "bg-white";
+                  return (
+                    <div
+                      key={`${i}-${j}`}
+                      data-value={letter}
+                      data-position={`${i},${j}`}
+                      className={`w-[50px] h-[50px] border flex items-center justify-center select-none ${cellClass} border-cyan-950 audiowide text-cyan-950 ${
+                        answeredLetters[positionKey]?.foundAll
+                          ? `cursor-not-allowed`
+                          : startDrag
+                          ? `cursor-grab`
+                          : `cursor-pointer`
+                      }`}
+                      onMouseDown={isTaskRunning && handleMouseDown}
+                      onMouseOver={isTaskRunning && handleMouseOver}
+                    >
+                      {letter}
+                    </div>
+                  );
+                })
+              )}
+              <svg
+                className="absolute top-0 left-0"
+                style={{
+                  width: `${currentTask?.crosswordGrid?.size[1] * 50}px`,
+                  height: `${currentTask?.crosswordGrid?.size[0] * 50}px`,
+                  pointerEvents: "none",
+                }}
+              >
+                <path
+                  d={linePath}
+                  stroke="#1CBD87"
+                  strokeWidth="4"
+                  fill="none"
+                />
+              </svg>
+            </div>
+            <div className="flex flex-col w-72 items-center justify-center">
+              <h1 className="text-3xl font-semibold text-cyan-300 uppercase audiowide mb-5">
+                Hints:
+              </h1>
+              <div className="bg-gradient-to-tl from-cyan-700 to-cyan-300 p-4 rounded-md">
+                <ol className="flex flex-col gap-2 text-wrap list-decimal list-inside">
+                  {currentTask?.crosswordGrid?.hints?.map((item, index) => {
+                    return (
+                      <li key={index} className="text-sm text-gray-800">
+                        {item.hint}
+                      </li>
+                    );
+                  })}
+                </ol>
+              </div>
+            </div>
+          </div>
+          <div
+            className={`flex items-center justify-center flex-col  text-cyan-200 rounded-lg shadow-lg transform -translate-y-1/2 transition-all duration-300 ${
+              user.coins < 400 / hintsLeft
+                ? `opacity-70 cursor-not-allowed`
+                : `opacity-100 cursor-pointer `
+            } absolute right-5 top-[38%]`}
+          >
+            <p className="text-lg font-semibold">{hintsLeft}/2</p>
+            <button
+              onClick={handleHint}
+              disabled={!isTaskRunning || user.coins < 400 / hintsLeft}
+              className={`mt-2 transition-all px-4 py-2 rounded-md bg-cyan-500 text-white hover:shadow-xl hover:scale-105 ${
+                user.coins < 400 / hintsLeft
+                  ? `bg-gray-300 cursor-not-allowed`
+                  : `hover:bg-cyan-600`
+              }`}
+            >
+              Use Clue
+              <FontAwesomeIcon
+                icon={faLightbulb}
+                className="text-yellow-200 ml-2"
+              ></FontAwesomeIcon>
+            </button>
+            {hintsLeft > 0 && (
+              <p className="text-sm mt-2 ">
+                <span className="font-bold uppercase text-cyan-400">
+                  Cost:{" "}
+                </span>
+                {400 / hintsLeft} coins
+              </p>
+            )}
+          </div>
+        </div>
       </div>
-      <div>
-        <h1>Hints:</h1>
-        <ol>
-          {currentTask?.crosswordGrid?.hints?.map((item, index) => {
-            return <li key={index}>{item.hint}</li>;
-          })}
-        </ol>
-      </div>
-      <div
-        className={`p-2 bg-white text-black absolute left-5 top-10 ${
-          user.coins < 400 / hintsLeft
-            ? `opacity-80 cursor-not-allowed`
-            : `opacity-100 cursor-pointer`
-        }`}
-      >
-        <p>{hintsLeft}/2</p>
-        <button
-          onClick={handleHint}
-          disabled={isTaskRunning && user.coins < 400 / hintsLeft}
-        >
-          Use Hint
-        </button>
-      </div>
-    </section>
+    </div>
   );
 };
 

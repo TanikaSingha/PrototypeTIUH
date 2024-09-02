@@ -11,7 +11,11 @@ import PuzzleGame from "../../../Games/PuzzleGame/PuzzleGame";
 import ChoiceGame from "../../../Games/ChoiceGame/ChoiceGame";
 import { Vortex } from "react-loader-spinner";
 import ContentWrapper from "../../../Components/ContentWrapper/ContentWrapper";
-
+import {
+  faArrowAltCircleLeft,
+  faArrowLeft,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const gameMap = {
   quiz: QuizGame,
   puzzle: PuzzleGame,
@@ -41,15 +45,17 @@ const TaskPage = () => {
   if (status === "loading") {
     return (
       <ContentWrapper>
-        <Vortex
-          visible={true}
-          height="80"
-          width="80"
-          ariaLabel="vortex-loading"
-          wrapperStyle={{}}
-          wrapperClass="vortex-wrapper"
-          colors={["#00A9E0", "#00B2A9", "#007A7A", "#E0F7FA", "#00A859"]}
-        />
+        <div className="w-full h-[calc(100vh-64px)] flex flex-col p-4 items-center justify-center">
+          <Vortex
+            visible={true}
+            height="80"
+            width="80"
+            ariaLabel="vortex-loading"
+            wrapperStyle={{}}
+            wrapperClass="vortex-wrapper"
+            colors={["#00A9E0", "#00B2A9", "#007A7A", "#E0F7FA", "#00A859"]}
+          />
+        </div>
       </ContentWrapper>
     );
   }
@@ -69,15 +75,15 @@ const TaskPage = () => {
       {currentTask && currentTask.name ? (
         <>
           <button
-            className="absolute top-40 left-10 bg-red-400 p-2"
             onClick={() => {
               if (!isTaskRunning) {
                 dispatch(resetTask());
                 navigate(`/element/${element}/level/${level}-level`);
               }
             }}
+            className="w-[50px] h-[50px] rounded-full bg-white cursor-pointer absolute top-5 left-5 z-50 hover:scale-110 transition-all duration-100 ease-in-out"
           >
-            Go back
+            <FontAwesomeIcon icon={faArrowLeft}></FontAwesomeIcon>
           </button>
           <GameComponent></GameComponent>
         </>
