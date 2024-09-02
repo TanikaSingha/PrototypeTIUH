@@ -15,10 +15,14 @@ import GameElement from "./Pages/GamePages/GameElement/GameElement";
 import GameLevel from "./Pages/GamePages/GameLevel/GameLevel";
 import TaskPage from "./Pages/GamePages/TaskPage/TaskPage";
 import Leaderboard from "./Pages/LeaderBoardPage/LeaderBoardPage";
+import { getLeaderBoard } from "./lib/Slices/leaderBoardSlice";
 
 const App = () => {
   const { user, otpVerification } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getLeaderBoard());
+  }, [user]);
   return (
     <main>
       <Routes>
