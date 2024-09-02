@@ -7,6 +7,9 @@ import { setTaskInfo } from "../../../lib/Slices/gameSlice";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import taskicon1 from "../../../assets/Icons/waterLeaf.png";
+import taskicon2 from "../../../assets/Icons/mulching.png";
+import taskicon3 from "../../../assets/Icons/legumes.png";
+
 
 const modalData = [
   { title: "Title 1", description: "Description 1", images: [] },
@@ -106,7 +109,7 @@ const CropLevel = () => {
       {modalOpen && <ModalComponent />}
       {!modalOpen && (
         <div className="z-50">
-          <h1 className="text-white text-4xl font-bold text-center mb-6">Crop Level</h1>
+          <h1 className="text-white text-4xl font-bold text-center mb-6 audiowide">Crop Level</h1>
           {/* <div
             className="w-20 h-20 bg-black cursor-pointer"
             onClick={() => {
@@ -118,43 +121,47 @@ const CropLevel = () => {
           <div className="flex justify-center space-x-6">
             {/* Task 1 */}
             <div
-              className="w-60 h-96 bg-gray-800 text-white flex flex-col justify-center items-center gap-2 p-2 rounded-lg cursor-pointer hover:scale-105 transition-transform"
+              className="w-72 h-96 bg-black/50 text-white flex flex-col justify-center items-center gap-2 p-4 rounded-lg cursor-pointer hover:scale-105 transition-transform"
               onClick={() => {
-                navigate(`/game/taskPage?element=farm&level=crop&type=task1`);
+                navigate(`/game/taskPage?element=farm&level=crop&type=quiz`);
               }}
             >
-              <h2 className="text-xl font-bold mb-2">Task 1</h2>
-              <p className="text-sm text-gray-300 text-center">
+              <h2 className="text-xl font-bold mb-2 montserrat text-white">Task 1</h2>
+              <p className="text-base text-white text-center montserrat">
                 Water-Smart Crop Management Quiz
               </p>
-              <img src={taskicon1} alt="icon" className="w-12 h-12 " />
-              <p className="text-center">Test your knowledge on sustainable crop management practices that protect and conserve groundwater</p>
+              <img src={taskicon1} alt="icon" className="w-12 h-12 m-2" />
+              <p className="text-center inconsolata">Test your knowledge on sustainable crop management practices that protect and conserve groundwater</p>
             </div>
 
             {/* Task 2 */}
             <div
-              className="w-60 h-96 bg-gray-800 text-white opacity-50 flex flex-col items-center justify-center rounded-lg cursor-pointer hover:scale-105 transition-transform"
+              className="w-72 h-96 bg-black/50  text-white flex flex-col justify-center items-center gap-2 p-4 rounded-lg cursor-pointer hover:scale-105 transition-transform"
               onClick={() => {
-                navigate(`/game/taskPage?element=farm&level=crop&type=task2`);
+                navigate(`/game/taskPage?element=farm&level=crop&type=quiz`);
               }}
             >
-              <h2 className="text-xl font-bold mb-2">Task 2</h2>
-              <p className="text-sm text-gray-300">
-                Brief description of Task 2.
+              <h2 className="text-xl font-bold mb-2 montserrat text-white">Task 2</h2>
+              <p className="text-base text-white text-center montserrat">
+              Mulching to Reduce Evaporation
               </p>
+              <img src={taskicon2} alt="icon" className="w-12 h-12 m-2" />
+              <p className="text-center inconsolata">Apply organic mulch around crops to retain soil moisture and reduce evaporation</p>
             </div>
 
             {/* Task 3 */}
             <div
-              className="w-60 h-96 bg-gray-800 text-white opacity-50 flex flex-col items-center justify-center rounded-lg cursor-pointer hover:scale-105 transition-transform"
+              className="w-72 h-96 bg-black/50 text-white flex flex-col justify-center items-center gap-2 p-4 rounded-lg cursor-pointer hover:scale-105 transition-transform"
               onClick={() => {
-                navigate(`/game/taskPage?element=farm&level=crop&type=task3`);
+                navigate(`/game/taskPage?element=farm&level=crop&type=quiz`);
               }}
             >
-              <h2 className="text-xl font-bold mb-2">Task 3</h2>
-              <p className="text-sm text-gray-300">
-                Brief description of Task 3.
+              <h2 className="text-xl font-bold mb-2 montserrat text-white">Task 3</h2>
+              <p className="text-base text-white text-center montserrat">
+              Implement Crop Rotation with Legumes
               </p>
+              <img src={taskicon3} alt="icon" className="w-12 h-12 m-2" />
+              <p className="text-center inconsolata">Rotate crops by planting legumes to improve soil health and water retention</p>
             </div>
           </div>
 

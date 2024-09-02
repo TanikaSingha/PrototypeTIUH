@@ -3,6 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { setModalClose } from "../../../lib/Slices/tutorialSlice";
 import { useNavigate } from "react-router-dom";
 import WaterCoolantLevelImage from "../../../assets/Levels/IndustryLevel/WaterCoolant-Level.png";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import taskicon1 from "../../../assets/Icons/recycleWater.png";
+import taskicon2 from "../../../assets/Icons/thermometer.png";
+import taskicon3 from "../../../assets/Icons/waterGauge.png"
 
 const modalData = [
   { title: "Title 1", description: "Description 1", images: [] },
@@ -84,24 +89,94 @@ const WaterCoolantLevel = () => {
     },
   ];
   return (
+    // <div
+    //   style={{ backgroundImage: `url(${WaterCoolantLevelImage})` }}
+    //   className="w-full min-h-screen bg-cover bg-no-repeat flex items-center justify-center"
+    // >
+    //   {modalOpen && <ModalComponent />}
+    //   {!modalOpen && (
+    // <div>
+    //   <h1 className="text-white text-4xl font-bold">Water-Coolant Level</h1>
+    //   <div
+    //     className="w-20 h-20 bg-black"
+    //     onClick={() => {
+    //       navigate(
+    //         `/game/taskPage?element=industry&level=water-coolant&type=puzzle`
+    //       );
+    //     }}
+    //   >
+    //     <p className="text-white">Task 1</p>
+    //   </div>
+    // </div>
+
+    //   )}
+    // </div>
     <div
       style={{ backgroundImage: `url(${WaterCoolantLevelImage})` }}
-      className="w-full min-h-screen bg-cover bg-no-repeat flex items-center justify-center"
+      className={`w-full h-[calc(100vh-64px)]  bg-cover bg-no-repeat flex items-center justify-center`}
     >
+      <div className="absolute inset-0 bg-black/50 z-10"></div>
+      <button
+        onClick={() => {
+          navigate(-1);
+        }
+        }
+        className="w-[50px] h-[50px] rounded-full bg-white cursor-pointer absolute top-5 left-5 z-50 hover:scale-110 transition-all duration-100 ease-in-out"
+      >
+        <FontAwesomeIcon icon={faArrowLeft} className=""></FontAwesomeIcon>
+      </button>
       {modalOpen && <ModalComponent />}
       {!modalOpen && (
-        <div>
-          <h1 className="text-white text-4xl font-bold">Water-Coolant Level</h1>
-          <div
-            className="w-20 h-20 bg-black"
-            onClick={() => {
-              navigate(
-                `/game/taskPage?element=industry&level=water-coolant&type=puzzle`
-              );
-            }}
-          >
-            <p className="text-white">Task 1</p>
+        <div className="z-50">
+          <h1 className="text-white text-4xl font-bold text-center mb-6 audiowide">Water Coolant Level</h1>
+          <div className="flex justify-center space-x-6">
+            {/* Task 1 */}
+            <div
+              className="w-72 h-96 bg-black/50 text-white flex flex-col justify-center items-center gap-2 p-4 rounded-lg cursor-pointer hover:scale-105 transition-transform"
+              onClick={() => {
+                navigate(`/game/taskPage?element=industry&level=water-coolant&type=puzzle`);
+              }}
+            >
+              <h2 className="text-xl font-bold mb-2 montserrat text-white">Task 1</h2>
+              <p className="text-base text-white text-center montserrat">
+                Implement Efficient Water Recycling
+              </p>
+              <img src={taskicon1} alt="icon" className="w-12 h-12 m-2" />
+              <p className="text-center inconsolata">Install and maintain a water recycling system in your industrial facility to reuse wastewater</p>
+            </div>
+
+            {/* Task 2 */}
+            <div
+              className="w-72 h-96 bg-black/50  text-white flex flex-col justify-center items-center gap-2 p-4 rounded-lg cursor-pointer hover:scale-105 transition-transform"
+              onClick={() => {
+                navigate(`/game/taskPage?element=industry&level=water-coolant&type=puzzle`);
+              }}
+            >
+              <h2 className="text-xl font-bold mb-2 montserrat text-white">Task 2</h2>
+              <p className="text-base text-white text-center montserrat">
+              Optimize Cooling System Efficiency
+
+              </p>
+              <img src={taskicon2} alt="icon" className="w-12 h-12 m-2" />
+              <p className="text-center inconsolata">Upgrade the cooling system in your facility to a more water-efficient model</p>
+            </div>
+
+            {/* Task 3 */}
+            <div
+              className="w-72 h-96 bg-black/50 text-white flex flex-col justify-center items-center gap-2 p-4 rounded-lg cursor-pointer hover:scale-105 transition-transform"
+              onClick={() => {
+                navigate(`/game/taskPage?element=industry&level=water-coolant&type=puzzle`);
+              }}
+            >
+              <h2 className="text-xl font-bold mb-2 montserrat text-white">Task 3</h2>
+              <p className="text-base text-white text-center montserrat">
+              Monitor Groundwater Usage
+              </p>
+              <img src={taskicon3} alt="icon" className="w-12 h-12 m-2" />
+              <p className="text-center inconsolata">Implement a real-time monitoring system for groundwater extraction in your industrial processes</p>
+            </div>
           </div>
+
         </div>
       )}
     </div>
