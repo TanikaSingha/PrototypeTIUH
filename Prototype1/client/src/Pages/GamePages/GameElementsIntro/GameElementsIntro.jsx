@@ -250,8 +250,7 @@ const GameElementsIntro = () => {
         <>
           <div className="flex flex-wrap items-center justify-center">
             <p className="inconsolata">
-              This is the Farm! Farms use a significant amount of groundwater.
-              Let's explore how we can conserve water here.
+              This is your Home! Every drop of water counts here. Let's discover ways to conserve water in our daily lives.
             </p>
             <div >
               <img src={aqua} alt="aqua" className="w-28 h-28" />
@@ -268,8 +267,7 @@ const GameElementsIntro = () => {
         <>
           <div className="flex flex-wrap items-center justify-center">
             <p className="inconsolata">
-              This is the Farm! Farms use a significant amount of groundwater.
-              Let's explore how we can conserve water here.
+              This is the Industry! Water is essential for production. Let's find innovative methods to save water in industrial processes.
             </p>
             <div >
               <img src={aqua} alt="aqua" className="w-28 h-28" />

@@ -99,7 +99,7 @@ const ChoiceGame = () => {
 
   return (
     <div className={`w-full h-[calc(100vh-64px)] flex flex-col p-4`}>
-      <h1 className="text-4xl font-semibold text-cyan-300 montserrat text-center mt-2">
+      <h1 className="text-4xl font-semibold text-cyan-300 inconsolata text-center mt-2">
         Choice Title: {currentTask.name}
       </h1>
       <div className="w-[1300px] mx-auto montserrat">
@@ -114,11 +114,11 @@ const ChoiceGame = () => {
             {isTaskRunning ? (
               <p>
                 Playing...{" "}
-                <FontAwesomeIcon icon={faHourglass}></FontAwesomeIcon>
+                <FontAwesomeIcon icon={faHourglass} className="ml-2"></FontAwesomeIcon>
               </p>
             ) : (
               <p>
-                Play Quiz <FontAwesomeIcon icon={faPlay}></FontAwesomeIcon>
+                Play Quiz <FontAwesomeIcon icon={faPlay} className="ml-2"></FontAwesomeIcon>
               </p>
             )}
           </button>
@@ -145,17 +145,17 @@ const ChoiceGame = () => {
             <h1 className="text-3xl font-semibold text-cyan-300 uppercase audiowide mb-5">
               Details:
             </h1>
-            <div className="space-y-3 rounded-md p-4 bg-gradient-to-bl from-emerald-500 to-green-100 ">
-              <h4 className="text-md text-gray-600">
-                <p className="font-semibold text-2xl text-gray-700 mb-2">
+            <div className="space-y-3 rounded-md p-4 bg-gradient-to-bl from-sky-500 to-sky-200 ">
+              <h4 className="text-md text-gray-900">
+                <p className="font-semibold text-2xl text-gray-800 mb-2">
                   Description:
                 </p>
                 {currentTask.description}
               </h4>
-              <p className="text-gray-700 font-semibold text-2xl">
+              <p className="text-gray-800 font-semibold text-2xl">
                 Information for the player:
               </p>
-              <ul className="list-disc ml-6 text-gray-700 text-md">
+              <ul className="list-disc ml-6 text-gray-900 text-md">
                 {currentTask.instructions?.map((item, index) => (
                   <li key={index} className="mb-2">
                     {item}
@@ -188,11 +188,11 @@ const ChoiceGame = () => {
             <h1 className="text-3xl font-semibold text-cyan-300 uppercase audiowide">
               Scenarios
             </h1>
-            <p className="text-lg font-medium text-emerald-200">
+            <p className="text-lg font-medium text-cyan-200">
               {currentTask?.scenarios?.[currentQuestion]?.scenario}
             </p>
             <div>
-              <h2 className="font-medium text-blue-200">
+              <h2 className="font-medium text-white">
                 Choose from the given options:
               </h2>
               <ul className="flex flex-col gap-3 mt-4">
@@ -206,17 +206,17 @@ const ChoiceGame = () => {
                       }}
                     >
                       <div
-                        className={`cursor-pointer p-3 rounded-lg hover:scale-105 hover:shadow-xl bg-gradient-to-tr transition-all relative ${
+                        className={`cursor-pointer p-3 rounded-lg hover:scale-105 hover:shadow-xl bg-gradient-to-t transition-all relative ${
                           choiceSelected === index
                             ? `border-yellow-50 shadow-md rounded-none border-4 hover:scale-100 ${
                                 result.outcome && index === result.option
                                   ? `${colorMap[result.outcome]}`
-                                  : ` from-cyan-100 to-blue-600  hover:from-blue-600 hover:to-cyan-100`
+                                  : ` from-sky-200 to-sky-50  hover:from-sky-50 hover:to-white`
                               }`
-                            : " from-cyan-100 to-blue-600  hover:from-blue-600 hover:to-cyan-100   "
+                            : " from-sky-200 to-sky-50  hover:from-sky-50 hover:to-white   "
                         }`}
                       >
-                        <span className="block font-semibold text-lg text-green-800">
+                        <span className="block font-semibold text-lg text-blue-950">
                           Choice {index + 1}:
                         </span>
                         <span className="block text-sm text-wrap text-gray-800">

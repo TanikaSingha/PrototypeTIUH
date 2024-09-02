@@ -130,7 +130,7 @@ const QuizGame = () => {
         />
       </div>
       <div className={`w-full h-[calc(100vh-64px)] flex flex-col p-4`}>
-        <h1 className="text-4xl font-semibold text-cyan-300 montserrat text-center mt-2">
+        <h1 className="text-4xl font-semibold text-cyan-300 inconsolata text-center mt-2">
           Quiz Name: {currentTask.name}
         </h1>
         <div className="w-[1300px] mx-auto montserrat">
@@ -149,11 +149,11 @@ const QuizGame = () => {
               {isTaskRunning ? (
                 <p>
                   Playing...{" "}
-                  <FontAwesomeIcon icon={faHourglass}></FontAwesomeIcon>
+                  <FontAwesomeIcon icon={faHourglass} className="ml-2"></FontAwesomeIcon>
                 </p>
               ) : (
                 <p>
-                  Play Quiz <FontAwesomeIcon icon={faPlay}></FontAwesomeIcon>
+                  Play Quiz <FontAwesomeIcon icon={faPlay} className="ml-2"></FontAwesomeIcon>
                 </p>
               )}
             </button>
@@ -163,17 +163,17 @@ const QuizGame = () => {
               <h1 className="text-3xl font-semibold text-cyan-300 uppercase audiowide mb-5">
                 Details:
               </h1>
-              <div className="space-y-3 rounded-md p-4 bg-gradient-to-bl from-emerald-500 to-green-100 ">
-                <h4 className="text-md text-gray-600">
-                  <p className="font-semibold text-2xl text-gray-700 mb-2">
+              <div className="space-y-3 rounded-md p-4 bg-gradient-to-bl from-sky-500 to-sky-200 ">
+                <h4 className="text-md text-gray-900">
+                  <p className="font-semibold text-2xl text-gray-800 mb-2">
                     Description:
                   </p>
                   {currentTask.description}
                 </h4>
-                <p className="text-gray-700 font-semibold text-2xl">
+                <p className="text-gray-800 font-semibold text-2xl">
                   Information for the player:
                 </p>
-                <ul className="list-disc ml-6 text-gray-700 text-md">
+                <ul className="list-disc ml-6 text-gray-900 text-md">
                   {currentTask.instructions?.map((item, index) => (
                     <li key={index} className="mb-2">
                       {item}
@@ -187,12 +187,12 @@ const QuizGame = () => {
               <h1 className="text-3xl font-semibold text-cyan-300 uppercase audiowide">
                 Questions
               </h1>
-              <p className="text-lg font-medium text-emerald-200">
+              <p className="text-lg font-medium text-cyan-400">
                 <span className="text-xl">Q. </span>
                 {currentTask.questions[currentQuestion]?.question}
               </p>
               <div>
-                <h2 className="font-medium text-blue-200">
+                <h2 className="font-medium text-white">
                   Choose from the given options:
                 </h2>
                 <ul className="grid grid-cols-2 gap-8 mt-4">
@@ -200,7 +200,7 @@ const QuizGame = () => {
                     (item, index) => (
                       <li
                         key={index}
-                        className="cursor-pointer p-3 rounded-md bg-gradient-to-tr from-cyan-100 to-blue-600  hover:from-blue-600 hover:to-cyan-100  transition-all relative hover:shadow-xl hover:scale-105"
+                        className="cursor-pointer p-3 rounded-md bg-gradient-to-t from-sky-200 to-sky-50  hover:from-sky-50 hover:to-white  transition-all relative hover:shadow-xl hover:scale-105"
                         onClick={() => {
                           if (startTimer) {
                             handleOption(item, index);
@@ -211,12 +211,12 @@ const QuizGame = () => {
                           className={`absolute inset-0 w-full h-full rounded-md ${
                             result.option === index
                               ? result.outcome === "correct"
-                                ? "bg-green-500/50"
+                                ? "bg-green-600/50"
                                 : "bg-red-600/50"
                               : ""
                           }`}
                         ></div>
-                        <span className="block font-semibold text-lg text-green-800">
+                        <span className="block font-semibold text-lg text-blue-950">
                           Option {index + 1}:
                         </span>
                         <span className="block text-md text-gray-800">

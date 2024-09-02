@@ -12,7 +12,7 @@ const GuideIntroduction = () => {
   const steps = [
     {
       target: ".aqua-animation",
-      content: "Hi,There i am Aqua your personal guide",
+      content: "Hi there, I am Aqua your personal guide",
       disableBeacon: true,
       placement: "left",
       spotlightPadding: 10,
