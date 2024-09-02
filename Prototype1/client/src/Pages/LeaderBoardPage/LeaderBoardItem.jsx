@@ -25,7 +25,7 @@ const LeaderboardItem = ({ item, rank }) => {
           <h2 className="text-xl font-semibold">{item?.username}</h2>
           <div className="text-gray-500">
             <FontAwesomeIcon icon={faMedal} className="mr-2" />
-            Level {item?.level}
+            Level {item?.playerLevel}
           </div>
         </div>
       </div>
