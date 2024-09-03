@@ -2,13 +2,12 @@ import React, { useState } from "react";
 import Joyride, { STATUS } from "react-joyride";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { nextStep } from "../../../lib/Slices/tutorialSlice";
+import { nextStep, setIntroTrue } from "../../../lib/Slices/tutorialSlice";
 import aqua from "../../../assets/aqua/aqua.png";
 import HomeElement from "../../../assets/Elements/HomeElement1.png";
 
 const HomeComponent = () => {
-  const [run, setRun] = useState(true);
-  const { isTutorialComplete } = useSelector((state) => state.tutorial);
+  const { homeElement, hudComponent } = useSelector((state) => state.tutorial);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const steps = [
@@ -52,7 +51,7 @@ const HomeComponent = () => {
   const handleJoyrideCallback = (data) => {
     const { status } = data;
     if (status === STATUS.FINISHED || status === STATUS.SKIPPED) {
-      setRun(false);
+      dispatch(setIntroTrue("homeElement"));
     }
   };
   return (
@@ -61,7 +60,7 @@ const HomeComponent = () => {
     >
       <Joyride
         steps={steps}
-        run={run}
+        run={hudComponent && !homeElement}
         continuous
         showSkipButton
         callback={handleJoyrideCallback}
@@ -128,9 +127,6 @@ const HomeComponent = () => {
         <div
           className="group farm-land absolute w-[50px] h-[85px] bg-transparent bottom-[250px] left-[300px] cursor-pointer z-30"
           onClick={() => {
-            if (!isTutorialComplete) {
-              dispatch(nextStep());
-            }
             navigate("/element/home/level/kitchen-level");
           }}
         >
@@ -141,11 +137,9 @@ const HomeComponent = () => {
         <div
           className="group irrigation-land absolute w-[50px] h-[85px] bg-transparent bottom-[150px] left-[430px] cursor-pointer z-30"
           onClick={() => {
-            if (!isTutorialComplete) {
-              dispatch(nextStep());
-            }
             navigate("/element/home/level/kitchen-level");
-          }}>
+          }}
+        >
           <div className="hidden inconsolata group-hover:block absolute top-[-80px] left-[50%] transform -translate-x-1/2 w-[200px] z-30 bg-gray-800 text-white text-center p-4 rounded-lg shadow-lg">
             Click to enter the cleaning area level!
           </div>
@@ -153,11 +147,9 @@ const HomeComponent = () => {
         <div
           className="group farm-land absolute w-[50px] h-[85px] bg-transparent bottom-[250px] left-[460px] cursor-pointer z-30"
           onClick={() => {
-            if (!isTutorialComplete) {
-              dispatch(nextStep());
-            }
             navigate("/element/home/level/kitchen-level");
-          }}>
+          }}
+        >
           <div className="hidden inconsolata group-hover:block absolute top-[-80px] left-[50%] transform -translate-x-1/2 w-[200px] z-30 bg-gray-800 text-white text-center p-4 rounded-lg shadow-lg">
             Click to enter the bathroom level!
           </div>

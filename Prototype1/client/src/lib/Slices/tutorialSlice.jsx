@@ -6,6 +6,11 @@ const initialState = {
   currentTask: "",
   isTutorialComplete: false,
   modalOpen: false,
+  gameElementsIntro: false,
+  farmElement: false,
+  homeElement: false,
+  industryElement: false,
+  hudComponent: false,
 };
 
 const tutorialSlice = createSlice({
@@ -38,6 +43,9 @@ const tutorialSlice = createSlice({
     setCurrentTask: (state, action) => {
       state.currentTask = action.payload;
     },
+    setIntroTrue: (state, action) => {
+      state[action.payload] = true;
+    },
   },
 });
 
@@ -50,5 +58,6 @@ export const {
   setModalOpen,
   setModalClose,
   setCurrentTask,
+  setIntroTrue,
 } = tutorialSlice.actions;
 export default tutorialSlice.reducer;

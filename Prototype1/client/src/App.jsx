@@ -20,9 +20,7 @@ import { getLeaderBoard } from "./lib/Slices/leaderBoardSlice";
 const App = () => {
   const { user, otpVerification } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getLeaderBoard());
-  }, [user]);
+
   return (
     <main>
       <Routes>
