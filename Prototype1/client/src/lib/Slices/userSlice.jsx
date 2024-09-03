@@ -16,7 +16,6 @@ export const loginUser = createAsyncThunk(
       const response = await apiRequest.post("/auth/login", credentials);
       const userData = response.data.data;
 
-     
       return userData;
     } catch (error) {
       return rejectWithValue(error.response?.data);
@@ -30,8 +29,6 @@ export const registerUser = createAsyncThunk(
     try {
       const response = await apiRequest.post("/auth/register", credentials);
       const userData = response.data.data;
-      socket.emit("newUser", { userId: userData._id, score: userData.score });
-
       return userData;
     } catch (error) {
       return rejectWithValue(error.response?.data);
