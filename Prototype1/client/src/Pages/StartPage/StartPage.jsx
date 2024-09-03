@@ -41,12 +41,12 @@ const StartPage = () => {
         </p>
       </div>
 
-      <div className="absolute top-5 right-5">
+      {/* <div className="absolute top-5 right-5">
         <button className="text-white text-md border-white border-2 p-2 rounded-2xl overflow-hidden transition-all duration-150 hover:bg-gradient-to-b hover:from-teal-600 hover:to-cyan-600 hover:text-white hover:border-transparent" onClick={profileButton}>
           View Profile
           <FontAwesomeIcon icon={faUser} className="text-xl ml-2" />
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -2,9 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowCircleDown, faWater, faPuzzlePiece, faLightbulb, faCoins, faStar, faClipboard } from '@fortawesome/free-solid-svg-icons'
-import logo from "../../assets/WebsiteLogo/logoLightBlue.jpg"
-import coin from "../../assets/Icons/coin1.png"
+import logo from "../../assets/WebsiteLogo/logo2.png"
 import badge from "../../assets/Icons/badge.png"
+import { useNavigate } from "react-router-dom";
 import "./HomePage.css"
 
 const videoLinks = [
@@ -17,6 +17,7 @@ const HomePage = () => {
   const videoRef = useRef(null);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [fade, setFade] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (videoRef.current) {
@@ -40,9 +41,19 @@ const HomePage = () => {
     <div className="min-h-screen bg-gray-900 text-gray-200">
       {/* Hero Section */}
       <section className="relative flex items-center justify-center min-h-screen bg-gray-800 text-white">
-        <div className="website-logo h-24 w-24 m-4 absolute inset-0 z-20">
+        <div className="website-logo h-64 w-40  absolute -top-4 -left-4 z-20">
           <img src={logo} alt="website-logo" className="rounded-full" />
         </div>
+        <div className="absolute top-4 right-4 z-20 gap-4 flex">
+          <button className="montserrat text-white text-md bg-gradient-to-r from-blue-800 to-blue-600 py-2 px-4 rounded-2xl overflow-hidden transition-all duration-150 hover:from-blue-800 hover:to-blue-950 hover:scale-105"
+            onClick={() => {
+              navigate("/login")
+            }}>Login</button>
+          <button className="montserrat text-white text-md border-white border-2 p-2 rounded-2xl overflow-hidden transition-all duration-150 hover:bg-gradient-to-b hover:from-teal-600 hover:to-cyan-600 hover:text-white hover:border-transparent hover:scale-105"
+            onClick={() => { navigate("/leaderboard") }}>
+            View Leaderboard
+            <FontAwesomeIcon icon={faClipboard} className="text-xl ml-2" />
+          </button></div>
         <div className="absolute inset-0 bg-black/70 z-10"></div>
         <video
           ref={videoRef}
@@ -138,7 +149,7 @@ const HomePage = () => {
 
           {/* Earn Scores Feature */}
           <div className="relative p-6 bg-gray-700 rounded-lg shadow-lg">
-          <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-blue-900 to-cyan-400 blur-md opacity-50"></div>
+            <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-blue-900 to-cyan-400 blur-md opacity-50"></div>
             <h3 className="relative text-xl  mb-4 heading z-20">
               Earn Scores
               <FontAwesomeIcon icon={faStar} className="pl-2"></FontAwesomeIcon>
@@ -152,7 +163,7 @@ const HomePage = () => {
 
           {/* Leaderboard Feature */}
           <div className="relative p-6 bg-gray-700 rounded-lg shadow-lg">
-          <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-blue-900 to-cyan-400 blur-md opacity-50"></div>
+            <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-blue-900 to-cyan-400 blur-md opacity-50"></div>
             <h3 className="relative text-xl  mb-4 heading z-20">
               Leaderboard
               <FontAwesomeIcon icon={faClipboard} className="pl-2"></FontAwesomeIcon>
@@ -175,7 +186,7 @@ const HomePage = () => {
       <section className="py-16 container mx-auto px-4 text-center bg-gradient-to-r from-black via-slate-900 to-slate-700">
         <h2 className="text-3xl font-semibold mb-6 heading flex justify-center items-center">
           Earn Awards and Certificates
-          <img src={badge} alt="badge" className="h-[3rem] w-[4rem] pl-2"/>
+          <img src={badge} alt="badge" className="h-[3rem] w-[4rem] pl-2" />
         </h2>
         <p className="text-gray-400 normal-text leading-relaxed max-w-2xl mx-auto mb-8">
           Showcase your achievements with awards and certificates. As you

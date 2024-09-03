@@ -5,6 +5,7 @@ import { Vortex } from "react-loader-spinner";
 
 const LeaderBoardPage = () => {
   const { status, data, error } = useSelector((state) => state.leaderboard);
+  const navigate = useNavigate();
 
   if (status === "loading") {
     return (
