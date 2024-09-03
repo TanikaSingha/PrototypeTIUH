@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { clearError, resendOtp, verifyOtp } from "../../lib/Slices/userSlice";
+import "./OtpPage.css"
 
 const OtpPage = () => {
   const [otp, setOtp] = useState(new Array(6).fill(""));
@@ -115,8 +116,8 @@ const OtpPage = () => {
   }, [dispatch]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-50">
-      <h1 className="text-3xl font-bold mb-6 text-gray-800">Verify Your OTP</h1>
+    <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gradient-to-b from-stone-950 via-stone-800 to-stone-600">
+      <h1 className="text-3xl font-bold mb-6 text-white montserrat">Verify Your OTP</h1>
       <div className="flex gap-2 mb-6" onPaste={handlePaste}>
         {otp.map((value, index) => (
           <input
@@ -126,28 +127,28 @@ const OtpPage = () => {
             ref={(el) => (inputRefs.current[index] = el)}
             onChange={(e) => handleChange(e, index)}
             onKeyDown={(e) => handleKeyDown(e, index)}
-            className="w-12 h-12 text-center text-2xl border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="inconsolata w-12 h-12 text-center text-2xl border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-600"
           />
         ))}
       </div>
       <div className="mb-6 text-center">
-        <h4 className="text-lg mb-4 text-gray-600">
+        <h4 className="inconsolata text-lg mb-4 text-gray-200">
           Didn't Receive OTP?
           <button
             onClick={() => handleClick(true)}
             disabled={isResending}
-            className="ml-2 text-blue-500 hover:text-blue-700 transition-colors"
+            className="ml-2 text-blue-600 hover:text-blue-900 transition-colors"
           >
             {isResending ? "Resending OTP..." : "Resend OTP"}
           </button>
         </h4>
-        <p className="text-gray-500">
+        <p className="inconsolata text-gray-200">
           {timer > 0 ? `OTP Expires in: ${formatTime(timer)}` : `OTP expired!`}
         </p>
       </div>
       <button
         onClick={() => handleClick(timer > 0 ? false : true)}
-        className="bg-blue-500 text-white py-2 px-6 rounded-md hover:bg-blue-600 transition-colors"
+        className="inconsolata font-bold text-lg bg-blue-600 text-white py-2 px-6 rounded-md hover:bg-blue-900 transition-colors"
       >
         {timer > 0 ? "Submit OTP" : "Resend OTP"}
       </button>
