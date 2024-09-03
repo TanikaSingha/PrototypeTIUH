@@ -93,13 +93,14 @@ const verifyOTP = async (req, res) => {
 
   const topUsers = await User.find({})
     .sort({ score: -1 })
-    .limit(10)
+    .limit(6)
     .select("_id score leaderBoardPosition");
 
   for (let i = 0; i < topUsers.length; i++) {
     topUsers[i].leaderBoardPosition = i + 1;
     await topUsers[i].save();
   }
+
   return res
     .status(StatusCodes.OK)
     .json({ data: user, message: "OTP verified successfully!" });

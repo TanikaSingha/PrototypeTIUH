@@ -6,7 +6,7 @@ const { BadRequest, NotFound } = require("../errors");
 const getLeaderBoard = async (req, res) => {
   const users = await User.find({})
     .sort({ score: -1 })
-    .limit(10)
+    .limit(6)
     .select("username score leaderBoardPosition avatar playerLevel");
   return res.status(200).json({ data: users, msg: "LeaderBoard received!" });
 };
@@ -56,7 +56,7 @@ const updateResult = async (req, res) => {
   await user.save();
   const topUsers = await User.find({})
     .sort({ score: -1 })
-    .limit(10)
+    .limit(6)
     .select("_id score leaderBoardPosition");
 
   for (let i = 0; i < topUsers.length; i++) {
