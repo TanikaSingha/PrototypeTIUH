@@ -3,14 +3,13 @@ import Joyride, { STATUS } from "react-joyride";
 import FarmElement from "../../../assets/Elements/FarmElement.png";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { nextStep } from "../../../lib/Slices/tutorialSlice";
+import { nextStep, setIntroTrue } from "../../../lib/Slices/tutorialSlice";
 import aqua from "../../../assets/aqua/aqua.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapMarkerAlt,faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 const FarmComponent = () => {
-  const [run, setRun] = useState(true);
-  const { isTutorialComplete } = useSelector((state) => state.tutorial);
+  const { farmElement, hudComponent } = useSelector((state) => state.tutorial);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const steps = [
@@ -54,7 +53,7 @@ const FarmComponent = () => {
   const handleJoyrideCallback = (data) => {
     const { status } = data;
     if (status === STATUS.FINISHED || status === STATUS.SKIPPED) {
-      setRun(false);
+      dispatch(setIntroTrue("farmElement"));
     }
   };
 
@@ -64,16 +63,16 @@ const FarmComponent = () => {
     >
       <Joyride
         steps={steps}
-        run={run}
+        run={!farmElement && hudComponent}
         continuous
         showSkipButton
         callback={handleJoyrideCallback}
         spotlightPadding={2}
         locale={{
-          back: "Previous", // Custom text for the Back button
-          last: "Finish", // Custom text for the Last button (usually the Finish button)
-          next: "Next", // Custom text for the Next button
-          skip: "Skip", // Custom text for the Skip button
+          back: "Previous",
+          last: "Finish",
+          next: "Next",
+          skip: "Skip",
         }}
         styles={{
           options: {
@@ -144,9 +143,6 @@ const FarmComponent = () => {
         <div
           className="group farm-land absolute w-[120px] h-[75px] bg-transparent bottom-[270px] left-[150px] cursor-pointer z-30"
           onClick={() => {
-            if (!isTutorialComplete) {
-              dispatch(nextStep());
-            }
             navigate("/element/farm/level/crop-level");
           }}
         >

@@ -2,15 +2,14 @@ import React, { useState } from "react";
 import Joyride, { STATUS } from "react-joyride";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { nextStep } from "../../../lib/Slices/tutorialSlice";
+import { nextStep, setIntroTrue } from "../../../lib/Slices/tutorialSlice";
 import aqua from "../../../assets/aqua/aqua.png";
 import HomeElement from "../../../assets/Elements/HomeElement1.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapMarkerAlt,faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 const HomeComponent = () => {
-  const [run, setRun] = useState(true);
-  const { isTutorialComplete } = useSelector((state) => state.tutorial);
+  const { homeElement, hudComponent } = useSelector((state) => state.tutorial);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const steps = [
@@ -54,7 +53,7 @@ const HomeComponent = () => {
   const handleJoyrideCallback = (data) => {
     const { status } = data;
     if (status === STATUS.FINISHED || status === STATUS.SKIPPED) {
-      setRun(false);
+      dispatch(setIntroTrue("homeElement"));
     }
   };
   return (
@@ -63,7 +62,7 @@ const HomeComponent = () => {
     >
       <Joyride
         steps={steps}
-        run={run}
+        run={hudComponent && !homeElement}
         continuous
         showSkipButton
         callback={handleJoyrideCallback}
@@ -143,9 +142,6 @@ const HomeComponent = () => {
         <div
           className="group farm-land absolute w-[50px] h-[85px] bg-transparent bottom-[250px] left-[300px] cursor-pointer z-40"
           onClick={() => {
-            if (!isTutorialComplete) {
-              dispatch(nextStep());
-            }
             navigate("/element/home/level/kitchen-level");
           }}
         >

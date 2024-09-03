@@ -1,15 +1,20 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import LeaderboardItem from "./LeaderboardItem";
 import { Vortex } from "react-loader-spinner";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { getLeaderBoard } from "../../lib/Slices/leaderBoardSlice";
 
 const LeaderBoardPage = () => {
   const { status, data, error } = useSelector((state) => state.leaderboard);
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getLeaderBoard());
+  }, []);
   if (status === "loading") {
     return (
       <div className="w-full min-h-screen flex items-center justify-center bg-gray-900">

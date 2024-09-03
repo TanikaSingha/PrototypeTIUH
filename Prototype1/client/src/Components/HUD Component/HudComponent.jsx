@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Joyride, { STATUS } from "react-joyride";
-import { setModalOpen } from "../../lib/Slices/tutorialSlice";
+import { setIntroTrue } from "../../lib/Slices/tutorialSlice";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./HudComponent.css"
 
 const getScoreFromLevel = (level) => {
@@ -15,66 +15,73 @@ const getScoreFromLevel = (level) => {
 };
 
 const Hud = () => {
-  const { isTutorialComplete } = useSelector((state) => state.tutorial);
+  const { hudComponent } = useSelector((state) => state.tutorial);
   const { user } = useSelector((state) => state.user);
   const { currentTask, isTaskRunning } = useSelector((state) => state.game);
-  const [run, setRun] = useState(!isTutorialComplete);
+  const [run, setRun] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleJoyrideCallback = (data) => {
     const { status } = data;
 
     if (status === STATUS.FINISHED || status === STATUS.SKIPPED) {
-      dispatch(setModalOpen());
-      setRun(false);
+      dispatch(setIntroTrue("hudComponent"));
     }
   };
 
   const steps = [
     {
       target: ".hud",
-      content: "This is HUD!",
+      content: "This is the Hud Component!",
       disableBeacon: true,
       placement: "bottom",
     },
     {
-      target: ".score",
-      content: "Here Score is being shown!",
-      placement: "top",
+      target: ".hud-title",
+      content: "This is the game title!",
+      placement: "bottom",
     },
     {
-      target: ".coins",
-      content: "Here Coins you collected are being shown",
-      placement: "top",
-    },
-    {
-      target: ".tasks",
+      target: ".hud-tasks",
       content:
-        "Here the current task you are performing or need to perform is shown!",
-      placement: "top",
+        "Here is the current task you are performing or need to perform!",
+      placement: "bottom",
     },
     {
-      target: ".water-level",
-      content: "Here the water level stored is being shown!",
-      placement: "top",
+      target: ".hud-score",
+      content: "Your score is displayed here.",
+      placement: "bottom",
+    },
+    {
+      target: ".hud-coins",
+      content: "Here, the coins you collected are shown.",
+      placement: "bottom",
+    },
+    {
+      target: ".hud-profile",
+      content: "This is your profile. Click to view your profile details.",
+      placement: "bottom",
+    },
+    {
+      target: ".hud-water-level",
+      content: "Here, the water level stored is displayed!",
+      placement: "bottom",
     },
   ];
-
   const percentage = (user.score / getScoreFromLevel(user.playerLevel)) * 100;
 
-
   return (
-    <div className="absolute top-0 left-0 p-4 bg-gradient-to-b from-blue-950 to-blue-900 shadow-lg w-full flex justify-between items-center hud h-16 text-white">
-      {/* <Joyride
+    <>
+      <Joyride
         steps={steps}
         continuous
-        run={run}
+        run={!hudComponent}
         showSkipButton
         showProgress
         disableOverlayClose
         callback={handleJoyrideCallback}
-      /> */}
-      <h2 className="text-xl font-bold audiowide tracking-wide"><Link to="/">AquaSavvy</Link></h2>
+      /> 
+      <h2 className="text-xl font-bold audiowide tracking-wide">AquaSavvy</h2>
       <div className="flex items-center space-x-6">
         <div className="montserrat text-base tasks">
           <strong>Tasks:</strong> {`"${currentTask?.name || `No Tasks`}"`}
@@ -130,14 +137,13 @@ const Hud = () => {
                   ? `bg-yellow-300`
                   : `bg-red-500`
                 } rounded`}
-              style={{ width: `${user.groundWaterLevel}%` }}
-            ></div>
+                style={{ width: `${user.groundWaterLevel}%` }}
+              ></div>
+            </div>
           </div>
         </div>
-
       </div>
-    </div>
-
+    </>
   );
 };
 
