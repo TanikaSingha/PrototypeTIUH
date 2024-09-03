@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { nextStep } from "../../../lib/Slices/tutorialSlice";
 import aqua from "../../../assets/aqua/aqua.png";
 import IndustryElement from "../../../assets/Elements/IndustryElement1.png";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMapMarkerAlt, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 const IndustryComponent = () => {
   const [run, setRun] = useState(true);
@@ -119,10 +121,23 @@ const IndustryComponent = () => {
           tooltip: {
             borderRadius: 12,
             boxShadow: "0 6px 12px rgba(0, 0, 0, 0.2)",
+            fontSize: "18px",
+            fontFamily: "Inconsolata, sans-serif",
+            fontWeight: "600",
+            color: "black"
           },
         }}
       />
-      <h1 className="font-bold text-4xl text-white farm-heading liu-jian mt-4">
+      <button
+        onClick={() => {
+          navigate("/gameElements");
+        }
+        }
+        className="w-[50px] h-[50px] rounded-full bg-white cursor-pointer absolute top-5 left-5 z-50 hover:scale-110 transition-all duration-100 ease-in-out"
+      >
+        <FontAwesomeIcon icon={faArrowLeft} className=""></FontAwesomeIcon>
+      </button>
+      <h1 className="font-bold text-4xl text-white industry-heading liu-jian mt-4">
         Industry
       </h1>
       <div className="relative bg-white/10 p-4 mt-8 rounded-3xl">
@@ -132,9 +147,13 @@ const IndustryComponent = () => {
             if (!isTutorialComplete) {
               dispatch(nextStep());
             }
-            navigate("/element/industry/level/water-coolant-level");
+            navigate("/element/industry/level/toxic-water-treatment-level");
           }}
         >
+          <FontAwesomeIcon
+            icon={faMapMarkerAlt}
+            className="text-rose-600 text-4xl absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-bounce group-hover:opacity-0 transition-opacity duration-300"
+          />
           <div className="hidden inconsolata group-hover:block absolute top-[-80px] left-[50%] transform -translate-x-1/2 w-[200px] z-30 bg-gray-800 text-white text-center p-4 rounded-lg shadow-lg">
             Click to enter the Toxic Material Treatment level!
           </div>
@@ -147,6 +166,10 @@ const IndustryComponent = () => {
             }
             navigate("/element/industry/level/water-coolant-level");
           }}>
+          <FontAwesomeIcon
+            icon={faMapMarkerAlt}
+            className="text-rose-600 text-4xl absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-bounce group-hover:opacity-0 transition-opacity duration-300 z-20"
+          />
           <div className="hidden inconsolata group-hover:block absolute top-[-80px] left-[50%] transform -translate-x-1/2 w-[200px] z-30 bg-gray-800 text-white text-center p-4 rounded-lg shadow-lg">
             Click to enter the Coolant System level!
           </div>
@@ -154,7 +177,7 @@ const IndustryComponent = () => {
         <img
           src={IndustryElement}
           alt=""
-          className="w-[700px] h-[500px] home-image"
+          className="w-[700px] h-[500px] industry-image"
         />
       </div>
     </div>

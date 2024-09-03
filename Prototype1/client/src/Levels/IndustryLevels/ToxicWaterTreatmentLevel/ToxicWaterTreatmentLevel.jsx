@@ -1,20 +1,20 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import WaterCoolantLevelImage from "../../../assets/Levels/IndustryLevel/WaterCoolant-Level.png";
+import ToxicLevel from "../../../assets/Levels/IndustryLevel/toxicwater.png";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowLeft, faRecycle, faCog, faTachometerAlt, faWind, faWrench } from "@fortawesome/free-solid-svg-icons";
-import taskicon1 from "../../../assets/Icons/recycleWater.png";
-import taskicon2 from "../../../assets/Icons/thermometer.png";
-import taskicon3 from "../../../assets/Icons/waterGauge.png"
+import { faArrowLeft, faRecycle, faFlask, faTint, faIndustry, faBiohazard } from "@fortawesome/free-solid-svg-icons";
+import taskicon1 from "../../../assets/Icons/waterpipe.png";
+import taskicon2 from "../../../assets/Icons/testtube.png";
+import taskicon3 from "../../../assets/Icons/search.png"
 import Joyride, { STATUS } from "react-joyride";
 import { setModalClose, setModalOpen } from "../../../lib/Slices/tutorialSlice";
 
 const modalData = [
   {
-    title: "Implement Efficient Water Recycling",
+    title: "Wastewater Recycling Setup",
     description:
-      "Introduce advanced water recycling techniques to reuse coolant water, minimizing the waste of fresh water resources in the cooling processes.",
+      "Implement a wastewater recycling system in the industry to treat and reuse toxic water. This reduces the discharge of harmful pollutants into groundwater and conserves water resources.",
     images: [
       <FontAwesomeIcon
         icon={faRecycle}
@@ -23,46 +23,46 @@ const modalData = [
     ],
   },
   {
-    title: "Optimize Cooling System Efficiency",
+    title: "Toxic Chemical Neutralization",
     description:
-      "Upgrade and maintain cooling systems to enhance their efficiency, reducing the amount of water needed for cooling and conserving groundwater resources.",
+      "Develop and integrate a chemical neutralization process to detoxify harmful chemicals before they reach groundwater. This prevents contamination and protects water quality.",
     images: [
       <FontAwesomeIcon
-        icon={faCog}
-        className="text-gray-500 w-12 h-12"
+        icon={faFlask}
+        className="text-red-500 w-12 h-12"
       />,
     ],
   },
   {
-    title: "Monitor Groundwater Usage",
+    title: "Groundwater Monitoring System",
     description:
-      "Implement a monitoring system to track groundwater usage, ensuring sustainable withdrawal rates and preventing over-extraction that can deplete local water tables.",
+      "Install a comprehensive groundwater monitoring system that tracks water quality and quantity near the industry. Regular monitoring helps detect and address potential contamination issues early.",
     images: [
       <FontAwesomeIcon
-        icon={faTachometerAlt}
+        icon={faTint}
         className="text-green-500 w-12 h-12"
       />,
     ],
   },
   {
-    title: "Use Alternative Cooling Methods",
+    title: "Effluent Treatment Plants",
     description:
-      "Explore alternative cooling methods such as dry cooling or air cooling to reduce dependency on water for industrial cooling needs.",
+      "Set up effluent treatment plants to treat industrial wastewater before it is released into the environment. Proper treatment prevents harmful substances from contaminating groundwater.",
     images: [
       <FontAwesomeIcon
-        icon={faWind}
-        className="text-blue-500 w-12 h-12"
+        icon={faIndustry}
+        className="text-gray-500 w-12 h-12"
       />,
     ],
   },
   {
-    title: "Regular Maintenance to Prevent Leaks",
+    title: "Hazardous Waste Management",
     description:
-      "Conduct regular maintenance of cooling systems to prevent leaks and water wastage, ensuring efficient use of water resources.",
+      "Implement a hazardous waste management program to safely handle and dispose of toxic materials, preventing them from leaching into groundwater.",
     images: [
       <FontAwesomeIcon
-        icon={faWrench}
-        className="text-red-500 w-12 h-12"
+        icon={faBiohazard}
+        className="text-yellow-500 w-12 h-12"
       />,
     ],
   },
@@ -122,8 +122,7 @@ const ModalComponent = () => {
       </div>
   );
 };
-
-const WaterCoolantLevel = () => {
+const ToxicWaterTreatmentLevel = () => {
   const { modalOpen } = useSelector((state) => state.tutorial);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -158,7 +157,7 @@ const WaterCoolantLevel = () => {
   };
   return (
     <div
-      style={{ backgroundImage: `url(${WaterCoolantLevelImage})` }}
+      style={{ backgroundImage: `url(${ToxicLevel})` }}
       className={`w-full h-[calc(100vh-64px)]  bg-cover bg-no-repeat flex items-center justify-center`}
     >
       <div className="absolute inset-0 bg-black/50 z-10"></div>
@@ -192,7 +191,7 @@ const WaterCoolantLevel = () => {
       {modalOpen && <ModalComponent />}
       {!modalOpen && (
         <div className="z-50">
-          <h1 className="text-white text-4xl font-bold text-center mb-6 audiowide">Water Coolant Level</h1>
+          <h1 className="text-white text-4xl font-bold text-center mb-6 audiowide">Toxic Water Treatment Level</h1>
           <div className="flex justify-center space-x-6">
             {/* Task 1 */}
             <div
@@ -203,10 +202,10 @@ const WaterCoolantLevel = () => {
             >
               <h2 className="text-xl font-bold mb-2 montserrat text-white">Task 1</h2>
               <p className="text-base text-white text-center montserrat">
-                Implement Efficient Water Recycling
+                Wastewater Recycling Setup
               </p>
               <img src={taskicon1} alt="icon" className="w-12 h-12 m-2" />
-              <p className="text-center inconsolata">Install and maintain a water recycling system in your industrial facility to reuse wastewater</p>
+              <p className="text-center inconsolata">Implement a wastewater recycling system in the industry to treat and reuse toxic water</p>
             </div>
 
             {/* Task 2 */}
@@ -218,11 +217,11 @@ const WaterCoolantLevel = () => {
             >
               <h2 className="text-xl font-bold mb-2 montserrat text-white">Task 2</h2>
               <p className="text-base text-white text-center montserrat">
-                Optimize Cooling System Efficiency
+                Toxic Chemical Neutralization
 
               </p>
               <img src={taskicon2} alt="icon" className="w-12 h-12 m-2" />
-              <p className="text-center inconsolata">Upgrade the cooling system in your facility to a more water-efficient model</p>
+              <p className="text-center inconsolata">Develop and integrate a chemical neutralization process in the industrial setup to detoxify harmful chemicals before they reach the groundwater</p>
             </div>
 
             {/* Task 3 */}
@@ -234,10 +233,10 @@ const WaterCoolantLevel = () => {
             >
               <h2 className="text-xl font-bold mb-2 montserrat text-white">Task 3</h2>
               <p className="text-base text-white text-center montserrat">
-                Monitor Groundwater Usage
+                Groundwater Monitoring System
               </p>
               <img src={taskicon3} alt="icon" className="w-12 h-12 m-2" />
-              <p className="text-center inconsolata">Implement a real-time monitoring system for groundwater extraction in your industrial processes</p>
+              <p className="text-center inconsolata">nstall a comprehensive groundwater monitoring system that tracks the quality and quantity of groundwater near the industry</p>
             </div>
           </div>
 
@@ -247,4 +246,4 @@ const WaterCoolantLevel = () => {
   );
 };
 
-export default WaterCoolantLevel;
+export default ToxicWaterTreatmentLevel;

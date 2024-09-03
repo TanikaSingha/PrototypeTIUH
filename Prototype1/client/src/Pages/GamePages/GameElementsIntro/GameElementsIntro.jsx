@@ -172,6 +172,10 @@ const GameElementsIntro = () => {
             borderRadius: 12,
             boxShadow: "0 6px 12px rgba(0, 0, 0, 0.2)",
             padding: "15px",
+            fontSize: "18px",
+            fontFamily: "Inconsolata, sans-serif",
+            fontWeight: "600",
+            color:"black"
           },
           tooltipContent: {
             display: "flex",

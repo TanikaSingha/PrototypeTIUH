@@ -3,7 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import video from "../../assets/Video/StartPage.mp4"
 import "./StartPage.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { faUser,faArrowLeft } from "@fortawesome/free-solid-svg-icons"
+
 
 const StartPage = () => {
   const navigate = useNavigate();
@@ -18,8 +19,16 @@ const StartPage = () => {
         src={video}
         autoPlay
         loop
-      // muted
+      muted
       ></video>
+      <button
+        onClick={() => {
+          navigate("/");
+        }}
+        className="w-[50px] h-[50px] rounded-full bg-white cursor-pointer absolute top-5 left-5 z-50 hover:scale-110 transition-all duration-100 ease-in-out"
+      >
+        <FontAwesomeIcon icon={faArrowLeft} className=""></FontAwesomeIcon>
+      </button>
       <div className="absolute inset-0 bg-black/70"></div>
 
       <div className="relative z-10 text-center text-white">
@@ -41,12 +50,12 @@ const StartPage = () => {
         </p>
       </div>
 
-      {/* <div className="absolute top-5 right-5">
-        <button className="text-white text-md border-white border-2 p-2 rounded-2xl overflow-hidden transition-all duration-150 hover:bg-gradient-to-b hover:from-teal-600 hover:to-cyan-600 hover:text-white hover:border-transparent" onClick={profileButton}>
+      <div className="absolute top-5 right-5">
+        <button className="text-white montserrat text-md border-white border-2 p-2 rounded-2xl overflow-hidden transition-all duration-150 hover:bg-black/80  hover:text-white hover:scale-105" onClick={profileButton}>
           View Profile
           <FontAwesomeIcon icon={faUser} className="text-xl ml-2" />
         </button>
-      </div> */}
+      </div>
     </div>
   );
 };

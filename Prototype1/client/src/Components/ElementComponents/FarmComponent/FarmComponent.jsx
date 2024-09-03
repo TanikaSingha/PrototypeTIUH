@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { nextStep } from "../../../lib/Slices/tutorialSlice";
 import aqua from "../../../assets/aqua/aqua.png";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMapMarkerAlt,faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 const FarmComponent = () => {
   const [run, setRun] = useState(true);
@@ -119,9 +121,22 @@ const FarmComponent = () => {
           tooltip: {
             borderRadius: 12,
             boxShadow: "0 6px 12px rgba(0, 0, 0, 0.2)",
+            fontSize: "18px",
+            fontFamily: "Inconsolata, sans-serif",
+            fontWeight: "600",
+            color: "black"
           },
         }}
       />
+      <button
+        onClick={() => {
+          navigate("/gameElements");
+        }
+        }
+        className="w-[50px] h-[50px] rounded-full bg-white cursor-pointer absolute top-5 left-5 z-50 hover:scale-110 transition-all duration-100 ease-in-out"
+      >
+        <FontAwesomeIcon icon={faArrowLeft} className=""></FontAwesomeIcon>
+      </button>
       <h1 className="font-bold text-4xl text-white farm-heading liu-jian mt-4">
         Farm
       </h1>
@@ -135,6 +150,10 @@ const FarmComponent = () => {
             navigate("/element/farm/level/crop-level");
           }}
         >
+          <FontAwesomeIcon
+            icon={faMapMarkerAlt}
+            className="text-rose-600 text-4xl absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-bounce group-hover:opacity-0 transition-opacity duration-300"
+          />
           <div className="hidden inconsolata group-hover:block absolute top-[-80px] left-[50%] transform -translate-x-1/2 w-[200px] z-30 bg-gray-800 text-white text-center p-4 rounded-lg shadow-lg">
             Click to enter the crop level!
           </div>
@@ -145,9 +164,13 @@ const FarmComponent = () => {
             if (!isTutorialComplete) {
               dispatch(nextStep());
             }
-            navigate("/element/farm/level/crop-level");
+            navigate("/element/farm/level/irrigation-level");
           }}
         >
+          <FontAwesomeIcon
+            icon={faMapMarkerAlt}
+            className="text-rose-600 text-4xl absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-bounce group-hover:opacity-0 transition-opacity duration-300"
+          />
           <div className="hidden inconsolata group-hover:block absolute top-[-80px] left-[50%] transform -translate-x-1/2 w-[200px] z-30 bg-gray-800 text-white text-center p-4 rounded-lg shadow-lg">
             Click to enter the irrigation level!
           </div>
@@ -158,9 +181,13 @@ const FarmComponent = () => {
             if (!isTutorialComplete) {
               dispatch(nextStep());
             }
-            navigate("/element/farm/level/crop-level");
+            navigate("/element/farm/level/pesticide-level");
           }}
         >
+          <FontAwesomeIcon
+            icon={faMapMarkerAlt}
+            className="text-rose-600 text-4xl absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-bounce group-hover:opacity-0 transition-opacity duration-300"
+          />
           <div className="hidden inconsolata group-hover:block absolute top-[-80px] left-[50%] transform -translate-x-1/2 w-[200px] z-30 bg-gray-800 text-white text-center p-4 rounded-lg shadow-lg">
             Click to enter the pesticide level!
           </div>

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Joyride, { STATUS } from "react-joyride";
 import { setModalOpen } from "../../lib/Slices/tutorialSlice";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./HudComponent.css"
 
 const getScoreFromLevel = (level) => {
@@ -74,7 +74,7 @@ const Hud = () => {
         disableOverlayClose
         callback={handleJoyrideCallback}
       /> */}
-      <h2 className="text-xl font-bold audiowide tracking-wide">AquaSavvy</h2>
+      <h2 className="text-xl font-bold audiowide tracking-wide"><Link to="/">AquaSavvy</Link></h2>
       <div className="flex items-center space-x-6">
         <div className="montserrat text-base tasks">
           <strong>Tasks:</strong> {`"${currentTask?.name || `No Tasks`}"`}
