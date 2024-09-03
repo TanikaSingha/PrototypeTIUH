@@ -11,9 +11,9 @@ const LeaderboardItem = ({ item, rank }) => {
   };
 
   return (
-    <div className="flex items-center justify-between p-4 bg-gray-100 rounded-lg shadow-sm">
+    <div className="flex items-center justify-between p-4 bg-white rounded-lg shadow-sm">
       <div className="flex items-center">
-        <span className={`text-2xl font-bold mr-4 ${getRankColor(rank)}`}>
+        <span className={`text-2xl audiowide font-bold mr-4 ${getRankColor(rank)}`}>
           #{rank}
         </span>
         <img
@@ -22,14 +22,14 @@ const LeaderboardItem = ({ item, rank }) => {
           className="w-12 h-12 rounded-full mr-4"
         />
         <div>
-          <h2 className="text-xl font-semibold">{item?.username}</h2>
-          <div className="text-gray-500">
-            <FontAwesomeIcon icon={faMedal} className="mr-2" />
+          <h2 className="text-xl montserrat font-semibold">{item?.username}</h2>
+          <div className="text-gray-500 inconsolata">
+            <FontAwesomeIcon icon={faMedal} className=" mr-2" />
             Level {item?.playerLevel}
           </div>
         </div>
       </div>
-      <div className="text-xl font-bold text-blue-600">{item?.score} pts</div>
+      <div className="text-xl font-bold inconsolata text-blue-600">{item?.score} pts</div>
     </div>
   );
 };

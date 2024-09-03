@@ -13,8 +13,8 @@ const LeaderBoardPage = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto my-10 p-6 bg-white rounded-lg shadow-lg">
-      <h1 className="text-3xl font-bold text-center mb-6">Leaderboard</h1>
+    <div className="max-w-4xl mx-auto my-10 p-6 bg-gradient-to-b from-sky-500 to-blue-700 rounded-lg shadow-lg">
+      <h1 className="text-3xl font-bold audiowide text-center mb-6">Leaderboard</h1>
       <div className="space-y-4">
         {data?.map((item, index) => (
           <LeaderboardItem key={index} item={item} rank={index + 1} />
