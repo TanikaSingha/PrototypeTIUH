@@ -82,9 +82,10 @@ const GuideIntroduction = () => {
             borderRadius: "20px", // Increase this value to make the corners more rounded
             padding: "15px", // Adjust padding as needed
             boxShadow: "0 6px 12px rgba(0, 0, 0, 0.2)", // Optional: Adjust the box shadow
-            fontSize: "16px",
+            fontSize: "18px",
             fontFamily: "Inconsolata, sans-serif",
-            fontWeight: "400",
+            fontWeight: "600",
+            color:"black"
           },
           spotlight: {
             borderRadius: "20px", // Increase this value to make the spotlight's border radius bigger

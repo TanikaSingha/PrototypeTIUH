@@ -6,6 +6,7 @@ import logo from "../../assets/WebsiteLogo/logo2.png"
 import badge from "../../assets/Icons/badge.png"
 import { useNavigate } from "react-router-dom";
 import "./HomePage.css"
+import certificate from "../../assets/Certificate.png"
 
 const videoLinks = [
   "https://res.cloudinary.com/dzjbxojvu/video/upload/v1724658888/bgfvjzpklnz6cq1lv4pg.mp4",
@@ -194,9 +195,9 @@ const HomePage = () => {
           skills, motivating you to continue making a difference.
         </p>
         <img
-          src="https://via.placeholder.com/400x200"
+          src={certificate}
           alt="Awards"
-          className="mx-auto rounded shadow"
+          className="mx-auto rounded shadow w-[400px] h-[200px]"
         />
       </section>
 

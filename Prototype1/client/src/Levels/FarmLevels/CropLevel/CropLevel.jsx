@@ -179,7 +179,7 @@ const CropLevel = () => {
       <div className="absolute inset-0 bg-black/50 z-10"></div>
       <button
         onClick={() => {
-          navigate("/gameElements");
+          navigate("/element/farm");
         }}
         className="w-[50px] h-[50px] rounded-full bg-white cursor-pointer absolute top-5 left-5 z-50 hover:scale-110 transition-all duration-100 ease-in-out"
       >

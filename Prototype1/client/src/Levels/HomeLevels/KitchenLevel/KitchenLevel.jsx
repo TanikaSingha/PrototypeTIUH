@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Joyride from "react-joyride";
-import { setModalClose, setModalOpen } from "../../../lib/Slices/tutorialSlice";
 import { useNavigate } from "react-router-dom";
 import KitchenLevelImage from "../../../assets/Levels/HomeLevel/Kitchen-Level.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faArrowLeft,
+  faArrowLeft,faUtensils,faTint,faCloudRain,faSearch,faFaucet,
   faFaucet,
   faRecycle,
   faSnowflake,
@@ -14,54 +12,60 @@ import {
   faWrench,
 } from "@fortawesome/free-solid-svg-icons";
 import taskicon1 from "../../../assets/Icons/dishwasher.png";
-import taskicon2 from "../../../assets/Icons/rainwaterTank.png";
-import taskicon3 from "../../../assets/Icons/faucet.png";
+import taskicon2 from "../../../assets/Icons/rainwaterTank.png"
+import taskicon3 from "../../../assets/Icons/faucet.png"
+import Joyride, { STATUS } from "react-joyride";
+import { setModalClose, setModalOpen } from "../../../lib/Slices/tutorialSlice";
 
 const modalData = [
   {
-    title: "Use Water-Efficient Appliances",
+    title: "Install Water-Efficient Appliances",
     description:
-      "Upgrade to water-efficient appliances like dishwashers and washing machines to significantly reduce water usage in your kitchen.",
+      "Upgrade your kitchen with water-efficient appliances, such as dishwashers and faucets, to minimize water usage without sacrificing performance.",
     images: [
       <FontAwesomeIcon icon={faTint} className="text-blue-500 w-12 h-12" />,
     ],
   },
   {
-    title: "Install Aerators on Faucets",
+    title: "Use Rainwater for Household Needs",
     description:
-      "Adding aerators to your kitchen faucets can reduce water flow without sacrificing pressure, saving water with every use.",
-    images: [
-      <FontAwesomeIcon icon={faFaucet} className="text-blue-500 w-12 h-12" />,
-    ],
-  },
-  {
-    title: "Collect and Reuse Water",
-    description:
-      "Collect excess water from cooking or washing produce and reuse it for other purposes, like watering plants.",
-    images: [
-      <FontAwesomeIcon icon={faRecycle} className="text-green-500 w-12 h-12" />,
-    ],
-  },
-  {
-    title: "Repair Leaks Promptly",
-    description:
-      "A leaky faucet can waste gallons of water a day. Ensure all kitchen leaks are repaired quickly to avoid water wastage.",
-    images: [
-      <FontAwesomeIcon icon={faWrench} className="text-red-500 w-12 h-12" />,
-    ],
-  },
-  {
-    title: "Opt for Cold Water Washing",
-    description:
-      "Whenever possible, use cold water for washing dishes to conserve energy and reduce water heating needs.",
+      "Implement a rainwater harvesting system to collect and use rainwater for non-potable household tasks, such as dishwashing and cleaning, reducing the demand on groundwater.",
     images: [
       <FontAwesomeIcon
-        icon={faSnowflake}
-        className="text-blue-300 w-12 h-12"
+        icon={faCloudRain}
+        className="text-blue-500 w-12 h-12"
+      />,
+    ],
+  },
+  {
+    title: "Regularly Inspect for Leaks",
+    description:
+      "Conduct routine inspections in your kitchen to detect and repair any leaks in pipes and faucets, preventing water wastage and reducing the strain on groundwater sources.",
+    images: [
+      <FontAwesomeIcon icon={faSearch} className="text-red-500 w-12 h-12" />,
+    ],
+  },
+  {
+    title: "Adopt Low-Flow Faucets",
+    description:
+      "Install low-flow faucets in your kitchen to reduce the flow of water while maintaining effective cleaning, thus conserving water with every use.",
+    images: [
+      <FontAwesomeIcon icon={faFaucet} className="text-green-500 w-12 h-12" />,
+    ],
+  },
+  {
+    title: "Use a Water-Efficient Dishwasher",
+    description:
+      "Switch to a water-efficient dishwasher that uses less water per cycle, ensuring clean dishes while conserving water.",
+    images: [
+      <FontAwesomeIcon
+        icon={faUtensils}
+        className="text-purple-500 w-12 h-12"
       />,
     ],
   },
 ];
+
 
 const ModalComponent = () => {
   const [page, setPage] = useState(0);
@@ -113,7 +117,6 @@ const ModalComponent = () => {
           )}
         </div>
       </div>
-    </div>
   );
 };
 
@@ -151,7 +154,6 @@ const KitchenLevel = () => {
       dispatch(setModalOpen());
     }
   };
-
   return (
     <div
       style={{ backgroundImage: `url(${KitchenLevelImage})` }}
@@ -160,13 +162,13 @@ const KitchenLevel = () => {
       <div className="absolute inset-0 bg-black/50 z-10"></div>
       <button
         onClick={() => {
-          navigate("/gameElements");
-        }}
+          navigate("/element/home");
+        }
+        }
         className="w-[50px] h-[50px] rounded-full bg-white cursor-pointer absolute top-5 left-5 z-50 hover:scale-110 transition-all duration-100 ease-in-out"
       >
         <FontAwesomeIcon icon={faArrowLeft} />
       </button>
-
       <Joyride
         steps={steps}
         callback={handleJoyrideCallback}
@@ -185,7 +187,6 @@ const KitchenLevel = () => {
           },
         }}
       />
-
       {!modalOpen && (
         <div className="z-50">
           <h1 className="text-white text-4xl font-bold text-center mb-6 audiowide">

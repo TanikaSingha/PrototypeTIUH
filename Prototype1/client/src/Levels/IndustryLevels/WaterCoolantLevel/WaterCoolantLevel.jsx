@@ -1,67 +1,74 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setModalClose, setModalOpen } from "../../../lib/Slices/tutorialSlice";
 import { useNavigate } from "react-router-dom";
 import WaterCoolantLevelImage from "../../../assets/Levels/IndustryLevel/WaterCoolant-Level.png";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Joyride from "react-joyride";
-import {
-  faArrowLeft,
-  faLeaf,
-  faRecycle,
-  faSeedling,
-  faThermometerHalf,
-  faWater,
-} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowLeft, faRecycle, faCog, faTachometerAlt, faWind, faWrench } from "@fortawesome/free-solid-svg-icons";
 import taskicon1 from "../../../assets/Icons/recycleWater.png";
 import taskicon2 from "../../../assets/Icons/thermometer.png";
-import taskicon3 from "../../../assets/Icons/waterGauge.png";
+import taskicon3 from "../../../assets/Icons/waterGauge.png"
+import Joyride, { STATUS } from "react-joyride";
+import { setModalClose, setModalOpen } from "../../../lib/Slices/tutorialSlice";
 
 const modalData = [
   {
-    title: "Efficient Water Recycling",
+    title: "Implement Efficient Water Recycling",
     description:
-      "Install and maintain a water recycling system in your industrial facility to reuse wastewater. This reduces the strain on groundwater resources.",
+      "Introduce advanced water recycling techniques to reuse coolant water, minimizing the waste of fresh water resources in the cooling processes.",
     images: [
-      <FontAwesomeIcon icon={faRecycle} className="text-blue-500 w-12 h-12" />,
+      <FontAwesomeIcon
+        icon={faRecycle}
+        className="text-blue-500 w-12 h-12"
+      />,
     ],
   },
   {
-    title: "Optimizing Cooling System",
+    title: "Optimize Cooling System Efficiency",
     description:
-      "Upgrade your facility's cooling system to a more water-efficient model. Efficient cooling systems reduce the need for excessive water usage.",
+      "Upgrade and maintain cooling systems to enhance their efficiency, reducing the amount of water needed for cooling and conserving groundwater resources.",
     images: [
       <FontAwesomeIcon
-        icon={faThermometerHalf}
-        className="text-blue-500 w-12 h-12"
+        icon={faCog}
+        className="text-gray-500 w-12 h-12"
       />,
     ],
   },
   {
     title: "Monitor Groundwater Usage",
     description:
-      "Implement a real-time monitoring system for groundwater extraction. Monitoring groundwater usage ensures sustainable practices and prevents over-extraction.",
+      "Implement a monitoring system to track groundwater usage, ensuring sustainable withdrawal rates and preventing over-extraction that can deplete local water tables.",
     images: [
-      <FontAwesomeIcon icon={faWater} className="text-blue-500 w-12 h-12" />,
+      <FontAwesomeIcon
+        icon={faTachometerAlt}
+        className="text-green-500 w-12 h-12"
+      />,
     ],
   },
   {
-    title: "Water Conservation Techniques",
+    title: "Use Alternative Cooling Methods",
     description:
-      "Learn about various water conservation techniques that can be applied in industrial processes to minimize water wastage and protect groundwater.",
+      "Explore alternative cooling methods such as dry cooling or air cooling to reduce dependency on water for industrial cooling needs.",
     images: [
-      <FontAwesomeIcon icon={faLeaf} className="text-blue-500 w-12 h-12" />,
+      <FontAwesomeIcon
+        icon={faWind}
+        className="text-blue-500 w-12 h-12"
+      />,
     ],
   },
   {
-    title: "Sustainable Practices",
+    title: "Regular Maintenance to Prevent Leaks",
     description:
-      "Adopt sustainable industrial practices that focus on reducing the environmental impact of water usage and ensuring long-term groundwater availability.",
+      "Conduct regular maintenance of cooling systems to prevent leaks and water wastage, ensuring efficient use of water resources.",
     images: [
-      <FontAwesomeIcon icon={faSeedling} className="text-blue-500 w-12 h-12" />,
+      <FontAwesomeIcon
+        icon={faWrench}
+        className="text-red-500 w-12 h-12"
+      />,
     ],
   },
 ];
+
+
 const ModalComponent = () => {
   const [page, setPage] = useState(0);
   const dispatch = useDispatch();
@@ -112,7 +119,6 @@ const ModalComponent = () => {
           )}
         </div>
       </div>
-    </div>
   );
 };
 const WaterCoolantLevel = () => {
@@ -155,8 +161,9 @@ const WaterCoolantLevel = () => {
       <div className="absolute inset-0 bg-black/50 z-10"></div>
       <button
         onClick={() => {
-          navigate("/gameElements");
-        }}
+          navigate("/element/industry");
+        }
+        }
         className="w-[50px] h-[50px] rounded-full bg-white cursor-pointer absolute top-5 left-5 z-50 hover:scale-110 transition-all duration-100 ease-in-out"
       >
         <FontAwesomeIcon icon={faArrowLeft} className=""></FontAwesomeIcon>
