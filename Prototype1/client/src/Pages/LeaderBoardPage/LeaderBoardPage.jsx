@@ -5,7 +5,7 @@ import { Vortex } from "react-loader-spinner";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+
 import { getLeaderBoard } from "../../lib/Slices/leaderBoardSlice";
 
 const LeaderBoardPage = () => {
