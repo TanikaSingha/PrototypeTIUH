@@ -145,9 +145,6 @@ const IndustryComponent = () => {
         <div
           className="group farm-land absolute w-[100px] h-[95px] bg-transparent bottom-[130px] left-[300px] cursor-pointer z-30"
           onClick={() => {
-            if (!isTutorialComplete) {
-              dispatch(nextStep());
-            }
             navigate("/element/industry/level/toxic-water-treatment-level");
           }}
         >

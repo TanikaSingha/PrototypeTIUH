@@ -1,12 +1,21 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowCircleDown, faWater, faPuzzlePiece, faLightbulb, faCoins, faStar, faClipboard } from '@fortawesome/free-solid-svg-icons'
-import logo from "../../assets/WebsiteLogo/logo2.png"
-import badge from "../../assets/Icons/badge.png"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faArrowCircleDown,
+  faWater,
+  faPuzzlePiece,
+  faLightbulb,
+  faCoins,
+  faStar,
+  faClipboard,
+} from "@fortawesome/free-solid-svg-icons";
+import logo from "../../assets/WebsiteLogo/logo2.png";
+import badge from "../../assets/Icons/badge.png";
 import { useNavigate } from "react-router-dom";
-import "./HomePage.css"
-import certificate from "../../assets/Certificate.png"
+import "./HomePage.css";
+import certificate from "../../assets/Certificate.png";
+import { useSelector } from "react-redux";
 
 const videoLinks = [
   "https://res.cloudinary.com/dzjbxojvu/video/upload/v1724658888/bgfvjzpklnz6cq1lv4pg.mp4",
@@ -17,6 +26,7 @@ const videoLinks = [
 const HomePage = () => {
   const videoRef = useRef(null);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+  const { user } = useSelector((state) => state.user);
   const [fade, setFade] = useState(false);
   const navigate = useNavigate();
 
@@ -46,20 +56,34 @@ const HomePage = () => {
           <img src={logo} alt="website-logo" className="rounded-full" />
         </div>
         <div className="absolute top-4 right-4 z-20 gap-4 flex">
-          <button className="montserrat text-white text-md bg-gradient-to-r from-blue-800 to-blue-600 py-2 px-4 rounded-2xl overflow-hidden transition-all duration-150 hover:from-blue-800 hover:to-blue-950 hover:scale-105"
+          <button
+            className="montserrat text-white text-md bg-gradient-to-r from-blue-800 to-blue-600 py-2 px-4 rounded-2xl overflow-hidden transition-all duration-150 hover:from-blue-800 hover:to-blue-950 hover:scale-105"
             onClick={() => {
-              navigate("/login")
-            }}>Login</button>
-          <button className="montserrat text-white text-md border-white border-2 p-2 rounded-2xl overflow-hidden transition-all duration-150 hover:bg-gradient-to-b hover:from-teal-600 hover:to-cyan-600 hover:text-white hover:border-transparent hover:scale-105"
-            onClick={() => { navigate("/leaderboard") }}>
+              if (user) {
+                navigate("/profile");
+              } else {
+                navigate("/login");
+              }
+            }}
+          >
+            {user ? `Profile` : `Login`}
+          </button>
+          <button
+            className="montserrat text-white text-md border-white border-2 p-2 rounded-2xl overflow-hidden transition-all duration-150 hover:bg-gradient-to-b hover:from-teal-600 hover:to-cyan-600 hover:text-white hover:border-transparent hover:scale-105"
+            onClick={() => {
+              navigate("/leaderboard");
+            }}
+          >
             View Leaderboard
             <FontAwesomeIcon icon={faClipboard} className="text-xl ml-2" />
-          </button></div>
+          </button>
+        </div>
         <div className="absolute inset-0 bg-black/70 z-10"></div>
         <video
           ref={videoRef}
-          className={`absolute inset-0 w-full h-full object-cover z-0 transition-opacity duration-500 ${fade ? "opacity-0" : "opacity-100"
-            }`}
+          className={`absolute inset-0 w-full h-full object-cover z-0 transition-opacity duration-500 ${
+            fade ? "opacity-0" : "opacity-100"
+          }`}
           src={videoLinks[currentVideoIndex]}
           type="video/mp4"
           autoPlay
@@ -78,17 +102,28 @@ const HomePage = () => {
               Play Now
             </button>
           </Link>
-          <button onClick={() => {
-            document.getElementById('about-section').scrollIntoView({ behavior: 'smooth' });
-          }} className="mt-8 mx-4 px-6 py-3 bg-gradient-to-r from-blue-950 to-sky-600 text-white text-lg normal-text font-bold rounded shadow hover:from-sky-600 hover:to-sky-700 transition-all transform hover:scale-105">
+          <button
+            onClick={() => {
+              document
+                .getElementById("about-section")
+                .scrollIntoView({ behavior: "smooth" });
+            }}
+            className="mt-8 mx-4 px-6 py-3 bg-gradient-to-r from-blue-950 to-sky-600 text-white text-lg normal-text font-bold rounded shadow hover:from-sky-600 hover:to-sky-700 transition-all transform hover:scale-105"
+          >
             Know More
-            <FontAwesomeIcon icon={faArrowCircleDown} className="ml-2"></FontAwesomeIcon>
+            <FontAwesomeIcon
+              icon={faArrowCircleDown}
+              className="ml-2"
+            ></FontAwesomeIcon>
           </button>
         </div>
       </section>
 
       {/* About Section */}
-      <section id="about-section" className="py-16 mx-auto px-4 text-center relative container bg-gradient-to-r from-black via-slate-900 to-slate-700">
+      <section
+        id="about-section"
+        className="py-16 mx-auto px-4 text-center relative container bg-gradient-to-r from-black via-slate-900 to-slate-700"
+      >
         {/* Animated Background */}
         {/* <div className="absolute inset-0 bg-gradient-to-r from-sky-950 via-blue-800 to-indigo-950 opacity-75 rounded-lg shadow-lg"></div> */}
         <div className="relative z-10">
@@ -109,19 +144,28 @@ const HomePage = () => {
         <div className="relative z-10 mt-8 flex justify-center space-x-8">
           <div className="text-center">
             <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
-              <FontAwesomeIcon className="text-lg" icon={faWater}></FontAwesomeIcon>
+              <FontAwesomeIcon
+                className="text-lg"
+                icon={faWater}
+              ></FontAwesomeIcon>
             </div>
             <p className="text-gray-300 normal-text">Water Sources</p>
           </div>
           <div className="text-center">
             <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
-              <FontAwesomeIcon className="text-lg" icon={faPuzzlePiece}></FontAwesomeIcon>
+              <FontAwesomeIcon
+                className="text-lg"
+                icon={faPuzzlePiece}
+              ></FontAwesomeIcon>
             </div>
             <p className="text-gray-300 normal-text">Challenges</p>
           </div>
           <div className="text-center">
             <div className="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
-              <FontAwesomeIcon className="text-lg" icon={faLightbulb}></FontAwesomeIcon>
+              <FontAwesomeIcon
+                className="text-lg"
+                icon={faLightbulb}
+              ></FontAwesomeIcon>
             </div>
             <p className="text-gray-300 normal-text">Strategic Moves</p>
           </div>
@@ -130,16 +174,17 @@ const HomePage = () => {
 
       {/* Features Section */}
       <section className="py-16 text-center bg-gradient-to-r from-black via-slate-900 to-slate-700">
-        <h2 className="text-3xl font-semibold mb-8 heading">
-          Features
-        </h2>
+        <h2 className="text-3xl font-semibold mb-8 heading">Features</h2>
         <div className="container mx-auto w-[72rem] grid grid-cols-1 md:grid-cols-3 gap-20 text-center">
           {/* Collect Coins Feature */}
           <div className="relative p-6 bg-gray-700 rounded-lg shadow-lg">
             <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-blue-900 to-cyan-400 blur-md opacity-50"></div>
             <h3 className="relative text-xl mb-4 heading z-20 flex justify-center">
               Collect Coins
-              <FontAwesomeIcon icon={faCoins} className="pl-2"></FontAwesomeIcon>
+              <FontAwesomeIcon
+                icon={faCoins}
+                className="pl-2"
+              ></FontAwesomeIcon>
             </h3>
             <p className="relative text-white text-base normal-text z-10">
               Earn coins by performing tasks such as fixing water leaks,
@@ -167,7 +212,10 @@ const HomePage = () => {
             <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-blue-900 to-cyan-400 blur-md opacity-50"></div>
             <h3 className="relative text-xl  mb-4 heading z-20">
               Leaderboard
-              <FontAwesomeIcon icon={faClipboard} className="pl-2"></FontAwesomeIcon>
+              <FontAwesomeIcon
+                icon={faClipboard}
+                className="pl-2"
+              ></FontAwesomeIcon>
             </h3>
             <p className="relative text-white text-base normal-text z-10">
               Compete with players worldwide! Check out the leaderboard to see

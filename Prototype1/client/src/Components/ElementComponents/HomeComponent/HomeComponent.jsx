@@ -156,9 +156,6 @@ const HomeComponent = () => {
         <div
           className="group irrigation-land absolute w-[50px] h-[85px] bg-transparent bottom-[150px] left-[430px] cursor-pointer z-40"
           onClick={() => {
-            if (!isTutorialComplete) {
-              dispatch(nextStep());
-            }
             navigate("/element/home/level/cleaning-level");
           }}>
           <FontAwesomeIcon
@@ -172,9 +169,6 @@ const HomeComponent = () => {
         <div
           className="group farm-land absolute w-[50px] h-[85px] bg-transparent bottom-[250px] left-[460px] cursor-pointer z-20"
           onClick={() => {
-            if (!isTutorialComplete) {
-              dispatch(nextStep());
-            }
             navigate("/element/home/level/bathroom-level");
           }}>
           <FontAwesomeIcon

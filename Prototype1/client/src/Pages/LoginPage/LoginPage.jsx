@@ -2,7 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { clearError, loginUser } from "../../lib/Slices/userSlice";
-
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const LoginPage = () => {
   const dispatch = useDispatch();
   const [form, setForm] = useState({ username: "", password: "" });
@@ -58,21 +59,29 @@ const LoginPage = () => {
   }, []);
 
   return (
-  
-    <div className=" min-h-screen ">
+    <div className=" min-h-screen relative">
+      <button
+        onClick={() => {
+          navigate("/");
+        }}
+        className="w-[50px] h-[50px] rounded-full bg-white cursor-pointer absolute top-5 left-5 z-50 hover:scale-110 transition-all duration-100 ease-in-out"
+      >
+        <FontAwesomeIcon icon={faArrowLeft} className=""></FontAwesomeIcon>
+      </button>
 
       <div className="absolute bg-black opacity-50 left-0 top-0 size-full z-[-1] bg-cover bg-center">
         <video
           ref={videoRef}
-          className={`object-cover size-full z-[-1] transition-opacity duration-500 ${fade ? "opacity-0" : "opacity-100"
-            }`}
+          className={`object-cover size-full z-[-1] transition-opacity duration-500 ${
+            fade ? "opacity-0" : "opacity-100"
+          }`}
           src={videoLinks[currentVideoIndex]}
           type="video/mp4"
           autoPlay
           muted
         />
       </div>
-    
+
       <div className="flex items-center justify-center min-h-screen z-10 w-full p-4">
         <div className="z-20 flex flex-col w-full max-w-md bg-slate-900 p-12 shadow-lg rounded-lg space-y-4">
           <h1 className="inconsolata text-2xl font-bold mb-6 text-center text-white">
@@ -137,8 +146,6 @@ const LoginPage = () => {
       </div>
     </div>
   );
-
-
 };
 
 export default LoginPage;

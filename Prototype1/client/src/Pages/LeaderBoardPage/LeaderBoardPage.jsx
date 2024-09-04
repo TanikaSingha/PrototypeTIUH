@@ -2,9 +2,8 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import LeaderboardItem from "./LeaderboardItem";
 import { Vortex } from "react-loader-spinner";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { getLeaderBoard } from "../../lib/Slices/leaderBoardSlice";
 
@@ -49,7 +48,6 @@ const LeaderBoardPage = () => {
         <FontAwesomeIcon icon={faArrowLeft} className=""></FontAwesomeIcon>
       </button>
       <div className="w-[1000px] border-4 border-yellow-500 rounded-2xl p-4 relative bg-gray-800">
-      
         <div
           className="border-4 border-yellow-300 flex items-center justify-center p-4 rounded-2xl w-96 absolute left-1/2 -top-[40px] -translate-x-1/2"
           style={{ backgroundColor: "#111827" }}
