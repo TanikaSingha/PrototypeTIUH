@@ -19,7 +19,9 @@ import {
 
 const QuizGame = () => {
   const dispatch = useDispatch();
-  const { currentTask, isTaskRunning } = useSelector((state) => state.game);
+  const { currentTask, isTaskRunning, isTaskComplete } = useSelector(
+    (state) => state.game
+  );
 
   const [score, setScore] = useState(0);
   const [coins, setCoins] = useState(0);
@@ -149,11 +151,18 @@ const QuizGame = () => {
               {isTaskRunning ? (
                 <p>
                   Playing...{" "}
-                  <FontAwesomeIcon icon={faHourglass} className="ml-2"></FontAwesomeIcon>
+                  <FontAwesomeIcon
+                    icon={faHourglass}
+                    className="ml-2"
+                  ></FontAwesomeIcon>
                 </p>
               ) : (
                 <p>
-                  Play Quiz <FontAwesomeIcon icon={faPlay} className="ml-2"></FontAwesomeIcon>
+                  Play Quiz{" "}
+                  <FontAwesomeIcon
+                    icon={faPlay}
+                    className="ml-2"
+                  ></FontAwesomeIcon>
                 </p>
               )}
             </button>

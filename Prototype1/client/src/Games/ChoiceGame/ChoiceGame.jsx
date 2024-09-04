@@ -195,7 +195,7 @@ const ChoiceGame = () => {
               <h2 className="font-medium text-white">
                 Choose from the given options:
               </h2>
-              <ul className="flex flex-col gap-3 mt-4">
+              <ul className="flex flex-col gap-1 mt-4">
                 {currentTask?.scenarios?.[currentQuestion]?.options?.map(
                   (item, index) => (
                     <li

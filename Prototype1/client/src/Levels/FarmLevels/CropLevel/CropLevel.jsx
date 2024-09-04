@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import cropLevelImage from "../../../assets/Levels/FarmLevel/Crop-Level.png";
 import { useDispatch, useSelector } from "react-redux";
-import { setModalClose, setModalOpen } from "../../../lib/Slices/tutorialSlice";
+import {
+  setIntroTrue,
+  setModalClose,
+  setModalOpen,
+} from "../../../lib/Slices/tutorialSlice";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Joyride from "react-joyride";
@@ -18,6 +22,7 @@ import {
 import taskicon1 from "../../../assets/Icons/waterLeaf.png";
 import taskicon2 from "../../../assets/Icons/mulching.png";
 import taskicon3 from "../../../assets/Icons/legumes.png";
+import ModalComponent from "../../../Components/ModalComponent/ModalComponent";
 
 const modalData = [
   {
@@ -71,73 +76,8 @@ const modalData = [
   },
 ];
 
-const ModalComponent = () => {
-  const [page, setPage] = useState(0);
-  const dispatch = useDispatch();
-
-  return (
-    <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-70">
-      <div className="w-[800px] bg-gradient-to-r from-blue-100 to-teal-100 rounded-lg shadow-xl flex flex-col p-6 relative">
-        <div className="bg-gradient-to-br from-blue-400 to-teal-300 w-24 h-24 flex items-center justify-center rounded-full ring-8 ring-teal-700 absolute -top-[66px] -left-10 z-10">
-          <FontAwesomeIcon
-            icon={faTint}
-            className="text-blue-100 text-4xl"
-          ></FontAwesomeIcon>
-        </div>
-        <div className="bg-gradient-to-r from-teal-100 to-blue-100 rounded-xl w-80 flex items-center justify-center absolute border-4 border-teal-900 p-4 -left-2 -top-[60px] tracking-widest">
-          <h1 className="text-4xl font-semibold text-teal-800 uppercase audiowide">
-          Trivia
-          </h1>
-        </div>
-        <div className="absolute top-4 right-4 text-gray-900">
-          <p className="text-sm font-semibold">
-            {page + 1}/{modalData.length}
-          </p>
-        </div>
-        <div className="flex flex-col items-center justify-center flex-1">
-          <h1 className="text-3xl font-bold text-teal-900 mb-4 ">
-            {modalData[page].title}
-          </h1>
-          <p className="text-lg text-gray-800 mb-8 text-center">
-            {modalData[page].description}
-          </p>
-          <div className="mb-6">{modalData[page].images}</div>
-        </div>
-        <div className="flex justify-between mt-auto">
-          {page > 0 && (
-            <button
-              className="bg-gradient-to-r from-teal-500 to-blue-500 hover:from-blue-500 hover:to-teal-500 text-white font-semibold py-2 px-4 rounded transition-all shadow-lg"
-              onClick={() => setPage((prevPage) => prevPage - 1)}
-            >
-              Prev
-            </button>
-          )}
-          {page < modalData.length - 1 && (
-            <button
-              className="bg-gradient-to-r from-teal-500 to-blue-500 hover:from-blue-500 hover:to-teal-500 text-white font-semibold py-2 px-4 rounded transition-all shadow-lg"
-              onClick={() => setPage((prevPage) => prevPage + 1)}
-            >
-              Next
-            </button>
-          )}
-          {page === modalData.length - 1 && (
-            <button
-              className="bg-gradient-to-r from-teal-500 to-blue-500 hover:from-blue-500 hover:to-teal-500 text-white font-semibold py-2 px-4 rounded transition-all shadow-lg"
-              onClick={() => {
-                dispatch(setModalClose());
-              }}
-            >
-              Done
-            </button>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-};
-
 const CropLevel = () => {
-  const { modalOpen } = useSelector((state) => state.tutorial);
+  const { modalOpen, cropLevel } = useSelector((state) => state.tutorial);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -167,6 +107,7 @@ const CropLevel = () => {
     const finishedStatuses = ["finished", "skipped"];
 
     if (finishedStatuses.includes(status)) {
+      dispatch(setIntroTrue("cropLevel"));
       dispatch(setModalOpen());
     }
   };
@@ -187,10 +128,17 @@ const CropLevel = () => {
       </button>
       <Joyride
         steps={steps}
+        run={!cropLevel}
         callback={handleJoyrideCallback}
         continuous
-        showProgress
+        showProgress={false}
         showSkipButton
+        locale={{
+          back: "Previous", // Custom text for the Back button
+          last: "Finish", // Custom text for the Last button (usually the Finish button)
+          next: "Next", // Custom text for the Next button
+          skip: "Skip", // Custom text for the Skip button
+        }}
         styles={{
           options: {
             arrowColor: "#fff",
@@ -201,9 +149,43 @@ const CropLevel = () => {
             width: 300,
             zIndex: 1000,
           },
+          buttonNext: {
+            backgroundColor: "white", // Tailwind green-500
+            color: "black",
+            borderRadius: 8,
+            padding: "10px 20px",
+            fontFamily: "Montserrat, sans-serif",
+            fontSize: "16px",
+            fontWeight: "600",
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+            transition: "background-color 0.3s ease, transform 0.3s ease",
+          },
+          buttonBack: {
+            backgroundColor: "black", // Tailwind gray-50
+            color: "#ffffff",
+            borderRadius: 8,
+            padding: "10px 20px",
+            fontSize: "16px",
+            fontFamily: "Montserrat, sans-serif",
+            fontWeight: "400",
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+            transition: "background-color 0.3s ease, transform 0.3s ease",
+          },
+          tooltip: {
+            borderRadius: "20px", // Increase this value to make the corners more rounded
+            padding: "15px", // Adjust padding as needed
+            boxShadow: "0 6px 12px rgba(0, 0, 0, 0.2)", // Optional: Adjust the box shadow
+            fontSize: "15px",
+            fontFamily: "Montserrat, sans-serif",
+            fontWeight: "600",
+            color: "black",
+          },
+          spotlight: {
+            borderRadius: "20px", // Increase this value to make the spotlight's border radius bigger
+          },
         }}
       />
-      {modalOpen && <ModalComponent />}
+      {modalOpen && <ModalComponent modalData={modalData} />}
       {!modalOpen && (
         <div className="z-50">
           <h1 className="text-white text-4xl font-bold text-center mb-6 audiowide">
@@ -234,7 +216,7 @@ const CropLevel = () => {
             <div
               className="w-72 h-96 bg-black/50  text-white flex flex-col justify-center items-center gap-2 p-4 rounded-lg cursor-pointer hover:scale-105 transition-transform joyride-step-2"
               onClick={() => {
-                navigate(`/game/taskPage?element=farm&level=crop&type=quiz`);
+                navigate(`/game/taskPage?element=farm&level=crop&type=choice`);
               }}
             >
               <h2 className="text-xl font-bold mb-2 montserrat text-white">
@@ -254,7 +236,7 @@ const CropLevel = () => {
             <div
               className="w-72 h-96 bg-black/50 text-white flex flex-col justify-center items-center gap-2 p-4 rounded-lg cursor-pointer hover:scale-105 transition-transform joyride-step-3"
               onClick={() => {
-                navigate(`/game/taskPage?element=farm&level=crop&type=quiz`);
+                navigate(`/game/taskPage?element=farm&level=crop&type=puzzle`);
               }}
             >
               <h2 className="text-xl font-bold mb-2 montserrat text-white">

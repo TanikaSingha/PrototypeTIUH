@@ -77,12 +77,67 @@ const Hud = () => {
         continuous
         run={!hudComponent}
         showSkipButton
-        showProgress
         disableOverlayClose
         callback={handleJoyrideCallback}
+        locale={{
+          back: "Previous", // Custom text for the Back button
+          last: "Finish", // Custom text for the Last button (usually the Finish button)
+          next: "Next", // Custom text for the Next button
+          skip: "Skip", // Custom text for the Skip button
+        }}
+        styles={{
+          options: {
+            arrowColor: "#fff",
+            backgroundColor: "#fff",
+            overlayColor: "rgba(0, 0, 0, 0.5)",
+            primaryColor: "#000",
+            textColor: "#fff",
+            width: 300,
+            zIndex: 1000,
+          },
+          buttonNext: {
+            backgroundColor: " rgb(244 63 94)", // Tailwind green-500
+            color: "white",
+            borderRadius: 8,
+            padding: "10px 20px",
+            fontFamily: "Montserrat, sans-serif",
+            fontSize: "16px",
+            fontWeight: "600",
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+            transition: "background-color 0.3s ease, transform 0.3s ease",
+          },
+          buttonBack: {
+            backgroundColor: "black", // Tailwind gray-50
+            color: "#ffffff",
+            borderRadius: 8,
+            padding: "10px 20px",
+            fontSize: "16px",
+            fontFamily: "Montserrat, sans-serif",
+            fontWeight: "400",
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+            transition: "background-color 0.3s ease, transform 0.3s ease",
+          },
+          tooltip: {
+            borderRadius: "20px", // Increase this value to make the corners more rounded
+            padding: "15px", // Adjust padding as needed
+            boxShadow: "0 6px 12px rgba(0, 0, 0, 0.2)", // Optional: Adjust the box shadow
+            fontSize: "15px",
+            fontFamily: "Montserrat, sans-serif",
+            fontWeight: "600",
+            color: "black",
+          },
+          spotlight: {
+            borderRadius: "20px", // Increase this value to make the spotlight's border radius bigger
+          },
+        }}
       />
       <div className="absolute top-0 left-0 p-4 bg-gradient-to-b from-blue-950 to-blue-900 shadow-lg w-full flex justify-between items-center hud  h-16 text-white">
-        <h2 className="text-xl font-bold audiowide tracking-wide hud-title">
+        <h2
+          className="text-xl font-bold audiowide tracking-wide hud-title"
+          onClick={() => {
+            navigate("/");
+          }}
+        >
           AquaSavvy
         </h2>
         <div className="flex items-center space-x-6">

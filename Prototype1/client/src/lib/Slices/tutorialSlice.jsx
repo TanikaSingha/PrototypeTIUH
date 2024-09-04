@@ -11,6 +11,14 @@ const initialState = {
   homeElement: false,
   industryElement: false,
   hudComponent: false,
+  cropLevel: false,
+  kitchenLevel: false,
+  irrigationLevel: false,
+  pesticideLevel: false,
+  bathroomLevel: false,
+  cleaningAreaLevel: false,
+  toxicWaterLevel: false,
+  waterCoolantLevel: false,
 };
 
 const tutorialSlice = createSlice({

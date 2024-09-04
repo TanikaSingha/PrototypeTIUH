@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { nextStep, setIntroTrue } from "../../../lib/Slices/tutorialSlice";
 import aqua from "../../../assets/aqua/aqua.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMapMarkerAlt,faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { faMapMarkerAlt, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 const FarmComponent = () => {
   const { farmElement, hudComponent } = useSelector((state) => state.tutorial);
@@ -123,15 +123,14 @@ const FarmComponent = () => {
             fontSize: "18px",
             fontFamily: "Inconsolata, sans-serif",
             fontWeight: "600",
-            color: "black"
+            color: "black",
           },
         }}
       />
       <button
         onClick={() => {
           navigate("/gameElements");
-        }
-        }
+        }}
         className="w-[50px] h-[50px] rounded-full bg-white cursor-pointer absolute top-5 left-5 z-50 hover:scale-110 transition-all duration-100 ease-in-out"
       >
         <FontAwesomeIcon icon={faArrowLeft} className=""></FontAwesomeIcon>
@@ -157,9 +156,6 @@ const FarmComponent = () => {
         <div
           className="group irrigation-land absolute w-[150px] h-[110px] bg-transparent bottom-[150px] left-[280px] cursor-pointer z-30"
           onClick={() => {
-            if (!isTutorialComplete) {
-              dispatch(nextStep());
-            }
             navigate("/element/farm/level/irrigation-level");
           }}
         >
@@ -174,9 +170,6 @@ const FarmComponent = () => {
         <div
           className="group farm-land absolute w-[120px] h-[85px] bg-transparent bottom-[220px] left-[470px] cursor-pointer z-30"
           onClick={() => {
-            if (!isTutorialComplete) {
-              dispatch(nextStep());
-            }
             navigate("/element/farm/level/pesticide-level");
           }}
         >
